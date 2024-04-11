@@ -1,0 +1,11 @@
+<inventory size="524,270">
+    <textbox id="meowoad_console" padding="15,5,15,5" pos="120,10" size="365, 240" placeholder="Console..." consumer="text_input">
+
+    </textbox>
+    <panel pos="10, 10" size="100,0">
+        <button padding="10,5,10,5" onclick="rotate_g()">rotate</button>
+        <button padding="10,5,10,5" onclick="up_down_g()">up_down</button>
+        <button padding="10,5,10,5" onclick="change()">change</button>
+        <button padding="10,5,10,5" onclick="convert()">convert</button>
+    </panel>
+</inventory>
