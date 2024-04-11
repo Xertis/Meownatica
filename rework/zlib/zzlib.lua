@@ -17,10 +17,10 @@ local data_buffer = require "core:data_buffer"
 local lua_version = tonumber(_VERSION:match("^Lua (.*)"))
 if not lua_version or lua_version < 5.3 then
   -- older version of Lua or Luajit being used - use bit/bit32-based implementation
-  infl = require "meownatica:zlib/inflate-bit32"
+  --infl = require "meownatica:zlib/inflate-bit32"
 else
   -- From Lua 5.3, use implementation based on bitwise operators
-  infl = require "meownatica:zlib/inflate-bwo"
+  --infl = require "meownatica:zlib/inflate-bwo"
 end
 
 local zzlib = {}

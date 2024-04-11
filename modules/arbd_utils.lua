@@ -4,7 +4,6 @@ local artd = require 'meownatica:artd'
 local arbd_u = {}
 local table_utils = require 'meownatica:table_utils'
 
-local zzlib = require 'meownatica:zlib/zzlib'
 
 function arbd_u:write(array, path)
     local buf = data_buffer()
