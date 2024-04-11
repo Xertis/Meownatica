@@ -1,0 +1,13 @@
+{
+  "blocks": [
+    "meowdelenie",
+    "meowdelat",
+    "meowbuild",
+    "meowreed",
+    "meowoad"
+  ],
+  "items": [
+    "meowint",
+    "block_edit"
+  ]
+}

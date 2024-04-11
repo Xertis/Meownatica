@@ -1,0 +1,3 @@
+[conversion_instructions]
+instruction1 = "artd_arbd.lua"
+instruction2 = "lua_arbd.lua"
