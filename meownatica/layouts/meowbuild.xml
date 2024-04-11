@@ -1,6 +1,0 @@
-<inventory size="140,85">
-    <panel pos="10, 10" size="120,0">
-        <button padding="10,5,10,5" onclick="rotate()">rotate</button>
-        <button padding="10,5,10,5" onclick="up_down()">up_down</button>
-    </panel>
-</inventory>
