@@ -46,9 +46,6 @@ local function split_string(input_string)
     return words
 end
 
-function setTextValidator_m(text)
-    print(text)
-end
 function text_input(text)
     print(text)
     text = split_string(text)

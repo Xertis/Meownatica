@@ -37,13 +37,7 @@ function meow_build:unbuild_reed(x, y, z, read_meowmatic)
     end
 end
 
-function meow_build:build_schem(x, y, z, read_meowmatic, set_air, blocks_update, set_block_on_tick)
-    local available_ids = {}
-    local packs = block.defs_count()
-
-    for i = 0, packs do
-        available_ids[#available_ids + 1] = block.name(i)
-    end
+function meow_build:build_schem(x, y, z, read_meowmatic, set_air, blocks_update, set_block_on_tick, available_ids)
 
     local function build_block(x, y, z, id, rotation, update, block_in_cord)
         if table_utils:find(available_ids, id, '') then

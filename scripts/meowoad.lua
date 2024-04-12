@@ -13,6 +13,8 @@ local y_tick = 0
 local z_tick = 0
 local meownatic_schem = {}
 
+local available_ids = {}
+
 local function table_shallow_copy(t)
     local t2 = {}
     for k,v in pairs(t) do
@@ -52,6 +54,12 @@ end
 local if_first_scheme_loaded = false
 function on_placed(x, y, z)
     if if_first_scheme_loaded == false then
+        local packs = block.defs_count()
+
+        for i = 0, packs do
+            available_ids[#available_ids + 1] = block.name(i)
+        end
+        
         local name, conv = '', ''
         meownatic_schem, conv, name = meow_change:change(false, true)
         if_first_scheme_loaded = true
@@ -101,7 +109,7 @@ function on_blocks_tick(tps)
         schem_thread = table_shallow_copy(g_meownatic_global[1])
     end
     if #g_meownatic_global > 0 then
-        schem_thread = meow_build:build_schem(schem_thread.x, schem_thread.y, schem_thread.z, schem_thread.schem, reader:get('SetAir'), reader:get('BlocksUpdate'), reader:get('SetBlockOnTick'))
+        schem_thread = meow_build:build_schem(schem_thread.x, schem_thread.y, schem_thread.z, schem_thread.schem, reader:get('SetAir'), reader:get('BlocksUpdate'), reader:get('SetBlockOnTick'), available_ids)
         if schem_thread == 'over' then
             table.remove(g_meownatic_global, 1)
         end
