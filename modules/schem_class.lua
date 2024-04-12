@@ -1,4 +1,4 @@
-local true_rotate = load_script('meownatica:meow_classes/rotate_class.lua')
+local true_rotate = load_script('meownatica:meow_classes/SmartRotate.lua')
 local artd = require 'meownatica:artd'
 local arbd = require 'meownatica:arbd_utils'
 local instruction = load_script('meownatica:meow_classes/find_instruction_class.lua')

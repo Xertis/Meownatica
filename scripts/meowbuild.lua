@@ -92,7 +92,7 @@ function on_blocks_tick(tps)
         schem_thread = table_shallow_copy(g_meownatic[1])
     end
     if #g_meownatic > 0 then
-        schem_thread = meow_build:build_schem(schem_thread.x, schem_thread.y, schem_thread.z, schem_thread.schem, reader:get('SetAir'), reader:get('BlocksUpdate'), reader:get('SetBlockOnTick'))
+        schem_thread = meow_build:build_schem(schem_thread.x, schem_thread.y, schem_thread.z, schem_thread.schem, reader:get('SetAir'), reader:get('BlocksUpdate'), reader:get('SetBlockOnTick'), '')
         if schem_thread == 'over' then
             table.remove(g_meownatic, 1)
         end
