@@ -39,7 +39,7 @@ local function split_string(input_string)
     local words = {}
 
     for word in input_string:gmatch("%S+") do
-        word = string.lower(word)
+        --word = string.lower(word)
         table.insert(words, word)
     end
 
@@ -49,6 +49,7 @@ end
 function console(text)
     text = split_string(text)
     local parameter = {text[2], text[4]}
+    text[1] = string.lower(text[1])
     if text[1] == 'schem' then
         if parameter[2] == 'del' then
             if reader:find(parameter[1]) ~= nil then 
@@ -72,7 +73,7 @@ function console(text)
             if parameter[2] ~= nil then
                 document.meowoad_console.text = 'Команда ' .. parameter[2] .. ' не существует'
             else
-                document.meowoad_console.text = 'Нет второго аргумента, запрос не закончен'
+                document.meowoad_console.text = 'Нет второго аргумента, запрос не закончен\nили первый аргумент неверен'
             end
         end
     elseif text[1] == 'config' then

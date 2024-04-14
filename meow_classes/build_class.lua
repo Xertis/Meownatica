@@ -67,7 +67,7 @@ function meow_build:build_schem(x, y, z, read_meowmatic, set_air, blocks_update,
         local index = (point - 1) % #read_meowmatic + 1 
         local schem = read_meowmatic[index]
         local block_in_cord = block.get(schem.x + x, schem.y + y, schem.z + z)
-        if block_in_cord ~= -1 and block_in_cord ~= block.index(schem.id) then
+        if block_in_cord ~= -1 and block.name(block_in_cord) ~= schem.id then
             if schem.id ~= 'core:air' then
                 build_block(schem.x + x, schem.y + y, schem.z + z, schem.id, schem.state.rotation, blocks_update, block_in_cord)
                 bs = bs + 1
