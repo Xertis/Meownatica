@@ -11,16 +11,19 @@ end
 
 function meow_build:build_reed(x, y, z, read_meowmatic)
     local point = 0
+    --local if_placed = false
     while point <= #read_meowmatic do
         local index = (point - 1) % #read_meowmatic + 1 
         local structure = read_meowmatic[index] 
         if structure.id ~= 'core:air' then
             if block.get(structure.x + x, structure.y + y, structure.z + z) == 0 then
+                --if_placed = true
                 block.set(structure.x + x, structure.y + y, structure.z + z, block.index("meownatica:meowreed"), 0, true)
             end
         end
         point = point + 1
     end
+    --return if_placed
 end
 
 function meow_build:unbuild_reed(x, y, z, read_meowmatic)
@@ -40,46 +43,45 @@ end
 function meow_build:build_schem(x, y, z, read_meowmatic, set_air, blocks_update, set_block_on_tick, available_ids)
 
     local function build_block(x, y, z, id, rotation, update, block_in_cord)
-        if table_utils:find(available_ids, id, '') then
-            if block.name(block_in_cord) ~= 'meownatica:meowoad' then    
+        if block.name(block_in_cord) ~= 'meownatica:meowoad' then  
+            if table_utils:find(available_ids, id, '') then   
                 block.set(x, y, z, block.index(id), rotation, update)
-            end
-        else
-            print('[MEOWNATICA] ' .. id .. ' does not exist')
-            if block.name(block_in_cord) ~= 'meownatica:meowoad' then   
+            else
+                print('[MEOWNATICA] ' .. id .. ' does not exist') 
                 block.set(x, y, z, 0, rotation, update)
             end
         end
     end
+    --build_block(structure.x + x, structure.y + y, structure.z + z, structure.id, structure.state.rotation, blocks_update, block_in_cord)
 
     local point = 0
-    local block_pack = set_block_on_tick
+    local bs = 0
+
     if blocks_update then
         blocks_update = false
     else
         blocks_update = true
     end
-    while point <= #read_meowmatic and point <= block_pack do
+
+    while point <= #read_meowmatic and bs < set_block_on_tick do
         local index = (point - 1) % #read_meowmatic + 1 
-        local structure = read_meowmatic[index]
-        local Block_in_cord = block.get(structure.x + x, structure.y + y, structure.z + z)
-        if Block_in_cord ~= -1 and block.name(Block_in_cord) ~= structure.id then
-            if structure.id == "core:air" and set_air == true then
-                build_block(structure.x + x, structure.y + y, structure.z + z, structure.id, structure.state.rotation, blocks_update, block_in_cord)
-            elseif structure.id ~= "core:air" then
-                build_block(structure.x + x, structure.y + y, structure.z + z, structure.id, structure.state.rotation, blocks_update, block_in_cord)
-            else
-                block_pack = block_pack + 1
+        local schem = read_meowmatic[index]
+        local block_in_cord = block.get(schem.x + x, schem.y + y, schem.z + z)
+        if block_in_cord ~= -1 and block_in_cord ~= block.index(schem.id) then
+            if schem.id ~= 'core:air' then
+                build_block(schem.x + x, schem.y + y, schem.z + z, schem.id, schem.state.rotation, blocks_update, block_in_cord)
+                bs = bs + 1
+            elseif schem.id == 'core:air' and set_air == true then
+                build_block(schem.x + x, schem.y + y, schem.z + z, 'core:air', schem.state.rotation, blocks_update, block_in_cord)
+                bs = bs + 1
             end
         end
-        if Block_in_cord ~= -1 then
-            table.remove(read_meowmatic, point)
-            block_pack = set_block_on_tick
-        else
-            block_pack = block_pack + 1
-        end
+
+        table.remove(read_meowmatic, point)
         point = point + 1
     end
+
+    -- Завершение
     if #read_meowmatic > 0 then
         return read_meowmatic
     else
