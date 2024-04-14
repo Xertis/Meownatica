@@ -46,12 +46,10 @@ local function split_string(input_string)
     return words
 end
 
-function text_input(text)
-    print(text)
+function console(text)
     text = split_string(text)
+    local parameter = {text[2], text[4]}
     if text[1] == 'schem' then
-        local parameter = {text[2], text[4]}
-        --document.meowoad_console.text = 'Config: ' .. parameter[2]
         if parameter[2] == 'del' then
             if reader:find(parameter[1]) ~= nil then 
                 meow_schem:save_to_config(nil, parameter[1])
@@ -67,7 +65,9 @@ function text_input(text)
                 document.meowoad_console.text = parameter[1] .. ' не существует в папке'
             end
         elseif parameter[1] == 'all' then
-            document.meowoad_console.text = 'Схем в конфиге: ' .. reader:len() .. ' штук(и)'
+            local res = 'Схем в конфиге: ' .. reader:len() .. ' штук(и)\n'
+            res = res .. reader:all_schem()
+            document.meowoad_console.text = res
         else
             if parameter[2] ~= nil then
                 document.meowoad_console.text = 'Команда ' .. parameter[2] .. ' не существует'
@@ -76,7 +76,6 @@ function text_input(text)
             end
         end
     elseif text[1] == 'config' then
-        local parameter = {text[2], text[4]}
         local result = false
         if parameter[2] == 'true' then parameter[2] = true elseif parameter[2] == 'false' then parameter[2] = false elseif parameter[2] ~= 'meownatics' then parameter[2] = tonumber(parameter[2]) end
         if parameter[2] ~= nil then
@@ -99,6 +98,18 @@ function text_input(text)
     elseif text[1] == 'meow' then
         document.meowoad_console.text = 'MEEEEOOOOOOWWW!!'
     end
+end
+
+function get_console()
+    console(document.meowoad_console.text)
+end
+
+function text_input(text)
+    console(text)
+end
+
+function clear()
+    document.meowoad_console.text = ''
 end
 
 function change()
