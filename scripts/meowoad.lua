@@ -3,6 +3,7 @@ local meow_build =  load_script('meownatica:meow_classes/build_class.lua')
 local meow_schem = require 'meownatica:schem_class'
 local container = require 'meownatica:container_class'
 local reader = require 'meownatica:read_toml'
+local table_utils = require 'meownatica:table_utils'
 local layer = 0
 local meownatic_layer_save = {}
 local start_build = false
@@ -14,15 +15,6 @@ local z_tick = 0
 local meownatic_schem = {}
 
 local available_ids = {}
-
-local function table_shallow_copy(t)
-    local t2 = {}
-    for k,v in pairs(t) do
-        t2[k] = v
-    end
-    return t2
-end
-
 
 local function get_layer(meownatic)
     if meownatic_layer_save ~= meownatic then
@@ -90,7 +82,7 @@ function on_interact(x, y, z, playerid)
                 end
             end
             if if_scheme_in_queue == false then
-                g_meownatic_global[#g_meownatic_global + 1] = {schem = table_shallow_copy(meownatic_schem), x = x, y = y, z = z}
+                g_meownatic_global[#g_meownatic_global + 1] = {schem = table_utils:copy(meownatic_schem), x = x, y = y, z = z}
             end
         end
     end
@@ -106,7 +98,7 @@ function on_blocks_tick(tps)
         end
     else
         say_over_tick = false
-        schem_thread = table_shallow_copy(g_meownatic_global[1])
+        schem_thread = table_utils:copy(g_meownatic_global[1])
     end
     if #g_meownatic_global > 0 then
         schem_thread = meow_build:build_schem(schem_thread.x, schem_thread.y, schem_thread.z, schem_thread.schem, reader:get('SetAir'), reader:get('BlocksUpdate'), reader:get('SetBlockOnTick'), available_ids)

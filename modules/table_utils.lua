@@ -37,4 +37,12 @@ function table_utils:find(table, element, state_is_true)
     end
 end
 
+function table_utils:copy(t)
+    local t2 = {}
+    for k,v in pairs(t) do
+        t2[k] = v
+    end
+    return t2
+end
+
 return table_utils

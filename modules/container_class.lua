@@ -1,18 +1,11 @@
+local table_utils = require 'meownatica:table_utils'
 local container = {}
 local information = {}
 local information_g = {}
 local queue_to_save = {}
 
-local function table_shallow_copy(t)
-    local t2 = {}
-    for k,v in pairs(t) do
-        t2[k] = v
-    end
-    return t2
-end
-
 function container:send(data)
-    information = table_shallow_copy(data)
+    information = table_utils:copy(data)
 end
 
 function container:get()
@@ -24,7 +17,7 @@ function container:get()
 end
 
 function container:send_g(data)
-    information_g = table_shallow_copy(data)
+    information_g = table_utils:copy(data)
 end
 
 function container:get_g()
@@ -36,7 +29,7 @@ function container:get_g()
 end
 
 function container:send_to_save(data)
-    queue_to_save = table_shallow_copy(data)
+    queue_to_save = table_utils:copy(data)
 end
 
 function container:get_to_save()
