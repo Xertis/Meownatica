@@ -83,6 +83,28 @@ function meow_schem:max_y(meownatic)
     return maximum
 end
 
+function meow_schem:max_x(meownatic)
+    local maximum = -10000000000000000000000
+    --Максимальный Y
+    for i = 1, #meownatic do
+        if meownatic[i].x > maximum then
+            maximum = meownatic[i].x
+        end
+    end
+    return maximum
+end
+
+function meow_schem:min_x(meownatic)
+    local minimal = 100000000000000000000000
+    --Минимальный Y
+    for i = 1, #meownatic do
+        if meownatic[i].x < minimal then
+            minimal = meownatic[i].x
+        end
+    end
+    return minimal
+end
+
 function meow_schem:materials(meownatic)
     local count = {}
     for _, materials in ipairs(meownatic) do
@@ -99,43 +121,21 @@ end
 
 --Переворот схемы вверх дном
 function meow_schem:upmeow(meownatic)
-
-    local n = #meownatic
-    --Сортируем таблицу
-    for i = 1, n - 1 do
-        local max_indx = i
-        for j = i + 1, n do
-            if meownatic[j].y > meownatic[max_indx].y then
-                max_indx = j
-            end
-        end
-        meownatic[i], meownatic[max_indx] = meownatic[max_indx], meownatic[i]
-    end
-
-    local Y_save = {}
+    max_y = meow_schem:max_y(meownatic)
     for i = 1, #meownatic do
-        local max_y = meow_schem:max_y(meownatic)
-        local min_y = meow_schem:min_y(meownatic)
-        max_y = max_y - i + 1
-        min_y = min_y + i - 1
+        local y = meownatic[i].y
 
-        for _, block in ipairs(meownatic) do
-            if block.y == max_y then
-                table.insert(Y_save, min_y)
-            end
-        end
+        meownatic[i].y = -y + max_y
     end
+    return meownatic
+end
 
-    for i, block in ipairs(meownatic) do
-        block.y = Y_save[i]
-    end
+function meow_schem:mirroring(meownatic)
+    max_x = meow_schem:max_x(meownatic)
+    for i = 1, #meownatic do
+        local x = meownatic[i].x
 
-    for i, block in ipairs(meownatic) do
-        if block.state.rotation == 5 then
-            block.state.rotation = 4
-        elseif block.state.rotation == 4 then
-            block.state.rotation = 5
-        end
+        meownatic[i].x = -x + max_x
     end
     return meownatic
 end
@@ -192,6 +192,5 @@ function meow_schem:convert(name_format, finish_format, source)
         return false
     end
 end
-
 
 return meow_schem

@@ -35,6 +35,16 @@ function up_down_g()
     end
 end
 
+function mirroring_g()
+    meownatic_schem = container:get_g()
+    meow_build:unbuild_reed(x, y, z, meownatic_schem)
+    if #meownatic_schem > 0 then
+        meownatic_schem = meow_schem:mirroring(meownatic_schem)
+        meow_build:build_reed(x, y, z, meownatic_schem)
+        container:send_g(meownatic_schem)
+    end
+end
+
 local function split_string(input_string)
     local words = {}
 

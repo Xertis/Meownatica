@@ -29,3 +29,12 @@ function up_down()
         meow_build:build_reed(x, y, z, save_meowmatic)
     end
 end
+
+function mirroring()
+    local save_meowmatic = container:get()
+    if #save_meowmatic > 0 then
+        meow_build:unbuild_reed(x, y, z, save_meowmatic)
+        save_meowmatic = meow_schem:mirroring(save_meowmatic)
+        meow_build:build_reed(x, y, z, save_meowmatic)
+    end
+end
