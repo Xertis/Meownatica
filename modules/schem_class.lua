@@ -127,6 +127,13 @@ function meow_schem:upmeow(meownatic)
 
         meownatic[i].y = -y + max_y
     end
+    for i, block in ipairs(meownatic) do
+        if block.state.rotation == 5 then
+            block.state.rotation = 4
+        elseif block.state.rotation == 4 then
+            block.state.rotation = 5
+        end
+    end
     return meownatic
 end
 
@@ -136,6 +143,20 @@ function meow_schem:mirroring(meownatic)
         local x = meownatic[i].x
 
         meownatic[i].x = -x + max_x
+    end
+    for i, block in ipairs(meownatic) do
+        local state = block.state.rotation
+
+        if state == 3 then
+            state = 1
+        elseif state == 0 then
+            state = 2
+        elseif state == 1 then
+            state = 3
+        elseif state == 2 then
+            state = 0
+        end
+        block.state.rotation = state
     end
     return meownatic
 end
