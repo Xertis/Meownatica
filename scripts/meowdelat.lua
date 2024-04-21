@@ -94,7 +94,9 @@ function on_placed(x, y, z)
                 create_ribs(x2_delat, y2_delat, z2_delat, x1_delat, y1_delat, z1_delat)
             end
             local data1 = {x1_delat, y1_delat, z1_delat, x2_delat, y2_delat, z2_delat}
-            data_meow:add(x, y, z, data1, 0, 0)
+            local data2 = {x2_delat, y2_delat, z2_delat, x1_delat, y1_delat, z1_delat}
+            data_meow:add(x, y, z, data2, 0, 0)
+            data_meow:add(x1_delat, y1_delat, z1_delat, data1, 0, 0)
             data_meow:save_metadata()
         end
         container:send(save_meowmatic)

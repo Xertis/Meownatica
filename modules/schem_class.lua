@@ -85,7 +85,7 @@ end
 
 function meow_schem:max_x(meownatic)
     local maximum = -10000000000000000000000
-    --Максимальный Y
+    --Максимальный X
     for i = 1, #meownatic do
         if meownatic[i].x > maximum then
             maximum = meownatic[i].x
@@ -96,10 +96,32 @@ end
 
 function meow_schem:min_x(meownatic)
     local minimal = 100000000000000000000000
-    --Минимальный Y
+    --Минимальный X
     for i = 1, #meownatic do
         if meownatic[i].x < minimal then
             minimal = meownatic[i].x
+        end
+    end
+    return minimal
+end
+
+function meow_schem:max_z(meownatic)
+    local maximum = -10000000000000000000000
+    --Максимальный Z
+    for i = 1, #meownatic do
+        if meownatic[i].z > maximum then
+            maximum = meownatic[i].z
+        end
+    end
+    return maximum
+end
+
+function meow_schem:min_z(meownatic)
+    local minimal = 100000000000000000000000
+    --Минимальный Z
+    for i = 1, #meownatic do
+        if meownatic[i].z < minimal then
+            minimal = meownatic[i].z
         end
     end
     return minimal
@@ -124,39 +146,59 @@ function meow_schem:upmeow(meownatic)
     max_y = meow_schem:max_y(meownatic)
     for i = 1, #meownatic do
         local y = meownatic[i].y
+        local state = meownatic[i].state.rotation
+        
+        if state == 5 then
+            meownatic[i].state.rotation = 4
+        elseif state == 4 then
+            meownatic[i].state.rotation = 5
+        end
 
         meownatic[i].y = -y + max_y
-    end
-    for i, block in ipairs(meownatic) do
-        if block.state.rotation == 5 then
-            block.state.rotation = 4
-        elseif block.state.rotation == 4 then
-            block.state.rotation = 5
-        end
     end
     return meownatic
 end
 
 function meow_schem:mirroring(meownatic)
     max_x = meow_schem:max_x(meownatic)
-    for i = 1, #meownatic do
-        local x = meownatic[i].x
+    min_x = meow_schem:min_x(meownatic)
+    max_z = meow_schem:max_z(meownatic)
+    min_z = meow_schem:min_z(meownatic)
 
-        meownatic[i].x = -x + max_x
-    end
-    for i, block in ipairs(meownatic) do
-        local state = block.state.rotation
-
-        if state == 3 then
-            state = 1
-        elseif state == 0 then
-            state = 2
-        elseif state == 1 then
-            state = 3
-        elseif state == 2 then
-            state = 0
+    dX = math.abs(max_x) + math.abs(min_x)
+    dZ = math.abs(max_z) + math.abs(min_z)
+    if dX <= dZ then
+        for i = 1, #meownatic do
+            local x = meownatic[i].x
+            local state = meownatic[i].state.rotation
+            meownatic[i].x = -x + max_x
+            if state == 3 then
+                state = 1
+            elseif state == 0 then
+                state = 2
+            elseif state == 1 then
+                state = 3
+            elseif state == 2 then
+                state = 0
+            end
+            meownatic[i].state.rotation = state
         end
-        block.state.rotation = state
+    else
+        for i = 1, #meownatic do
+            local z = meownatic[i].z
+            local state = meownatic[i].state.rotation
+            meownatic[i].z = -z + max_z
+            if state == 3 then
+                state = 1
+            elseif state == 0 then
+                state = 2
+            elseif state == 1 then
+                state = 3
+            elseif state == 2 then
+                state = 0
+            end
+            meownatic[i].state.rotation = state
+        end
     end
     return meownatic
 end
