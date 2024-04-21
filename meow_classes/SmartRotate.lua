@@ -1,8 +1,20 @@
+local json = require "meownatica:json_reader"
+
 local rotate_schem = {}
 
 local function is_close(value1, value2)
-    --local inaccuracy = 0.25
     return math.abs(value1 - value2)
+end
+
+--find_tiny_value
+local function ftv(tbl)
+    maximum = tbl[1]
+    for i = 1, #tbl do
+        if tbl[i] > maximum then
+            maximum = tbl[i]
+        end
+    end
+    return maximum
 end
 
 local function checkElements(big_table, elements_to_search)
@@ -33,70 +45,57 @@ function rotate_schem:rotate(x, y, z, id, state)
         local name_block = name:sub(pos + 1)
         local config = ''
         if file.isfile(name_mode .. ':' .. 'blocks' .. '/' .. name_block .. '.json') then
-            config = file.read(name_mode .. ':' .. 'blocks' .. '/' .. name_block .. '.json')
+            config = json.decode(file.read(name_mode .. ':' .. 'blocks' .. '/' .. name_block .. '.json'))
         else
             print('[MEOWNATICA] Блок: ' .. name .. ' не найден среди ваших модов')
             return nil
         end
-        local config = string.lower(config)
-        -- Делим конфиг на строки
-        local lines = {}
-        for line in config:gmatch("[^\n]+") do
-            table.insert(lines, line)
-        end
 
         local model = ''
-        --Ищем aabb в строке
-        for i, line in ipairs(lines) do
-            if line:find('aabb') and line:find('model') then
-                model = 'aabb'
-            elseif line:find('custom') and line:find('model') then
-                model = 'custom'
-            end
-        end
+        if config['model'] ~= nil then model = string.lower(config['model']) end
 
         local rotate = ''
-        --Ищем pipe в строке
-        for i, line in ipairs(lines) do
-            if line:find('pipe') and line:find('rotation') then
-                rotate = 'pipe'
-            elseif  line:find('pane') and line:find('rotation') then
-                rotate = 'pane'
-            end
-        end
-
+        if config['rotation'] ~= nil then rotate = string.lower(config['rotation']) end
         
         local hitbox = {}
-        local sides = {} 
+        local sides = {{}, {}, {}, {}, {}, {}} 
         if (model == 'aabb' or model == 'custom') and (rotate == 'pipe' or rotate == 'pane') then
             --Получаем хитбокс
-            for i, line in ipairs(lines) do
-                if line:find('hitbox') and line:find(']') then
-                    for num in line:gmatch("%d+%.?%d*") do
-                        table.insert(hitbox, tonumber(num))
+            if config['hitbox'] ~= nil then
+                hitbox = {config['hitbox']}
+            elseif config['model-primitives'] ~= nil then
+                for _, aabb in ipairs(config['model-primitives']['aabbs']) do
+                    local save = {}
+                    for i = 1, 6 do
+                        table.insert(save, aabb[i])
                     end
+                    table.insert(hitbox, save)
                 end
             end
+
             if hitbox[1] ~= nil then
-                local x, y, z, width, height, depth = hitbox[1], hitbox[2], hitbox[3], hitbox[4], hitbox[5], hitbox[6]
-                local minX = x
-                local maxX = x + width
-                local minY = y
-                local maxY = y + height
-                local minZ = z
-                local maxZ = z + depth
-            
-                table.insert(sides, is_close(minY, 0.0))
-                table.insert(sides, is_close(maxY, 1.0))
-                table.insert(sides, is_close(minX, 0.0))
-                table.insert(sides, is_close(maxX, 1.0))
-                table.insert(sides, is_close(minZ, 0.0))
-                table.insert(sides, is_close(maxZ, 1.0))
+                for _, aabb in ipairs(hitbox) do
+                    local x, y, z, width, height, depth = aabb[1], aabb[2], aabb[3], aabb[4], aabb[5], aabb[6]
+                    local minX = x
+                    local maxX = x + width
+                    local minY = y
+                    local maxY = y + height
+                    local minZ = z
+                    local maxZ = z + depth
+                    table.insert(sides[1], is_close(minY, 0.0))
+                    table.insert(sides[2], is_close(maxY, 1.0))
+                    table.insert(sides[3], is_close(minX, 0.0))
+                    table.insert(sides[4], is_close(maxX, 1.0))
+                    table.insert(sides[5], is_close(minZ, 0.0))
+                    table.insert(sides[6], is_close(maxZ, 1.0))
+                end
             end
         end
         --print("[MEOWNATICA] Расстояние до сторон внешнего куба: " .. table.concat(sides, ", "))
+
+
         if hitbox[1] ~= nil then
-            if rotate == 'pane' and (sides[5] < sides[6] or sides[5] > sides[6]) then
+            if rotate == 'pane' and ((ftv(sides[5]) < ftv(sides[6]) or ftv(sides[5]) > ftv(sides[6])) or (ftv(sides[3]) < ftv(sides[4]) or ftv(sides[3]) > ftv(sides[4]))) then
                 if state == 1 then
                     return 0
                 elseif state == 0 then
