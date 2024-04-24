@@ -1,4 +1,5 @@
 local json = require "meownatica:json_reader"
+local lang = load_script('meownatica:meow_data/lang.lua')
 
 local rotate_schem = {}
 
@@ -47,10 +48,10 @@ function rotate_schem:rotate(x, y, z, id, state)
         if file.isfile(name_mode .. ':' .. 'blocks' .. '/' .. name_block .. '.json') then
             config = json.decode(file.read(name_mode .. ':' .. 'blocks' .. '/' .. name_block .. '.json'))
         else
-            print('[MEOWNATICA] Блок: ' .. name .. ' не найден среди ваших модов')
+            print('[MEOWNATICA] ' .. lang:get('block') .. ' ' .. name .. ' ' .. lang:get('not found'))
             return nil
         end
-
+        
         local model = ''
         if config['model'] ~= nil then model = string.lower(config['model']) end
 
@@ -58,7 +59,7 @@ function rotate_schem:rotate(x, y, z, id, state)
         if config['rotation'] ~= nil then rotate = string.lower(config['rotation']) end
         
         local hitbox = {}
-        local sides = {{}, {}, {}, {}, {}, {}} 
+        local sides = {{}, {}, {}, {}, {}, {}}
         if (model == 'aabb' or model == 'custom') and (rotate == 'pipe' or rotate == 'pane') then
             --Получаем хитбокс
             if config['hitbox'] ~= nil then

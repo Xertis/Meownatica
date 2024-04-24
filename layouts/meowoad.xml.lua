@@ -9,6 +9,18 @@ local z = 0
 local reader = require 'meownatica:read_toml'
 local convert_schem = {}
 
+local function convert_string_to_value(str)
+    if str == "true" then
+        return true
+    elseif str == "false" then
+        return false
+    elseif tonumber(str) ~= nil then
+        return tonumber(str)
+    else
+        return str
+    end
+end
+
 function on_open(invid, x1, y1, z1)
     x = x1
     y = y1
@@ -88,7 +100,7 @@ function console(text)
         end
     elseif text[1] == 'config' then
         local result = false
-        if parameter[2] == 'true' then parameter[2] = true elseif parameter[2] == 'false' then parameter[2] = false elseif parameter[2] ~= 'meownatics' then parameter[2] = tonumber(parameter[2]) end
+        parameter[2] = convert_string_to_value(parameter[2])
         if parameter[2] ~= nil then
             if parameter[1] ~= 'meownatics' then
                 result = meow_schem:save_to_config(nil, nil, parameter, true)

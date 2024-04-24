@@ -4,6 +4,7 @@ local meow_schem = require 'meownatica:schem_class'
 local container = require 'meownatica:container_class'
 local reader = require 'meownatica:read_toml'
 local table_utils = require 'meownatica:table_utils'
+local lang = load_script('meownatica:meow_data/lang.lua')
 local layer = 0
 local meownatic_layer_save = {}
 local start_build = false
@@ -94,7 +95,7 @@ function on_blocks_tick(tps)
     if #g_meownatic_global <= 0 then
         start_build = false
         if say_over_tick == false then
-            print('[MEOWNATICA:Global schem] The construction queue is finished')
+            print(lang:get('Global is finish'))
             say_over_tick = true
         end
     else
@@ -107,9 +108,11 @@ function on_blocks_tick(tps)
         
         if schem_thread == 'over' then
             table.remove(g_meownatic_global, 1)
-            print('[MEOWNATICA] Meownatic is inserted incorrectly, install the following ContentPack to insert it correctly:')
-            for a, b in ipairs(lose_blocks) do
-                print('             ' .. a .. '. '.. b)
+            if lose_blocks ~= nil then
+                print(lang:get('not mods'))
+                for a, b in ipairs(lose_blocks) do
+                    print('             ' .. a .. '. '.. b)
+                end
             end
             lose_blocks = {}
             schem_thread = {}

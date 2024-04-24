@@ -38,10 +38,12 @@ function table_utils:find(table, element, state_is_true)
 end
 
 function table_utils:insert_unique(tbl, elem)
-    if table_utils:find(tbl, elem) then
-        return tbl
-    else
-        return table.insert(tbl, elem)
+    if tbl ~= nil then
+        if table_utils:find(tbl, elem) then
+            return tbl
+        else
+            return table.insert(tbl, elem)
+        end
     end
 end
 

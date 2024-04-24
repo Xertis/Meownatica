@@ -1,6 +1,7 @@
 local meow_build = { }
 local json = require 'meownatica:json_reader'
 local table_utils = require 'meownatica:table_utils'
+local lang = load_script('meownatica:meow_data/lang.lua')
 
 function meow_build:new()
     local o = {}
@@ -47,7 +48,7 @@ function meow_build:build_schem(x, y, z, read_meowmatic, set_air, blocks_update,
             if table_utils:find(available_ids, id, '') then   
                 block.set(x, y, z, block.index(id), rotation, update)
             else
-                print('[MEOWNATICA] ' .. id .. ' does not exist') 
+                print('[MEOWNATICA] ' .. id .. ' ' .. lang:get('not found'))
                 lose_blocks = table_utils:insert_unique(lose_blocks, id:match("(.*):"))
                 block.set(x, y, z, 0, rotation, update)
             end

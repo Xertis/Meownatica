@@ -3,6 +3,7 @@ local meow_schem = require 'meownatica:schem_class'
 local container = require 'meownatica:container_class'
 local reader = require 'meownatica:read_toml'
 local table_utils = require 'meownatica:table_utils'
+local lang = load_script('meownatica:meow_data/lang.lua')
 local layer1 = 0
 local meownatic_layer_save1 = {}
 local start_build = false
@@ -78,7 +79,7 @@ function on_blocks_tick(tps)
     if #g_meownatic <= 0 then
         start_build = false
         if say_over_tick == false then
-            print('[MEOWNATICA:Local schem] The construction queue is finished')
+            print(lang:get('Local is finish'))
             say_over_tick = true
         end
     else

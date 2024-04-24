@@ -1,6 +1,7 @@
 local container = require 'meownatica:container_class'
 local meow_schem = require 'meownatica:schem_class'
 local arbd = require 'meownatica:arbd_utils'
+local lang = load_script('meownatica:meow_data/lang.lua')
 local num_file = 0
 
 local function printStructures(tbl)
@@ -8,7 +9,7 @@ local function printStructures(tbl)
     while file.exists('meownatica:meownatics/' .. 'save_meownatic_' .. num_file .. '.arbd') do
         num_file = num_file + 1
     end
-    print('[MEOWNATICA] Loading meownatic...')
+    print(lang:get('Save Meownatic'))
 
     arbd_table = arbd:convert_save(tbl)
 

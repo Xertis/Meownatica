@@ -3,6 +3,7 @@ local data_buffer = require "core:data_buffer"
 local artd = require 'meownatica:artd'
 local arbd_u = {}
 local table_utils = require 'meownatica:table_utils'
+local lang = load_script('meownatica:meow_data/lang.lua')
 
 
 function arbd_u:write(array, path)
@@ -61,7 +62,7 @@ function arbd_u:convert_save(array)
         'Blocks count: ' .. #arbd_table - 3 .. '\n             ' ..
         arbd_table[1]
     )
-    print('[MEOWNATICA] Meownatic is converted...')
+    print(lang:get('is converted'))
     arbd_table[#arbd_table + 1] = false
     return arbd_table
 end
