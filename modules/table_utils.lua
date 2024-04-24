@@ -37,6 +37,14 @@ function table_utils:find(table, element, state_is_true)
     end
 end
 
+function table_utils:insert_unique(tbl, elem)
+    if table_utils:find(tbl, elem) then
+        return tbl
+    else
+        return table.insert(tbl, elem)
+    end
+end
+
 function table_utils:copy(t)
     local t2 = {}
     for k,v in pairs(t) do

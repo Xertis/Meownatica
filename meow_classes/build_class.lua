@@ -40,7 +40,7 @@ function meow_build:unbuild_reed(x, y, z, read_meowmatic)
     end
 end
 
-function meow_build:build_schem(x, y, z, read_meowmatic, set_air, blocks_update, set_block_on_tick, available_ids)
+function meow_build:build_schem(x, y, z, read_meowmatic, set_air, blocks_update, set_block_on_tick, available_ids, lose_blocks)
 
     local function build_block(x, y, z, id, rotation, update, block_in_cord)
         if block.name(block_in_cord) ~= 'meownatica:meowoad' then  
@@ -48,6 +48,7 @@ function meow_build:build_schem(x, y, z, read_meowmatic, set_air, blocks_update,
                 block.set(x, y, z, block.index(id), rotation, update)
             else
                 print('[MEOWNATICA] ' .. id .. ' does not exist') 
+                lose_blocks = table_utils:insert_unique(lose_blocks, id:match("(.*):"))
                 block.set(x, y, z, 0, rotation, update)
             end
         end
@@ -83,9 +84,9 @@ function meow_build:build_schem(x, y, z, read_meowmatic, set_air, blocks_update,
 
     -- Завершение
     if #read_meowmatic > 0 then
-        return read_meowmatic
+        return read_meowmatic, lose_blocks
     else
-        return 'over'
+        return 'over', lose_blocks
     end
 end
 

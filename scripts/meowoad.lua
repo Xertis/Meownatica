@@ -13,6 +13,7 @@ local x_tick = 0
 local y_tick = 0
 local z_tick = 0
 local meownatic_schem = {}
+local lose_blocks = {}
 
 local available_ids = {}
 
@@ -101,9 +102,17 @@ function on_blocks_tick(tps)
         schem_thread = table_utils:copy(g_meownatic_global[1])
     end
     if #g_meownatic_global > 0 then
-        schem_thread = meow_build:build_schem(schem_thread.x, schem_thread.y, schem_thread.z, schem_thread.schem, reader:get('SetAir'), reader:get('BlocksUpdate'), reader:get('SetBlockOnTick'), available_ids)
+        schem_thread, lose_blocks = meow_build:build_schem(schem_thread.x, schem_thread.y, schem_thread.z, schem_thread.schem, reader:get('SetAir'),
+                                                            reader:get('BlocksUpdate'), reader:get('SetBlockOnTick'), available_ids, lose_blocks)
+        
         if schem_thread == 'over' then
             table.remove(g_meownatic_global, 1)
+            print('[MEOWNATICA] Meownatic is inserted incorrectly, install the following ContentPack to insert it correctly:')
+            for a, b in ipairs(lose_blocks) do
+                print('             ' .. a .. '. '.. b)
+            end
+            lose_blocks = {}
+            schem_thread = {}
         end
     end
 end
