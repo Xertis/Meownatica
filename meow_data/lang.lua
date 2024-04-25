@@ -10,8 +10,11 @@ texts['not mods'] = {'[MEOWNATICA] Meownatic is inserted incorrectly, install th
 texts['not found'] = {'does not exist', 'не найден'}
 texts['block'] = {'Block:', 'Блок:'}
 texts['is converted'] = {'[MEOWNATICA] Meownatic is converted', '[MEOWNATICA] Мяунатик сконвертирован'}
-
-
+texts['was deleted'] = {'was deleted', 'был удалён'}
+texts['meownatic'] = {'meownatic', 'мяунатика'}
+texts['was added'] = {'has been added', 'был добавлен'}
+texts['meownatics in the config'] = {'meownatics in the config:', 'мяунатики в конфиге:'}
+texts['count'] = {'count:', 'кол-во:'}
 function lang:get(key)
     local language = reader:get('language')
     if language == 'rus' then

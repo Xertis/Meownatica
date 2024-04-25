@@ -55,4 +55,9 @@ function table_utils:copy(t)
     return t2
 end
 
+function table_utils:sort(t)
+    table.sort(t, function(a, b) return a < b end)
+    return t
+end
+
 return table_utils

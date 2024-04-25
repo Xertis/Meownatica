@@ -64,6 +64,20 @@ function meow_change:change(meownatica, change)
     end
 end
 
+function meow_change:get_schem(meownatic_load)
+    local www, index = reader:find(meownatic_load)
+    if index ~= nil then
+        local source1 = "meownatica:meownatics/" .. reader:schem_full(index)
+        if reader:schem_full(index):find('.arbd') then
+            local doc = arbd:read(source1)
+            return arbd_convert(doc)
+            -----------------------------------------------------
+        else
+            return 'convert', reader:schem_full(index), reader:schem_full(index)
+        end
+    end
+end
+
 return meow_change
 
     

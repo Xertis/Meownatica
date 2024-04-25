@@ -1,7 +1,9 @@
 local meow_build = load_script('meownatica:meow_classes/build_class.lua')
 local meow_schem = require 'meownatica:schem_class'
 local container = require 'meownatica:container_class'
+local table_utils = require 'meownatica:table_utils'
 local meow_change = load_script('meownatica:meow_classes/change_schem_class.lua')
+local lang = load_script('meownatica:meow_data/lang.lua')
 local meownatic_schem = meow_change:change(false, true)
 local x = 0
 local y = 0
@@ -76,21 +78,35 @@ function console(text)
         if parameter[2] == 'del' then
             if reader:find(parameter[1]) ~= nil then 
                 meow_schem:save_to_config(nil, parameter[1])
-                document.meowoad_console.text = parameter[1] .. ' был удалён'
+                document.meowoad_console.text = parameter[1] .. lang:get('was deleted')
             else
-                document.meowoad_console.text = 'Схемы ' .. parameter[1] .. ' нет в конфиге'
+                document.meowoad_console.text = 'Схемы ' .. parameter[1] .. ' ' .. lang:get('not found')
             end
         elseif parameter[2] == 'add' then
             if file.exists('meownatica:meownatics/' .. parameter[1]) then
                 meow_schem:save_to_config(parameter[1], nil)
-                document.meowoad_console.text = parameter[1] .. ' был добавлен'
+                document.meowoad_console.text = parameter[1] .. ' ' .. lang:get('was added')
             else
-                document.meowoad_console.text = parameter[1] .. ' не существует в папке'
+                document.meowoad_console.text = parameter[1] .. ' ' .. lang:get('not found')
             end
         elseif parameter[1] == 'all' then
-            local res = 'Схем в конфиге: ' .. reader:len() .. ' штук(и)\n'
+            local res = lang:get('meownatics in the config') .. ' ' .. reader:len() .. '\n'
             res = res .. reader:all_schem()
             document.meowoad_console.text = res
+        elseif parameter[2] == 'materials' then
+
+            --schem police_station.arbd = materials
+            local materials = meow_change:get_schem(parameter[1])
+            if materials ~= nil then
+                local result = ''
+                for _, entry in ipairs(meow_schem:materials(materials)) do
+                    result = result .. "ID: " .. entry.id .. ' ' .. lang:get('count') .. ' ' .. entry.count .. '\n'
+                end
+
+                document.meowoad_console.text = result
+            else
+                document.meowoad_console.text = parameter[1] .. ' ' .. lang:get('not found')
+            end
         else
             if parameter[2] ~= nil then
                 document.meowoad_console.text = 'Команда ' .. parameter[2] .. ' не существует'

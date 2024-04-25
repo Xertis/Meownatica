@@ -129,16 +129,24 @@ end
 
 function meow_schem:materials(meownatic)
     local count = {}
-    for _, materials in ipairs(meownatic) do
+    for _, materials in pairs(meownatic) do
         local id = materials.id
         count[id] = (count[id] or 0) + 1
     end
-    --for id, value in pairs(count) do
-        --print("Материал с id", id, "встречается", value, "раз(а)")
-    --end
 
-    --print('===' .. 'Блоков всего: ' .. #meownatic .. '===')
-    return count
+    local sorted_count = {}
+    for id, count_value in pairs(count) do
+        table.insert(sorted_count, { id = id, count = count_value })
+    end
+    table.sort(sorted_count, function(a, b)
+        if a.count == b.count then
+            return a.id < b.id
+        else
+            return a.count > b.count
+        end
+    end)
+
+    return sorted_count
 end
 
 --Переворот схемы вверх дном

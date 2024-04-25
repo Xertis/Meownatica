@@ -21,6 +21,12 @@ function reader:schem(indx)
     return tbl['source' .. indx]
 end
 
+function reader:schem_full(indx)
+    local tbl = toml.deserialize(file.read('meownatica:meow_config.toml'))
+    tbl = tbl['meownatics']
+    return tbl[indx]
+end
+
 function reader:indx_is_real(indx, config)
     local indx = string.lower(indx)
     local tbl = toml.deserialize(file.read('meownatica:meow_config.toml'))
