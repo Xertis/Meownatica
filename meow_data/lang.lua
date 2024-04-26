@@ -14,6 +14,7 @@ texts['was deleted'] = {'was deleted', 'был удалён'}
 texts['meownatic'] = {'meownatic', 'мяунатика'}
 texts['was added'] = {'has been added', 'был добавлен'}
 texts['meownatics in the config'] = {'meownatics in the config:', 'мяунатики в конфиге:'}
+texts['config parameters'] = {'config parameters:', 'значения конфига:'}
 texts['count'] = {'count:', 'кол-во:'}
 function lang:get(key)
     local language = reader:get('language')

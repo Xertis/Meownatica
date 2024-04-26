@@ -50,6 +50,17 @@ function reader:len()
     return i
 end
 
+function reader:all_parameters()
+    local tbl = toml.deserialize(file.read('meownatica:meow_config.toml'))
+    local text = ''
+    for idx, value in pairs(tbl) do
+        if idx ~= 'meownatics' then
+            text = text .. idx .. ' = ' .. tostring(value) .. '\n'
+        end
+    end
+    return text
+end
+
 function reader:all_schem()
     local tbl = toml.deserialize(file.read('meownatica:meow_config.toml'))
     tbl = tbl['meownatics']

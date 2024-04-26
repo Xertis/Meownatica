@@ -127,7 +127,13 @@ function console(text)
                 document.meowoad_console.text = 'Параметра ' .. parameter[1] .. ' не существует'
             end
         else
-            document.meowoad_console.text = 'Недопустимое значение параметра'
+            if parameter[1] == 'all' then
+                local res = lang:get('config parameters') .. '\n'
+                res = res .. reader:all_parameters()
+                document.meowoad_console.text = res
+            else
+                document.meowoad_console.text = 'Недопустимое значение параметра'
+            end
         end
 
     elseif text[1] == 'amogus' then
