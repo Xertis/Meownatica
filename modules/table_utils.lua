@@ -39,10 +39,8 @@ end
 
 function table_utils:insert_unique(tbl, elem)
     if tbl ~= nil then
-        if table_utils:find(tbl, elem) then
-            return tbl
-        else
-            return table.insert(tbl, elem)
+        if table_utils:find(tbl, elem) == false then
+            table.insert(tbl, elem)
         end
     end
 end
