@@ -1,4 +1,4 @@
-data_meow = require 'meownatica:metadata_class'
+local data_meow = require 'meownatica:metadata_class'
 
 function on_world_open()
     data_meow:open_metadata()

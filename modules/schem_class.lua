@@ -127,6 +127,24 @@ function meow_schem:min_z(meownatic)
     return minimal
 end
 
+function meow_schem:max_position(meownatic)
+    local max_x = meownatic[1].x
+    local max_y = meownatic[1].y
+    local max_z = meownatic[1].z
+    for i = 1, #meownatic do
+        if meownatic[i].x > max_x then
+            max_x = meownatic[i].x
+        end
+        if meownatic[i].y > max_y then
+            max_y = meownatic[i].y
+        end
+        if meownatic[i].z > max_z then
+            max_z = meownatic[i].z
+        end
+    end
+    return {max_x, max_y, max_z}
+end
+
 function meow_schem:materials(meownatic)
     local count = {}
     for _, materials in pairs(meownatic) do
