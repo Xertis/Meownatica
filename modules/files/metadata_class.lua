@@ -1,11 +1,5 @@
 local data_meow = { }
 local metadata_meow = {}
-function data_meow:new()
-    local o = {}
-    setmetatable(o, self)
-    self.__index = self
-    return o
-end
 
 function data_meow:add(x1, y1, z1, data1_t, data2_t, data3_t)
     metadata_meow[#metadata_meow + 1] = {x = x1, y = y1, z = z1, data1 = data1_t, data2 = data2_t, data3 = data3_t}

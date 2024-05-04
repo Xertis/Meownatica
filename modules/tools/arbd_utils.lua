@@ -1,10 +1,8 @@
-local arbd = require 'meownatica:arbd'
+local arbd = require 'meownatica:files/arbd'
 local data_buffer = require "core:data_buffer"
-local artd = require 'meownatica:artd'
 local arbd_u = {}
-local table_utils = require 'meownatica:table_utils'
+local table_utils = require 'meownatica:tools/table_utils'
 local lang = load_script('meownatica:meow_data/lang.lua')
-
 
 function arbd_u:write(array, path)
     local buf = data_buffer()

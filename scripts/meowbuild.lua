@@ -1,35 +1,11 @@
 local meow_build = load_script('meownatica:meow_classes/build_class.lua')
-local meow_schem = require 'meownatica:schem_class'
 local container = require 'meownatica:container_class'
-local reader = require 'meownatica:read_toml'
-local table_utils = require 'meownatica:table_utils'
+local reader = require 'meownatica:tools/read_toml'
+local table_utils = require 'meownatica:tools/table_utils'
 local lang = load_script('meownatica:meow_data/lang.lua')
-local layer1 = 0
-local meownatic_layer_save1 = {}
-local start_build = false
 local g_meownatic = {}
 local schem_thread = {}
-local x_tick = 0
-local y_tick = 0
-local z_tick = 0
-local array = {}
-local num_file = 0
 
-local function get_layer1(meownatic)
-    if meownatic_layer_save1 ~= meownatic then
-        meownatic_layer_save1 = meownatic
-        layer1 = meow_schem:min_y(meownatic)
-        return layer1
-    else
-        local max_layer = meow_schem:max_y(meownatic)
-        if layer1 >= max_layer then
-            layer1 = meow_schem:min_y(meownatic)
-        else
-            layer1 = layer1 + 1
-        end
-        return layer1
-    end
-end
 function on_broken(x, y, z)
     local save_meowmatic = container:get()
     for key, value in ipairs(g_meownatic) do
@@ -46,7 +22,6 @@ function on_placed(x, y, z)
     local save_meowmatic = container:get()
     if #save_meowmatic > 0 then
         meow_build:build_reed(x, y, z, save_meowmatic)
-        layer1 = meow_schem:min_y(save_meowmatic) - 1
     end
 end
 
@@ -71,13 +46,10 @@ function on_interact(x, y, z, playerid)
         end
     end
 end
-local i_queue = 1
-local stopped = false
+
 local say_over_tick = false
 function on_blocks_tick(tps)
-    local queue_to_save = container:get_to_save()
     if #g_meownatic <= 0 then
-        start_build = false
         if say_over_tick == false then
             print(lang:get('Local is finish'))
             say_over_tick = true

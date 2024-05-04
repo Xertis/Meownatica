@@ -1,7 +1,7 @@
 local meow_build = load_script('meownatica:meow_classes/build_class.lua')
-local meow_schem = require 'meownatica:schem_class'
+local meow_schem = require 'meownatica:schematics_editors/SchemEditor'
 local container = require 'meownatica:container_class'
-local reader = require 'meownatica:read_toml'
+local reader = require 'meownatica:tools/read_toml'
 local x = 0
 local y = 0
 local z = 0

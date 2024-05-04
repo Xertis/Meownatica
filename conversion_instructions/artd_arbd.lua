@@ -1,6 +1,6 @@
-local artd = require 'meownatica:artd'
-local arbd = require 'meownatica:arbd_utils'
-local meow_schem = require 'meownatica:schem_class'
+local artd = require 'meownatica:files/artd'
+local arbd = require 'meownatica:tools/arbd_utils'
+local meow_schem = require 'meownatica:schematics_editors/SchemEditor'
 
 local convert_base = {}
 function convert_base:convert(path)

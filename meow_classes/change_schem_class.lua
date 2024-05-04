@@ -1,7 +1,7 @@
-local reader = require 'meownatica:read_toml'
-local arbd = require 'meownatica:arbd_utils'
+local reader = require 'meownatica:tools/read_toml'
+local arbd = require 'meownatica:tools/arbd_utils'
 local container = require 'meownatica:container_class'
-local meow_schem = require 'meownatica:schem_class'
+local meow_schem = require 'meownatica:schematics_editors/SchemEditor'
 local meow_change = { }
 local point2 = 1
 

@@ -1,16 +1,11 @@
 local true_rotate = load_script('meownatica:meow_classes/SmartRotate.lua')
-local artd = require 'meownatica:artd'
-local arbd = require 'meownatica:arbd_utils'
+local artd = require 'meownatica:files/artd'
+local arbd = require 'meownatica:tools/arbd_utils'
 local instruction = load_script('meownatica:meow_classes/find_instruction_class.lua')
 local meow_schem = {}
-local reader = require 'meownatica:read_toml'
+local reader = require 'meownatica:tools/read_toml'
 local toml = require 'core:toml'
-function meow_schem:new()
-    local o = {}
-    setmetatable(o, self)
-    self.__index = self
-    return o
-end
+local PosManager = require 'meownatica:schematics_editors/PosManager'
 
 --Поворот схемы
 function meow_schem:rotate_standart(meownatic)
@@ -61,90 +56,6 @@ function meow_schem:rotate(meownatic, smart_rotate)
     return meownatic
 end
 
-function meow_schem:min_y(meownatic)
-    local minimal = 100000000000000000000000
-    --Минимальный Y
-    for i = 1, #meownatic do
-        if meownatic[i].y < minimal then
-            minimal = meownatic[i].y
-        end
-    end
-    return minimal
-end
-
-function meow_schem:max_y(meownatic)
-    local maximum = -10000000000000000000000
-    --Максимальный Y
-    for i = 1, #meownatic do
-        if meownatic[i].y > maximum then
-            maximum = meownatic[i].y
-        end
-    end
-    return maximum
-end
-
-function meow_schem:max_x(meownatic)
-    local maximum = -10000000000000000000000
-    --Максимальный X
-    for i = 1, #meownatic do
-        if meownatic[i].x > maximum then
-            maximum = meownatic[i].x
-        end
-    end
-    return maximum
-end
-
-function meow_schem:min_x(meownatic)
-    local minimal = 100000000000000000000000
-    --Минимальный X
-    for i = 1, #meownatic do
-        if meownatic[i].x < minimal then
-            minimal = meownatic[i].x
-        end
-    end
-    return minimal
-end
-
-function meow_schem:max_z(meownatic)
-    local maximum = -10000000000000000000000
-    --Максимальный Z
-    for i = 1, #meownatic do
-        if meownatic[i].z > maximum then
-            maximum = meownatic[i].z
-        end
-    end
-    return maximum
-end
-
-function meow_schem:min_z(meownatic)
-    local minimal = 100000000000000000000000
-    --Минимальный Z
-    for i = 1, #meownatic do
-        if meownatic[i].z < minimal then
-            minimal = meownatic[i].z
-        end
-    end
-    return minimal
-end
-
-function meow_schem:max_position(meownatic)
-    local max_x = meownatic[1].x
-    local max_y = meownatic[1].y
-    local max_z = meownatic[1].z
-    for i = 1, #meownatic do
-        if meownatic[i].x > max_x then
-            max_x = meownatic[i].x
-        end
-        if meownatic[i].y > max_y then
-            max_y = meownatic[i].y
-        end
-        if meownatic[i].z > max_z then
-            max_z = meownatic[i].z
-        end
-    end
-    return {max_x, max_y, max_z}
-end
-
 function meow_schem:materials(meownatic)
     local count = {}
     for _, materials in pairs(meownatic) do
@@ -169,7 +80,7 @@ end
 
 --Переворот схемы вверх дном
 function meow_schem:upmeow(meownatic)
-    max_y = meow_schem:max_y(meownatic)
+    max_y = PosManager:max_y(meownatic)
     for i = 1, #meownatic do
         local y = meownatic[i].y
         local state = meownatic[i].state.rotation
@@ -186,10 +97,10 @@ function meow_schem:upmeow(meownatic)
 end
 
 function meow_schem:mirroring(meownatic)
-    max_x = meow_schem:max_x(meownatic)
-    min_x = meow_schem:min_x(meownatic)
-    max_z = meow_schem:max_z(meownatic)
-    min_z = meow_schem:min_z(meownatic)
+    max_x = PosManager:max_x(meownatic)
+    min_x = PosManager:min_x(meownatic)
+    max_z = PosManager:max_z(meownatic)
+    min_z = PosManager:min_z(meownatic)
 
     dX = math.abs(max_x) + math.abs(min_x)
     dZ = math.abs(max_z) + math.abs(min_z)

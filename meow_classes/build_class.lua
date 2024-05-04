@@ -1,14 +1,7 @@
-local meow_build = { }
-local json = require 'meownatica:json_reader'
-local table_utils = require 'meownatica:table_utils'
+local meow_build = {}
+local json = require 'meownatica:tools/json_reader'
+local table_utils = require 'meownatica:tools/table_utils'
 local lang = load_script('meownatica:meow_data/lang.lua')
-
-function meow_build:new()
-    local o = {}
-    setmetatable(o, self)
-    self.__index = self
-    return o
-end
 
 function meow_build:build_reed(x, y, z, read_meowmatic)
     local point = 0

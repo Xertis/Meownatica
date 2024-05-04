@@ -1,10 +1,9 @@
 local save_meowmatic = {}
 local executer_delat = false
 local x1_delat, y1_delat, z1_delat = 0, 0, 0
-local x1, y1, z1, x2, y2, z2, x_p, y_p, z_p = 0, 0, 0, 0, 0, 0, 0, 0, 0
 
-local data_meow = require 'meownatica:metadata_class'
-local reader = require 'meownatica:read_toml'
+local data_meow = require 'meownatica:files/metadata_class'
+local reader = require 'meownatica:tools/read_toml'
 local container = require 'meownatica:container_class'
 
 local function createCube(x1, y1, z1, x2, y2, z2, x_p, y_p, z_p)

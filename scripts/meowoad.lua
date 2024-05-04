@@ -1,38 +1,16 @@
 local meow_change = load_script('meownatica:meow_classes/change_schem_class.lua')
 local meow_build =  load_script('meownatica:meow_classes/build_class.lua')
-local meow_schem = require 'meownatica:schem_class'
 local container = require 'meownatica:container_class'
-local reader = require 'meownatica:read_toml'
-local table_utils = require 'meownatica:table_utils'
+local reader = require 'meownatica:tools/read_toml'
+local table_utils = require 'meownatica:tools/table_utils'
 local lang = load_script('meownatica:meow_data/lang.lua')
-local layer = 0
-local meownatic_layer_save = {}
-local start_build = false
 local g_meownatic_global = {}
 local schem_thread = {}
-local x_tick = 0
-local y_tick = 0
-local z_tick = 0
 local meownatic_schem = {}
 local lose_blocks = {}
 
 local available_ids = {}
 
-local function get_layer(meownatic)
-    if meownatic_layer_save ~= meownatic then
-        meownatic_layer_save = meownatic
-        layer = meow_schem:min_y(meownatic)
-        return layer
-    else
-        local max_layer = meow_schem:max_y(meownatic)
-        if layer >= max_layer then
-            layer = meow_schem:min_y(meownatic)
-        else
-            layer = layer + 1
-        end
-        return layer
-    end
-end
 function on_broken(x, y, z)
     meownatic_schem = container:get_g()
     for key, value in ipairs(g_meownatic_global) do

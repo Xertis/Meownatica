@@ -1,4 +1,4 @@
-local reader = require 'meownatica:read_toml'
+local reader = require 'meownatica:tools/read_toml'
 
 local lang = {}
 local texts = {}

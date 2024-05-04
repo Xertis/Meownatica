@@ -1,4 +1,4 @@
-local table_utils = require 'meownatica:table_utils'
+local table_utils = require 'meownatica:tools/table_utils'
 local container = {}
 local information = {}
 local information_g = {}

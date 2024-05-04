@@ -1,4 +1,4 @@
-local json = require "meownatica:json_reader"
+local json = require "meownatica:tools/json_reader"
 local lang = load_script('meownatica:meow_data/lang.lua')
 
 local rotate_schem = {}
