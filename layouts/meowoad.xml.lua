@@ -7,7 +7,7 @@ local meownatic_schem = meow_change:change(false, true)
 local x = 0
 local y = 0
 local z = 0
-local reader = require 'meownatica:read_toml'
+local reader = require 'meownatica:tools/read_toml'
 local convert_schem = {}
 
 local function convert_string_to_value(str)

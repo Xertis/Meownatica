@@ -51,7 +51,13 @@ function meow_change:change(meownatica, change)
     else
         local index = 1
         point2 = 1
-        local source1 = "meownatica:meownatics/" .. reader:schem(index)
+        local source1 = ''
+        if reader:len() > 0 then
+            source1 = "meownatica:meownatics/" .. reader:schem(index)
+        else
+            container:send_g({})
+            return {}
+        end
         if reader:schem(index):find('.arbd') then
             print(source1)
             local doc = arbd:read(source1)
