@@ -102,5 +102,12 @@ function meow_schem:min_position(meownatic)
     return {min_x, min_y, min_z}
 end
 
+function meow_schem:get_binding_block(meownatic)
+    for i = 1, #meownatic do
+        if meownatic[i].x == 0 and meownatic[i].y == 0 and meownatic[i].z == 0 then
+            return i
+        end
+    end
+end
 
 return meow_schem

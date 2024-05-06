@@ -1,4 +1,5 @@
 local RLE = {}
+local table_utils = require 'meownatica:tools/table_utils'
 
 function RLE:encode_modify(data)
     local encodedTable = {}
@@ -41,8 +42,8 @@ function RLE:decode_modify(data)
     local decodedTable = {}
     local len_data = #data
     for i = 1, len_data do
-      local val = data[i]
-      valType = type(val)
+        local val = data[i]
+        local valType = type(val)
         if valType ~= 'table' then
             table.insert(decodedTable, val)
         else
@@ -97,6 +98,60 @@ function RLE:decode(data)
         end
     end
     
+    return decodedTable
+end
+
+function RLE:encode_table(data)
+    local encodedTable = {}
+    local count = 1
+    local lastValue = {1}
+    local tempValue = {}
+
+    for _, value in ipairs(data) do
+        if table_utils:equals(value, lastValue) then
+            count = count + 1
+        else
+            if lastValue and count > 2 then
+                table.insert(encodedTable, {{count}})
+                table.insert(encodedTable, lastValue)
+            elseif lastValue and count <= 2 then
+                for _, v in ipairs(tempValue) do
+                    table.insert(encodedTable, v)
+                end
+            end
+            count = 1
+            lastValue = value
+            tempValue = {}
+        end
+        table.insert(tempValue, value)
+    end
+
+    if count > 2 then
+        table.insert(encodedTable, {count})
+        table.insert(encodedTable, lastValue)
+    else
+        for _, v in ipairs(tempValue) do
+            table.insert(encodedTable, v)
+        end
+    end
+
+    return encodedTable
+end
+
+function RLE:decode_table(data)
+    local decodedTable = {}
+    local len_data = #data
+    for i = 1, len_data do
+        local val = data[i]
+        local valType = type(val[1])
+        if valType ~= 'table' then
+            table.insert(decodedTable, val)
+        else
+            for j = 1, val[1][1] - 1 do
+                table.insert(decodedTable, data[i+1])
+            end
+        end
+    end
     return decodedTable
 end
 

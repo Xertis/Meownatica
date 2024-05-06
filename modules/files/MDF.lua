@@ -6,23 +6,25 @@ local mdf = {}
 
 local function serializeBlcoks(depthX, depthY, depthZ, blocks)
     local bytes = {}
-    local len = depthX*depthY*depthZ
+    local len =  #blocks
     for i = 1, len do
         bytes[i] = bit.lshift(blocks[i][1], 8)
         bytes[i + len] = bit.rshift(blocks[i][1], 8)
         bytes[i + len * 2] = blocks[i][2]
         bytes[i + len * 3] = blocks[i][3]
     end
-
+    for i = 1, #bytes do
+        print(bytes[i])
+    end
     return RLE:encode(bytes)
 end
 
 local function serializeDWH(buf, dwh)
-    --Сохраняем глубину, ширину и высоту
-    print(dwh[1], dwh[2], dwh[3])
+    --Сохраняем глубину, ширину, высоту и блок привязки
     buf:put_int16(dwh[1])
     buf:put_int16(dwh[2])
     buf:put_int16(dwh[3])
+    buf:put_int32(dwh[4])
 end
 
 local function serializeModsIDS(buf, mods)
@@ -31,7 +33,6 @@ local function serializeModsIDS(buf, mods)
     for id, mod in pairs(mods) do
         buf:put_string(mod)
     end
-    print(buf.pos)
 end
 
 local function serializeBlocksID(buf, blocks)
@@ -42,7 +43,7 @@ local function serializeBlocksID(buf, blocks)
     end
 end
 
-function mdf:StartSerialize(buf, arr)
+function mdf:StartSerialize(arr, buf)
     --Сериализуем версию
     buf:put_uint16(arr[1])
     --Сериализуем айди модов
@@ -54,23 +55,23 @@ function mdf:StartSerialize(buf, arr)
     --Сериализуем блоки
     local blocks = serializeBlcoks(arr[3][1], arr[3][2], arr[3][3], arr[4])
     buf:put_int32(#blocks)
+    print('erg')
     buf:put_bytes(blocks)
+    print('fed')
     
 end
 
 local function deserializeBlocks(depthX, depthY, depthZ, encodedData)
     local bytes = RLE:decode(encodedData)
     local blocks = {}
-    local blockIndex = 1
+    local len = depthX * depthY * depthZ
 
-    for i = 1, depthX * depthY * depthZ, 4 do
-        local block = {}
-        block[1] = bytes[i]
-        block[2] = bytes[i + 1]
-        block[3] = bytes[i + 2]
-        block[4] = bytes[i + 3]
-        blocks[blockIndex] = block
-        blockIndex = blockIndex + 1
+    for i = 1, len do
+        print(i)
+        local blockType = bit.bor(bit.lshift(bytes[i], 8), bytes[i + len])
+        local a = bytes[i + len * 2]
+        local b = bytes[i + len * 3]
+        blocks[i] = {blockType, a, b}
     end
 
     return blocks
@@ -91,14 +92,13 @@ function mdf:StartDeserialize(buf)
     for i = 1, mods_ids_len do
         local mod = buf:get_string()
         table.insert(mods_ids, mod)
-        print(mod)
     end
-    print(buf.pos)
     --Получаем dwh
     local dX = buf:get_int16()
     local dY = buf:get_int16()
     local dZ = buf:get_int16()
-    dwh = {dX, dY, dZ}
+    local binding_block = buf:get_int32()
+    dwh = {dX, dY, dZ, binding_block}
 
     --Получаеем блоки
     local blocks_len = buf:get_int32()

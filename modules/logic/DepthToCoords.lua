@@ -1,8 +1,7 @@
 local convert = {}
 
-function convert:dtc(DepthX, DepthY, DepthZ)
-    local x, y, z = DepthX, DepthY, DepthZ
-    return {{0, 0, 0}, {x, y, z}}
+function convert:dtc(Depth)
+    return {{0, 0, 0}, Depth}
 end
 
 return convert

@@ -11,14 +11,10 @@ local function createCube(x1, y1, z1, x2, y2, z2, x_p, y_p, z_p)
     for x = math.min(x1, x2), math.max(x1, x2) do
         for y = math.min(y1, y2), math.max(y1, y2) do
             for z = math.min(z1, z2), math.max(z1, z2) do
-                if (block.get(x, y, z) ~= 0 or copy_air == true) and (block.get(x, y, z) ~= block.index('meownatica:meowdelat') and block.get(x, y, z) ~= block.index('meownatica:meowdelenie')) then
+                if (block.name(block.get(x, y, z)) ~= 'meownatica:meowdelat' and block.name(block.get(x, y, z)) ~= 'meownatica:meowdelenie') then
                     save_meowmatic[#save_meowmatic + 1] = {x = x - x_p, y = y - y_p, z = z - z_p, id = block.name(block.get(x, y, z)), state = {rotation = block.get_states(x, y, z), solid = block.is_solid_at(x, y, z), replaceable = block.is_replaceable_at(x, y, z)}}
                 else
-                    if block.get(x, y, z) ~= block.index('meownatica:meowdelat') and (copy_air == false and block.get(x, y, z) ~= 0) then
-                        if block.get(x, y, z) ~= block.index('meownatica:meowdelenie') then
-                            save_meowmatic[#save_meowmatic + 1] = {x = x - x_p, y = y - y_p, z = z - z_p, id = block.name(block.get(x, y, z)), state = {rotation = block.get_states(x, y, z), solid = block.is_solid_at(x, y, z), replaceable = block.is_replaceable_at(x, y, z)}}
-                        end
-                    end
+                    save_meowmatic[#save_meowmatic + 1] = {x = x - x_p, y = y - y_p, z = z - z_p, id = 'core:air', state = {rotation = 0, solid = false, replaceable = false}}
                 end
             end
         end

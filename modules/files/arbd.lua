@@ -23,7 +23,6 @@ local arbd = { }
 
 local function serializeArray(arr, buf)
     local len = #arr
-    print(123213123213213213123)
     buf:put_byte(ARR)
     buf:put_uint32(len)
 
