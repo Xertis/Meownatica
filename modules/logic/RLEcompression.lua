@@ -142,8 +142,8 @@ function RLE.decode_table(data)
     local decodedTable = {}
     local len_data = #data
     for i = 1, len_data do
-        local val = data
-        local valType = type(val[1])
+        local val = data[i]
+        local valType = type(val)
         if valType == 'table' then
             table.insert(decodedTable, val)
         else

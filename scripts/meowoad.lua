@@ -86,7 +86,7 @@ function on_blocks_tick(tps)
         
         if schem_thread == 'over' then
             table.remove(g_meownatic_global, 1)
-            if lose_blocks ~= nil then
+            if lose_blocks ~= nil and #lose_blocks > 0 then
                 print(lang.get('not mods'))
                 for a, b in ipairs(lose_blocks) do
                     print('             ' .. a .. '. '.. b)

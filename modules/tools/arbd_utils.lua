@@ -117,7 +117,7 @@ function arbd_u.convert_read(tbl)
         local block_info = tbl[4][i]
         local block_id = blocks_id[block_info[1]]
         local state_idx = block_info[2]
-        if (block_id ~= 'core.air') or (block_id == 'core.air' and setair) then
+        if (block_id ~= 'core:air') or (block_id == 'core:air' and setair) then
             if correct_cords then
                 local state = {
                     rotation = block_info[2],
@@ -126,7 +126,6 @@ function arbd_u.convert_read(tbl)
                 }
 
                 local cord = correct_cords[i]
-                --print(block_id, cord[1], cord[2], cord[3])
                 if block_id ~= nil then
                     table.insert(result, {
                         x = cord[1],
