@@ -1,20 +1,20 @@
 local data_meow = { }
 local metadata_meow = {}
 
-function data_meow:add(x1, y1, z1, data1_t, data2_t, data3_t)
+function data_meow.add(x1, y1, z1, data1_t, data2_t, data3_t)
     metadata_meow[#metadata_meow + 1] = {x = x1, y = y1, z = z1, data1 = data1_t, data2 = data2_t, data3 = data3_t}
 end
 
-function data_meow:remove(x, y, z)
+function data_meow.remove(x, y, z)
     for key, value in ipairs(metadata_meow) do
         if value.x == x and value.y == y and value.z == z then
             table.remove(metadata_meow, key)
-            data_meow:save_metadata()
+            data_meow.save_metadata()
         end
     end
 end
 
-function data_meow:read(x, y, z)
+function data_meow.read(x, y, z)
     if #metadata_meow > 0 then
         for key, value in ipairs(metadata_meow) do
             if value.x == x and value.y == y and value.z == z then
@@ -26,12 +26,12 @@ function data_meow:read(x, y, z)
     end
 end
 
-function data_meow:write(x, y, z, data1, data2, data3)
-    data_meow:remove(x, y, z)
-    data_meow:add(x, y, z, data1, data2, data3)
+function data_meow.write(x, y, z, data1, data2, data3)
+    data_meow.remove(x, y, z)
+    data_meow.add(x, y, z, data1, data2, data3)
 end
 
-function data_meow:save_metadata()
+function data_meow.save_metadata()
     local function table_print(t)
         if type(t) ~= "table" then
             return 0
@@ -79,7 +79,7 @@ function data_meow:save_metadata()
     end
 end
 
-function data_meow:open_metadata()
+function data_meow.open_metadata()
     local path = pack.data_file("meownatica", "meownatica_data.lua")
     if file.isfile(path) then
         if file.read(path) ~= '--WAIT...' then

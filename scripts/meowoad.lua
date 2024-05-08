@@ -12,14 +12,14 @@ local lose_blocks = {}
 local available_ids = {}
 
 function on_broken(x, y, z)
-    meownatic_schem = container:get_g()
+    meownatic_schem = container.get_g()
     for key, value in ipairs(g_meownatic_global) do
         if value.x == x and value.y == y and value.z == z then
             table.remove(g_meownatic_global, key)
         end
     end
     if #meownatic_schem > 0 then
-        meow_build:unbuild_reed(x, y, z, meownatic_schem)
+        meow_build.unbuild_reed(x, y, z, meownatic_schem)
     end
 end
 
@@ -33,21 +33,21 @@ function on_placed(x, y, z)
         end
         
         local name, conv = '', ''
-        meownatic_schem, conv, name = meow_change:change(false, true)
+        meownatic_schem, conv, name = meow_change.change(false, true)
         if_first_scheme_loaded = true
         if meownatic_schem == 'convert' then
-            meownatic_schem = meow_change:convert_schem(conv)
+            meownatic_schem = meow_change.convert_schem(conv)
         end
     else
-        meownatic_schem = container:get_g()
+        meownatic_schem = container.get_g()
     end
     if #meownatic_schem > 0 then
-        meow_build:build_reed(x, y, z, meownatic_schem)
+        meow_build.build_reed(x, y, z, meownatic_schem)
     end
 end
 
 function on_interact(x, y, z, playerid)
-    meownatic_schem = container:get_g()
+    meownatic_schem = container.get_g()
     local id_inv, id_slot = player.get_inventory(playerid)
     local id_item, werwerew = inventory.get(id_inv, id_slot)
     if item.name(id_item) == 'meownatica:block_edit' then
@@ -62,7 +62,7 @@ function on_interact(x, y, z, playerid)
                 end
             end
             if if_scheme_in_queue == false then
-                g_meownatic_global[#g_meownatic_global + 1] = {schem = table_utils:copy(meownatic_schem), x = x, y = y, z = z}
+                g_meownatic_global[#g_meownatic_global + 1] = {schem = table_utils.copy(meownatic_schem), x = x, y = y, z = z}
             end
         end
     end
@@ -73,21 +73,21 @@ function on_blocks_tick(tps)
     if #g_meownatic_global <= 0 then
         start_build = false
         if say_over_tick == false then
-            print(lang:get('Global is finish'))
+            print(lang.get('Global is finish'))
             say_over_tick = true
         end
     else
         say_over_tick = false
-        schem_thread = table_utils:copy(g_meownatic_global[1])
+        schem_thread = table_utils.copy(g_meownatic_global[1])
     end
     if #g_meownatic_global > 0 then
-        schem_thread, lose_blocks = meow_build:build_schem(schem_thread.x, schem_thread.y, schem_thread.z, schem_thread.schem, reader:get('SetAir'),
-                                                            reader:get('BlocksUpdate'), reader:get('SetBlockOnTick'), available_ids, lose_blocks)
+        schem_thread, lose_blocks = meow_build.build_schem(schem_thread.x, schem_thread.y, schem_thread.z, schem_thread.schem, reader.get('SetAir'),
+                                                            reader.get('BlocksUpdate'), reader.get('SetBlockOnTick'), available_ids, lose_blocks)
         
         if schem_thread == 'over' then
             table.remove(g_meownatic_global, 1)
             if lose_blocks ~= nil then
-                print(lang:get('not mods'))
+                print(lang.get('not mods'))
                 for a, b in ipairs(lose_blocks) do
                     print('             ' .. a .. '. '.. b)
                 end

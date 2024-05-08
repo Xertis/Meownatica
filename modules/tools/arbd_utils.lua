@@ -8,24 +8,27 @@ local dtc = require 'meownatica:logic/DepthToCoords'
 local meow_schem = require 'meownatica:schematics_editors/PosManager'
 local RLE = require 'meownatica:logic/RLEcompression'
 local reader = require 'meownatica:tools/read_toml'
+local json = require 'meownatica:tools/json_reader'
 
-function arbd_u:write(array, path)
-    local buf = data_buffer()
-  
-    arbd.serialize(array, buf)
-    
-    file.write_bytes(path, buf:get_bytes())
+function arbd_u.write(array, path)
+    --local buf = data_buffer()
+
+    --arbd.serialize(array, buf)
+
+    --file.write_bytes(path, buf.get_bytes())
+    file.write(path, json.encode(array))
 end
 
-function arbd_u:read(path)
+function arbd_u.read(path)
     if not file.exists(path) then
         return nil
     end
-    return arbd.deserialize(data_buffer(file.read_bytes(path)))
+    --return arbd.deserialize(data_buffer(file.read_bytes(path)))
+    return json.decode(file.read(path))
 end
 
 
-function arbd_u:convert_save(array)
+function arbd_u.convert_save(array)
     --## ОБЪЯВЛЕНИЕ ПЕРЕМЕННЫХ ##
     local arbd_table = {}
     local temp_table_1 = {}
@@ -35,12 +38,13 @@ function arbd_u:convert_save(array)
     local state = nil
 
     --## РАСЧЁТ ГЛУБИНЫ ##
-    local max_pos = meow_schem:max_position(array)
-    local min_pos = meow_schem:min_position(array)
+    local max_pos = meow_schem.max_position(array)
+    local min_pos = meow_schem.min_position(array)
     local depthX, depthY, depthZ = math.abs(min_pos[1] - max_pos[1]), math.abs(min_pos[2] - max_pos[2]), math.abs(min_pos[3] - max_pos[3])
-    
+
     --## РАСЧЁТ АЙДИШНИКОВ БЛОКОВ ##
-    for _, value in pairs(array) do
+    for _, value in ipairs(array) do
+        --print(value.x, value.y, value.Z, value.id)
         if temp_table_1[value.id] == nil then
             table.insert(blocks_id, value.id)
             temp_table_1[value.id] = #blocks_id
@@ -58,19 +62,22 @@ function arbd_u:convert_save(array)
     --## ЗАПИСЬ ДАННЫХ ##
     arbd_table[1] = 3
     arbd_table[2] = blocks_id
-    arbd_table[3] = {depthX, depthY, depthZ, meow_schem:get_binding_block(array)}
+
+    local binding = meow_schem.get_binding_block(array)
+    arbd_table[3] = {depthX, depthY, depthZ, binding}
+
     arbd_table[4] = temp_table_2
 
     --## ВЫВОД ##
     print(
         '[MEOWNATICA] \n             ' ..
-        'IDs count: ' .. #arbd_table[2] .. '\n             ' ..
-        'Blocks count: ' .. #arbd_table[4] .. '\n             ' ..
-        'Binding: ' .. arbd_table[3][4] .. '\n             ' ..
-        'Version: ' .. arbd_table[1]
+        'IDs count. ' .. #arbd_table[2] .. '\n             ' ..
+        'Blocks count. ' .. #arbd_table[4] .. '\n             ' ..
+        'Binding. ' .. arbd_table[3][4] .. '\n             ' ..
+        'Version. ' .. arbd_table[1]
     )
-    arbd_table[4] = RLE:encode_table(arbd_table[4])
-    print(lang:get('is converted'))
+    arbd_table[4] = RLE.encode_table(arbd_table[4])
+    print(lang.get('is converted'))
     arbd_table[5] = false
     return arbd_table
 end
@@ -99,26 +106,27 @@ local function create_cords(x1, y1, z1, x2, y2, z2, bind_block)
     return result
 end
 
-function arbd_u:convert_read(tbl)
+function arbd_u.convert_read(tbl)
     local result = {}
-    local cords = dtc:dtc(tbl[3])
+    local cords = dtc.dtc(tbl[3])
     local correct_cords = create_cords(cords[1][1], cords[1][2], cords[1][3], cords[2][1], cords[2][2], cords[2][3], cords[2][4])
     local blocks_id = tbl[2]
-    local setair = reader:get('SetAir')
-    tbl[4] = RLE:decode_table(tbl[4])
+    local setair = reader.get('SetAir')
+    tbl[4] = RLE.decode_table(tbl[4])
     for i = 1, #tbl[4] do
         local block_info = tbl[4][i]
         local block_id = blocks_id[block_info[1]]
         local state_idx = block_info[2]
-        if (block_id ~= 'core:air') or (block_id == 'core:air' and setair) then
+        if (block_id ~= 'core.air') or (block_id == 'core.air' and setair) then
             if correct_cords then
                 local state = {
                     rotation = block_info[2],
                     solid = block_info[3],
                     replaceable = false
                 }
-                --print(block_info[4], #correct_cords)
+
                 local cord = correct_cords[i]
+                --print(block_id, cord[1], cord[2], cord[3])
                 if block_id ~= nil then
                     table.insert(result, {
                         x = cord[1],

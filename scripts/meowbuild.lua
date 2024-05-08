@@ -7,26 +7,26 @@ local g_meownatic = {}
 local schem_thread = {}
 
 function on_broken(x, y, z)
-    local save_meowmatic = container:get()
+    local save_meowmatic = container.get()
     for key, value in ipairs(g_meownatic) do
         if value.x == x and value.y == y and value.z == z then
             table.remove(g_meownatic, key)
         end
     end
     if #save_meowmatic > 0 then
-        meow_build:unbuild_reed(x, y, z, save_meowmatic)
+        meow_build.unbuild_reed(x, y, z, save_meowmatic)
     end
 end
 
 function on_placed(x, y, z)
-    local save_meowmatic = container:get()
+    local save_meowmatic = container.get()
     if #save_meowmatic > 0 then
-        meow_build:build_reed(x, y, z, save_meowmatic)
+        meow_build.build_reed(x, y, z, save_meowmatic)
     end
 end
 
 function on_interact(x, y, z, playerid)
-    local save_meowmatic = container:get()
+    local save_meowmatic = container.get()
     local id_inv, id_slot = player.get_inventory(playerid)
     local id_item, werwerew = inventory.get(id_inv, id_slot)
     if item.name(id_item) == 'meownatica:block_edit' then
@@ -41,7 +41,7 @@ function on_interact(x, y, z, playerid)
                 end
             end
             if if_scheme_in_queue == false then
-                g_meownatic[#g_meownatic + 1] = {schem = table_utils:copy(save_meowmatic), x = x, y = y, z = z}
+                g_meownatic[#g_meownatic + 1] = {schem = table_utils.copy(save_meowmatic), x = x, y = y, z = z}
             end
         end
     end
@@ -51,15 +51,15 @@ local say_over_tick = false
 function on_blocks_tick(tps)
     if #g_meownatic <= 0 then
         if say_over_tick == false then
-            print(lang:get('Local is finish'))
+            print(lang.get('Local is finish'))
             say_over_tick = true
         end
     else
         say_over_tick = false
-        schem_thread = table_utils:copy(g_meownatic[1])
+        schem_thread = table_utils.copy(g_meownatic[1])
     end
     if #g_meownatic > 0 then
-        schem_thread = meow_build:build_schem(schem_thread.x, schem_thread.y, schem_thread.z, schem_thread.schem, reader:get('SetAir'), reader:get('BlocksUpdate'), reader:get('SetBlockOnTick'), '')
+        schem_thread = meow_build.build_schem(schem_thread.x, schem_thread.y, schem_thread.z, schem_thread.schem, reader.get('SetAir'), reader.get('BlocksUpdate'), reader.get('SetBlockOnTick'), '')
         if schem_thread == 'over' then
             table.remove(g_meownatic, 1)
         end

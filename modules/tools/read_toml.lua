@@ -1,12 +1,12 @@
 local reader = {}
 local toml = require "core:toml"
 
-function reader:get(parameter)
+function reader.get(parameter)
     local parameter = string.lower(parameter)
     return toml.deserialize(file.read('meownatica:meow_config.toml'))[parameter] 
 end
 
-function reader:get_all()
+function reader.get_all()
     local parameters = {}
     local tbl = toml.deserialize(file.read('meownatica:meow_config.toml'))
     for idx, value in pairs(tbl) do
@@ -15,19 +15,19 @@ function reader:get_all()
     return parameters
 end
 
-function reader:schem(indx)
+function reader.schem(indx)
     local tbl = toml.deserialize(file.read('meownatica:meow_config.toml'))
     tbl = tbl['meownatics']
     return tbl['source' .. indx]
 end
 
-function reader:schem_full(indx)
+function reader.schem_full(indx)
     local tbl = toml.deserialize(file.read('meownatica:meow_config.toml'))
     tbl = tbl['meownatics']
     return tbl[indx]
 end
 
-function reader:indx_is_real(indx, config)
+function reader.indx_is_real(indx, config)
     local indx = string.lower(indx)
     local tbl = toml.deserialize(file.read('meownatica:meow_config.toml'))
     if config == nil then
@@ -40,7 +40,7 @@ function reader:indx_is_real(indx, config)
     end
 end
 
-function reader:len()
+function reader.len()
     local tbl = toml.deserialize(file.read('meownatica:meow_config.toml'))
     tbl = tbl['meownatics']
     local i = 0
@@ -50,7 +50,7 @@ function reader:len()
     return i
 end
 
-function reader:all_parameters()
+function reader.all_parameters()
     local tbl = toml.deserialize(file.read('meownatica:meow_config.toml'))
     local text = ''
     for idx, value in pairs(tbl) do
@@ -61,7 +61,7 @@ function reader:all_parameters()
     return text
 end
 
-function reader:all_schem()
+function reader.all_schem()
     local tbl = toml.deserialize(file.read('meownatica:meow_config.toml'))
     tbl = tbl['meownatics']
     local text = ''
@@ -71,7 +71,7 @@ function reader:all_schem()
     return text
 end
 
-function reader:find(text)
+function reader.find(text)
     local tbl = toml.deserialize(file.read('meownatica:meow_config.toml'))
     tbl = tbl['meownatics']
     for idx, value in pairs(tbl) do
@@ -81,13 +81,13 @@ function reader:find(text)
     end
 end
 
-function reader:ci_get(indx)
+function reader.ci_get(indx)
     local tbl = toml.deserialize(file.read('meownatica:conversion_instructions/conversion_instructions.toml'))
     tbl = tbl['conversion_instructions']
     return tbl['instruction' .. indx]
 end
 
-function reader:ci_len()
+function reader.ci_len()
     local tbl = toml.deserialize(file.read('meownatica:conversion_instructions/conversion_instructions.toml'))
     tbl = tbl['conversion_instructions']
     local i = 0

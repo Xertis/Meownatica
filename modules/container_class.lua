@@ -4,11 +4,11 @@ local information = {}
 local information_g = {}
 local queue_to_save = {}
 
-function container:send(data)
-    information = table_utils:copy(data)
+function container.send(data)
+    information = table_utils.copy(data)
 end
 
-function container:get()
+function container.get()
     if information ~= nil then
         return information
     else
@@ -16,11 +16,11 @@ function container:get()
     end
 end
 
-function container:send_g(data)
-    information_g = table_utils:copy(data)
+function container.send_g(data)
+    information_g = table_utils.copy(data)
 end
 
-function container:get_g()
+function container.get_g()
     if information_g ~= nil then
         return information_g
     else
@@ -28,11 +28,11 @@ function container:get_g()
     end
 end
 
-function container:send_to_save(data)
-    queue_to_save = table_utils:copy(data)
+function container.send_to_save(data)
+    queue_to_save = table_utils.copy(data)
 end
 
-function container:get_to_save()
+function container.get_to_save()
     if queue_to_save ~= nil then
         return queue_to_save
     else

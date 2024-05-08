@@ -37,9 +37,10 @@ local function checkElements(big_table, elements_to_search)
     end
 end
 
-function rotate_schem:rotate(x, y, z, id, state)
+function rotate_schem.rotate(x, y, z, id, state)
     --Получаем всю инфу о блоке
     if id ~= 'core:air' then
+        print(id)
         local name = id
         local pos = name:find(':')
         local name_mode = name:sub(1, pos - 1)
@@ -48,7 +49,7 @@ function rotate_schem:rotate(x, y, z, id, state)
         if file.isfile(name_mode .. ':' .. 'blocks' .. '/' .. name_block .. '.json') then
             config = json.decode(file.read(name_mode .. ':' .. 'blocks' .. '/' .. name_block .. '.json'))
         else
-            print('[MEOWNATICA] ' .. lang:get('block') .. ' ' .. name .. ' ' .. lang:get('not found'))
+            print('[MEOWNATICA] ' .. lang.get('block') .. ' ' .. name .. ' ' .. lang.get('not found'))
             return nil
         end
         

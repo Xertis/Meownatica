@@ -3,7 +3,7 @@ local json = require 'meownatica:tools/json_reader'
 local table_utils = require 'meownatica:tools/table_utils'
 local lang = load_script('meownatica:meow_data/lang.lua')
 
-function meow_build:build_reed(x, y, z, read_meowmatic)
+function meow_build.build_reed(x, y, z, read_meowmatic)
     local point = 0
     --local if_placed = false
     while point <= #read_meowmatic do
@@ -20,7 +20,7 @@ function meow_build:build_reed(x, y, z, read_meowmatic)
     --return if_placed
 end
 
-function meow_build:unbuild_reed(x, y, z, read_meowmatic)
+function meow_build.unbuild_reed(x, y, z, read_meowmatic)
     local point = 0
     while point <= #read_meowmatic do
         local index = (point - 1) % #read_meowmatic + 1 
@@ -34,7 +34,7 @@ function meow_build:unbuild_reed(x, y, z, read_meowmatic)
     end
 end
 
-function meow_build:build_schem(x, y, z, read_meowmatic, set_air, blocks_update, set_block_on_tick, available_ids, lose_blocks)
+function meow_build.build_schem(x, y, z, read_meowmatic, set_air, blocks_update, set_block_on_tick, available_ids, lose_blocks)
     if blocks_update then
         blocks_update = false
     else
@@ -43,11 +43,11 @@ function meow_build:build_schem(x, y, z, read_meowmatic, set_air, blocks_update,
     
     local function build_block(x, y, z, id, rotation, update, block_in_cord)
         if block.name(block_in_cord) ~= 'meownatica:meowoad' then  
-            if table_utils:find(available_ids, id, '') then   
+            if table_utils.find(available_ids, id, '') then   
                 block.set(x, y, z, block.index(id), rotation, update)
             else
-                print('[MEOWNATICA] ' .. id .. ' ' .. lang:get('not found'))
-                table_utils:insert_unique(lose_blocks, id:match("(.*):"))
+                print('[MEOWNATICA] ' .. id .. ' ' .. lang.get('not found'))
+                table_utils.insert_unique(lose_blocks, id:match("(.*):"))
                 block.set(x, y, z, 0, rotation, update)
             end
         end
@@ -83,7 +83,7 @@ function meow_build:build_schem(x, y, z, read_meowmatic, set_air, blocks_update,
     end
 end
 
-function meow_build:build_layer(x, y, z, read_meowmatic, set_air, blocks_update, layer)
+function meow_build.build_layer(x, y, z, read_meowmatic, set_air, blocks_update, layer)
     local point = 0
     if blocks_update then
         blocks_update = false

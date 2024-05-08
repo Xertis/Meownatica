@@ -2,14 +2,14 @@ local reader = require 'meownatica:tools/read_toml'
 
 local findinstruct = {}
 
-function findinstruct:find(start_format, goal_format)
+function findinstruct.find(start_format, goal_format)
     local instruction_start = ''
     local instruction_goal = ''
     local path_instructions = ''
-    local instruction_count = reader:ci_len()
+    local instruction_count = reader.ci_len()
     local i = 1
     while (start_format ~= instruction_start or instruction_goal ~= goal_format) and i <= instruction_count do
-        path_instructions = reader:ci_get(i)
+        path_instructions = reader.ci_get(i)
         instruction_start, instruction_goal = path_instructions:match("(.-)_([^_]+)%.lua")
         instruction_goal = '.' .. instruction_goal
         i = i + 1
@@ -22,7 +22,7 @@ function findinstruct:find(start_format, goal_format)
     end
 end
 
-function findinstruct:convert(path_to_convert, path_instructions)
+function findinstruct.convert(path_to_convert, path_instructions)
     local conv = load_script('meownatica:conversion_instructions/' .. path_instructions)
     conv:convert(path_to_convert)
 end

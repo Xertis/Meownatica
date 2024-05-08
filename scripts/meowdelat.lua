@@ -7,7 +7,7 @@ local reader = require 'meownatica:tools/read_toml'
 local container = require 'meownatica:container_class'
 
 local function createCube(x1, y1, z1, x2, y2, z2, x_p, y_p, z_p)
-    local copy_air = reader:get('CopyAir')
+    local copy_air = reader.get('CopyAir')
     for x = math.min(x1, x2), math.max(x1, x2) do
         for y = math.min(y1, y2), math.max(y1, y2) do
             for z = math.min(z1, z2), math.max(z1, z2) do
@@ -22,7 +22,7 @@ local function createCube(x1, y1, z1, x2, y2, z2, x_p, y_p, z_p)
 end
 
 local function create_ribs(x1, y1, z1, x2, y2, z2)
-    local set_meowdelenie = reader:get('SetMeowdelenie')
+    local set_meowdelenie = reader.get('SetMeowdelenie')
     for x = math.min(x1, x2), math.max(x1, x2) do
         for y = math.min(y1, y2), math.max(y1, y2) do
             for z = math.min(z1, z2), math.max(z1, z2) do
@@ -64,12 +64,12 @@ end
 
 function on_broken(x, y, z)
     executer_delat = false
-    local data, data2, data3 = data_meow:read(x, y, z)
+    local data, data2, data3 = data_meow.read(x, y, z)
     if data ~= nil then
         deleteCube(data[1], data[2], data[3], data[4], data[5], data[6])
     end
-    data_meow:remove(x, y, z)
-    data_meow:save_metadata()
+    data_meow.remove(x, y, z)
+    data_meow.save_metadata()
 end
 
 function on_placed(x, y, z)
@@ -90,16 +90,16 @@ function on_placed(x, y, z)
             end
             local data1 = {x1_delat, y1_delat, z1_delat, x2_delat, y2_delat, z2_delat}
             local data2 = {x2_delat, y2_delat, z2_delat, x1_delat, y1_delat, z1_delat}
-            data_meow:add(x, y, z, data2, 0, 0)
-            data_meow:add(x1_delat, y1_delat, z1_delat, data1, 0, 0)
-            data_meow:save_metadata()
+            data_meow.add(x, y, z, data2, 0, 0)
+            data_meow.add(x1_delat, y1_delat, z1_delat, data1, 0, 0)
+            data_meow.save_metadata()
         end
-        container:send(save_meowmatic)
+        container.send(save_meowmatic)
     end
 end
 
 function on_interact(x, y, z)
-    local data, data2, data3 = data_meow:read(x, y, z)
+    local data, data2, data3 = data_meow.read(x, y, z)
     if data ~= nil then
         local x1_delat, y1_delat, z1_delat, x2_delat, y2_delat, z2_delat = data[1], data[2], data[3], data[4], data[5], data[6]
         save_meowmatic = {}
@@ -111,7 +111,7 @@ function on_interact(x, y, z)
             create_ribs(x2_delat, y2_delat, z2_delat, x1_delat, y1_delat, z1_delat)
         end
     end
-    container:send(save_meowmatic)
+    container.send(save_meowmatic)
 end
 
 return save_meowmatic

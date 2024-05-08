@@ -3,7 +3,7 @@ local meow_schem = require 'meownatica:schematics_editors/SchemEditor'
 local container = require 'meownatica:container_class'
 local meow_change = load_script('meownatica:meow_classes/change_schem_class.lua')
 local lang = load_script('meownatica:meow_data/lang.lua')
-local meownatic_schem = meow_change:change(false, true)
+local meownatic_schem = meow_change.change(false, true)
 local x = 0
 local y = 0
 local z = 0
@@ -29,32 +29,32 @@ function on_open(invid, x1, y1, z1)
 end
 
 function rotate_g()
-    meownatic_schem = container:get_g()
-    meow_build:unbuild_reed(x, y, z, meownatic_schem)
+    meownatic_schem = container.get_g()
+    meow_build.unbuild_reed(x, y, z, meownatic_schem)
     if #meownatic_schem > 0 then
-        meownatic_schem = meow_schem:rotate(meownatic_schem, reader:get('SmartRotateOn'))
-        meow_build:build_reed(x, y, z, meownatic_schem)
-        container:send_g(meownatic_schem)
+        meownatic_schem = meow_schem.rotate(meownatic_schem, reader.get('SmartRotateOn'))
+        meow_build.build_reed(x, y, z, meownatic_schem)
+        container.send_g(meownatic_schem)
     end
 end
 
 function up_down_g()
-    meownatic_schem = container:get_g()
-    meow_build:unbuild_reed(x, y, z, meownatic_schem)
+    meownatic_schem = container.get_g()
+    meow_build.unbuild_reed(x, y, z, meownatic_schem)
     if #meownatic_schem > 0 then
-        meownatic_schem = meow_schem:upmeow(meownatic_schem)
-        meow_build:build_reed(x, y, z, meownatic_schem)
-        container:send_g(meownatic_schem)
+        meownatic_schem = meow_schem.upmeow(meownatic_schem)
+        meow_build.build_reed(x, y, z, meownatic_schem)
+        container.send_g(meownatic_schem)
     end
 end
 
 function mirroring_g()
-    meownatic_schem = container:get_g()
-    meow_build:unbuild_reed(x, y, z, meownatic_schem)
+    meownatic_schem = container.get_g()
+    meow_build.unbuild_reed(x, y, z, meownatic_schem)
     if #meownatic_schem > 0 then
-        meownatic_schem = meow_schem:mirroring(meownatic_schem)
-        meow_build:build_reed(x, y, z, meownatic_schem)
-        container:send_g(meownatic_schem)
+        meownatic_schem = meow_schem.mirroring(meownatic_schem)
+        meow_build.build_reed(x, y, z, meownatic_schem)
+        container.send_g(meownatic_schem)
     end
 end
 
@@ -75,36 +75,36 @@ function console(text)
     text[1] = string.lower(text[1])
     if text[1] == 'schem' then
         if parameter[2] == 'del' then
-            if reader:find(parameter[1]) ~= nil then 
-                meow_schem:save_to_config(nil, parameter[1])
-                document.meowoad_console.text = parameter[1] .. lang:get('was deleted')
+            if reader.find(parameter[1]) ~= nil then 
+                meow_schem.save_to_config(nil, parameter[1])
+                document.meowoad_console.text = parameter[1] .. lang.get('was deleted')
             else
-                document.meowoad_console.text = 'Схемы ' .. parameter[1] .. ' ' .. lang:get('not found')
+                document.meowoad_console.text = 'Схемы ' .. parameter[1] .. ' ' .. lang.get('not found')
             end
         elseif parameter[2] == 'add' then
             if file.exists('meownatica:meownatics/' .. parameter[1]) then
-                meow_schem:save_to_config(parameter[1], nil)
-                document.meowoad_console.text = parameter[1] .. ' ' .. lang:get('was added')
+                meow_schem.save_to_config(parameter[1], nil)
+                document.meowoad_console.text = parameter[1] .. ' ' .. lang.get('was added')
             else
-                document.meowoad_console.text = parameter[1] .. ' ' .. lang:get('not found')
+                document.meowoad_console.text = parameter[1] .. ' ' .. lang.get('not found')
             end
         elseif parameter[1] == 'all' then
-            local res = lang:get('meownatics in the config') .. ' ' .. reader:len() .. '\n'
-            res = res .. reader:all_schem()
+            local res = lang.get('meownatics in the config') .. ' ' .. reader.len() .. '\n'
+            res = res .. reader.all_schem()
             document.meowoad_console.text = res
         elseif parameter[2] == 'materials' then
 
             --schem police_station.arbd = materials
-            local materials = meow_change:get_schem(parameter[1])
+            local materials = meow_change.get_schem(parameter[1])
             if materials ~= nil then
                 local result = ''
-                for _, entry in ipairs(meow_schem:materials(materials)) do
-                    result = result .. "ID: " .. entry.id .. ' ' .. lang:get('count') .. ' ' .. entry.count .. '\n'
+                for _, entry in ipairs(meow_schem.materials(materials)) do
+                    result = result .. "ID: " .. entry.id .. ' ' .. lang.get('count') .. ' ' .. entry.count .. '\n'
                 end
 
                 document.meowoad_console.text = result
             else
-                document.meowoad_console.text = parameter[1] .. ' ' .. lang:get('not found')
+                document.meowoad_console.text = parameter[1] .. ' ' .. lang.get('not found')
             end
         else
             if parameter[2] ~= nil then
@@ -118,7 +118,7 @@ function console(text)
         parameter[2] = convert_string_to_value(parameter[2])
         if parameter[2] ~= nil then
             if parameter[1] ~= 'meownatics' then
-                result = meow_schem:save_to_config(nil, nil, parameter, true)
+                result = meow_schem.save_to_config(nil, nil, parameter, true)
             end
             if result ~= false then
                 document.meowoad_console.text = 'Параметр ' .. parameter[1] .. ' теперь имеет значение: ' .. tostring(parameter[2])
@@ -127,8 +127,8 @@ function console(text)
             end
         else
             if parameter[1] == 'all' then
-                local res = lang:get('config parameters') .. '\n'
-                res = res .. reader:all_parameters()
+                local res = lang.get('config parameters') .. '\n'
+                res = res .. reader.all_parameters()
                 document.meowoad_console.text = res
             else
                 document.meowoad_console.text = 'Недопустимое значение параметра'
@@ -157,13 +157,13 @@ function clear()
 end
 
 function change()
-    meownatic_schem = container:get_g()
-    meow_build:unbuild_reed(x, y, z, meownatic_schem)
+    meownatic_schem = container.get_g()
+    meow_build.unbuild_reed(x, y, z, meownatic_schem)
     local conv = 0
-    meownatic_schem, conv, name = meow_change:change(meownatic_schem, true)
+    meownatic_schem, conv, name = meow_change.change(meownatic_schem, true)
     if meownatic_schem ~= 'convert' then
-        meow_build:build_reed(x, y, z, meownatic_schem)
-        container:send_g(meownatic_schem)
+        meow_build.build_reed(x, y, z, meownatic_schem)
+        container.send_g(meownatic_schem)
         document.meowoad_console.text = 'Схема ' .. name .. ' загружена'
     else
         document.meowoad_console.text = 'Схема ' .. name .. ' \nнуждается в конвертации!'
@@ -178,12 +178,12 @@ end
 function convert()
     if #convert_schem > 0 then
         document.meowoad_console.text = 'Схема ' .. convert_schem[1].name .. ' конвертируется...'
-        meownatic_schem = meow_change:convert_schem(convert_schem[1].convert)
+        meownatic_schem = meow_change.convert_schem(convert_schem[1].convert)
         if meownatic_schem ~= 'not converted' then
             document.meowoad_console.text = 'Схема ' .. convert_schem[1].name .. ' \nсконвертирована!'
         else
             document.meowoad_console.text = 'Отсутствует нужная инструкция конвертации,\nфайл не сконвертирован'
-            container:get_g(meownatic_schem)
+            container.get_g(meownatic_schem)
         end
         table.remove(convert_schem, 1)
     else

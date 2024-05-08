@@ -1,6 +1,4 @@
 local true_rotate = load_script('meownatica:meow_classes/SmartRotate.lua')
-local artd = require 'meownatica:files/artd'
-local arbd = require 'meownatica:tools/arbd_utils'
 local instruction = load_script('meownatica:meow_classes/find_instruction_class.lua')
 local meow_schem = {}
 local reader = require 'meownatica:tools/read_toml'
@@ -8,7 +6,7 @@ local toml = require 'core:toml'
 local PosManager = require 'meownatica:schematics_editors/PosManager'
 
 --Поворот схемы
-function meow_schem:rotate_standart(meownatic)
+function meow_schem.rotate_standart(meownatic)
     local x = meownatic.x
     local z = meownatic.z
 
@@ -31,7 +29,7 @@ function meow_schem:rotate_standart(meownatic)
     return meownatic
 end
 
-function meow_schem:rotate(meownatic, smart_rotate)
+function meow_schem.rotate(meownatic, smart_rotate)
     for i = 1, #meownatic do
         if meownatic[i].state.solid == false or meownatic[i].state.solid == nil then
             local x = meownatic[i].x
@@ -39,7 +37,7 @@ function meow_schem:rotate(meownatic, smart_rotate)
             local z = meownatic[i].z
             local state_true = nil
             if smart_rotate == true then
-                state_true = true_rotate:rotate(x, y, z, meownatic[i].id, meownatic[i].state.rotation)
+                state_true = true_rotate.rotate(x, y, z, meownatic[i].id, meownatic[i].state.rotation)
             end
             if state_true ~= nil then
                 --Поворот на 90 градусов
@@ -47,16 +45,16 @@ function meow_schem:rotate(meownatic, smart_rotate)
                 meownatic[i].x = -z
                 meownatic[i].z = x
             else
-                meownatic[i] = meow_schem:rotate_standart(meownatic[i])
+                meownatic[i] = meow_schem.rotate_standart(meownatic[i])
             end
         else
-            meownatic[i] = meow_schem:rotate_standart(meownatic[i])
+            meownatic[i] = meow_schem.rotate_standart(meownatic[i])
         end
     end
     return meownatic
 end
 
-function meow_schem:materials(meownatic)
+function meow_schem.materials(meownatic)
     local count = {}
     for _, materials in pairs(meownatic) do
         local id = materials.id
@@ -79,8 +77,8 @@ function meow_schem:materials(meownatic)
 end
 
 --Переворот схемы вверх дном
-function meow_schem:upmeow(meownatic)
-    max_y = PosManager:max_y(meownatic)
+function meow_schem.upmeow(meownatic)
+    max_y = PosManager.max_y(meownatic)
     for i = 1, #meownatic do
         local y = meownatic[i].y
         local state = meownatic[i].state.rotation
@@ -96,11 +94,11 @@ function meow_schem:upmeow(meownatic)
     return meownatic
 end
 
-function meow_schem:mirroring(meownatic)
-    max_x = PosManager:max_x(meownatic)
-    min_x = PosManager:min_x(meownatic)
-    max_z = PosManager:max_z(meownatic)
-    min_z = PosManager:min_z(meownatic)
+function meow_schem.mirroring(meownatic)
+    max_x = PosManager.max_x(meownatic)
+    min_x = PosManager.min_x(meownatic)
+    max_z = PosManager.max_z(meownatic)
+    min_z = PosManager.min_z(meownatic)
 
     dX = math.abs(max_x) + math.abs(min_x)
     dZ = math.abs(max_z) + math.abs(min_z)
@@ -140,21 +138,21 @@ function meow_schem:mirroring(meownatic)
     return meownatic
 end
 
-function meow_schem:save_to_config(name, expection, replace, config)
+function meow_schem.save_to_config(name, expection, replace, config)
     local lines = toml.deserialize(file.read("meownatica:meow_config.toml"))
-    local len = reader:len()
+    local len = reader.len()
     if len == 0 then
         len = 1
     end
     if name ~= nil then
         local name_to_save = 'source' .. len
-        if reader:indx_is_real(name_to_save) == false then
+        if reader.indx_is_real(name_to_save) == false then
             print(value, idx, name_to_save)
             lines['meownatics'][name_to_save] = name
         else
             local i = len + 1
             while true do
-                if reader:indx_is_real('source' .. i) == false then
+                if reader.indx_is_real('source' .. i) == false then
                     lines['meownatics']['source' .. i] = name
                     break
                 else
@@ -164,15 +162,15 @@ function meow_schem:save_to_config(name, expection, replace, config)
         end     
     end
     if expection ~= nil then
-        local find, idx = reader:find(expection)
+        local find, idx = reader.find(expection)
         lines['meownatics'][idx] = nil
     end
     if replace ~= nil then
         if config == nil then
-            local find, idx = reader:find(replace[1])
+            local find, idx = reader.find(replace[1])
             lines['meownatics'][idx] = replace[2]
         else
-            if reader:indx_is_real(replace[1], true) then
+            if reader.indx_is_real(replace[1], true) then
                 lines[replace[1]] = replace[2]
             else
                 return false
@@ -182,11 +180,11 @@ function meow_schem:save_to_config(name, expection, replace, config)
     file.write('meownatica:meow_config.toml', toml.serialize(lines))
 end
 
-function meow_schem:convert(name_format, finish_format, source)
-    local format = name_format:match("%.([^%.]+)$")
-    local path = instruction:find(format, finish_format)
+function meow_schem.convert(name_format, finish_format, source)
+    local format = name_format.match("%.([^%.]+)$")
+    local path = instruction.find(format, finish_format)
     if path ~= '' then
-        instruction:convert("meownatica:meownatics/" .. source, path)
+        instruction.convert("meownatica:meownatics/" .. source, path)
         return true
     else
         return false

@@ -60,10 +60,10 @@ function convert_base:convert(path)
 
         convert_meownatic[#convert_meownatic + 1] = {x = x, y = y, z = z, id = id, state = {rotation = rotation, solid = solid, replaceable = replaceable}}
     end
-    artd_table = arbd:convert_save(convert_meownatic)
+    artd_table = arbd.convert_save(convert_meownatic)
     
-    arbd:write(artd_table, "meownatica:meownatics/" .. name .. '.arbd')
-    meow_schem:save_to_config(nil, nil, {name_format, name .. '.arbd'})
+    arbd.write(artd_table, "meownatica:meownatics/" .. name .. '.arbd')
+    meow_schem.save_to_config(nil, nil, {name_format, name .. '.arbd'})
 end
 
 return convert_base
