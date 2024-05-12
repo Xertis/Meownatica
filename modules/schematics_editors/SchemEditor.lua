@@ -54,6 +54,24 @@ function meow_schem.rotate(meownatic, smart_rotate)
     return meownatic
 end
 
+function meow_schem.delete_air(meownatic, setair)
+    local del = {}
+    if setair == false then
+        for i = 1, #meownatic do
+            if meownatic[i].id == 'core:air' then
+                table.insert(del, i)
+            end
+        end
+
+        for i = 1, #del do
+            table.remove(meownatic, del[i])
+        end
+        return meownatic
+    else
+        return meownatic
+    end
+end
+
 function meow_schem.materials(meownatic)
     local count = {}
     for _, materials in pairs(meownatic) do
@@ -78,7 +96,7 @@ end
 
 --Переворот схемы вверх дном
 function meow_schem.upmeow(meownatic)
-    max_y = PosManager.max_y(meownatic)
+    local max_y = PosManager.max_y(meownatic)
     for i = 1, #meownatic do
         local y = meownatic[i].y
         local state = meownatic[i].state.rotation
@@ -181,7 +199,7 @@ function meow_schem.save_to_config(name, expection, replace, config)
 end
 
 function meow_schem.convert(name_format, finish_format, source)
-    local format = name_format.match("%.([^%.]+)$")
+    local format = name_format:match("%.([^%.]+)$")
     local path = instruction.find(format, finish_format)
     if path ~= '' then
         instruction.convert("meownatica:meownatics/" .. source, path)

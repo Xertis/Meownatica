@@ -71,10 +71,10 @@ function arbd_u.convert_save(array)
     --## ВЫВОД ##
     print(
         '[MEOWNATICA] \n             ' ..
-        'IDs count. ' .. #arbd_table[2] .. '\n             ' ..
-        'Blocks count. ' .. #arbd_table[4] .. '\n             ' ..
-        'Binding. ' .. arbd_table[3][4] .. '\n             ' ..
-        'Version. ' .. arbd_table[1]
+        'IDs count: ' .. #arbd_table[2] .. '\n             ' ..
+        'Blocks count: ' .. #arbd_table[4] .. '\n             ' ..
+        'Binding: ' .. arbd_table[3][4] .. '\n             ' ..
+        'Version: ' .. arbd_table[1]
     )
     arbd_table[4] = RLE.encode_table(arbd_table[4])
     print(lang.get('is converted'))

@@ -103,20 +103,19 @@ function meow_schem.min_position(meownatic)
 end
 
 function meow_schem.get_binding_block(meownatic)
-    for i = 1, #meownatic do
-        if meownatic[i].x == 0 and meownatic[i].y == 0 and meownatic[i].z == 0 then
-            return i
-        end
-    end
-end
+    local clstDist = math.huge
+    local clstID = nil
 
- function meow_schem.pos_in_table(x, y, z, tbl)
-    for i = 1, #tbl do
-        if tbl.x == x and tbl.y == y and tbl.z == z then
-            return true
+    for i, point in ipairs(meownatic) do
+        local distance = math.sqrt(point.x^2 + point.y^2 + point.z^2)
+
+        if distance < clstDist then
+            clstDist = distance
+            clstID = i
         end
     end
-    return false
+
+    return clstID
 end
 
 function meow_schem.distance(x1, y1, z1, x2, y2, z2)
@@ -132,5 +131,14 @@ end
 function meow_schem.easy_distance(x1, y1, z1, x2, y2, z2)
     local x, y, z = math.abs(x1 - x2), math.abs(y1 - y2), math.abs(z1 - z2)
     return x+y+z
+end
+
+function meow_schem.if_cord_in_meownatic(x, y, z, meownatic)
+    for i = 1, #meownatic do
+        if meownatic[i].x == x and meownatic[i].y == y and meownatic[i].z == z then
+            return true, i
+        end
+    end
+    return false
 end
 return meow_schem

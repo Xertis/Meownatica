@@ -1,13 +1,9 @@
-smartrotateon = true
 blocksupdate = false
-setair = false
+setmeowdelenie = true
 setblockontick = 200
 language = "rus"
-copyair = false
-setmeowdelenie = true
+smartrotateon = true
+setair = false
 [meownatics]
-source4 = "CityMeownatic.arbd"
-source2 = "Broken_Sphere.arbd"
-source1 = "police_station.arbd"
-source3 = "blu_spaceship.arbd"
+source1 = "update9.arbd"
 

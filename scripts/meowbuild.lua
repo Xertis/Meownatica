@@ -3,8 +3,27 @@ local container = require 'meownatica:container_class'
 local reader = require 'meownatica:tools/read_toml'
 local table_utils = require 'meownatica:tools/table_utils'
 local lang = load_script('meownatica:meow_data/lang.lua')
+local meow_schem = require 'meownatica:schematics_editors/SchemEditor'
 local g_meownatic = {}
 local schem_thread = {}
+
+local function delete_air(meownatic, setair)
+    local del = {}
+    if setair == false then
+        for i = 1, #meownatic do
+            if meownatic[i].id == 'core:air' then
+                table.insert(del, i)
+            end
+        end
+
+        for i = 1, #del do
+            table.remove(meownatic, del[i])
+        end
+        return meownatic
+    else
+        return meownatic
+    end
+end
 
 function on_broken(x, y, z)
     local save_meowmatic = container.get()
@@ -41,7 +60,7 @@ function on_interact(x, y, z, playerid)
                 end
             end
             if if_scheme_in_queue == false then
-                g_meownatic[#g_meownatic + 1] = {schem = table_utils.copy(save_meowmatic), x = x, y = y, z = z}
+                g_meownatic[#g_meownatic + 1] = {schem = delete_air(table_utils.copy(save_meowmatic, reader.get('SetAir'))), x = x, y = y, z = z}
             end
         end
     end
