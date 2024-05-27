@@ -128,6 +128,10 @@ function meow_schem.distance(x1, y1, z1, x2, y2, z2)
 	return x + y + z
 end
 
+function meow_schem.euclidean_dist(x1, y1, z1, x2, y2, z2)
+    return ((x1 - x2) ^ 2 + (y1 - y2) ^ 2 + (z1 - z2) ^ 2) ^ 0.5
+end
+
 function meow_schem.easy_distance(x1, y1, z1, x2, y2, z2)
     local x, y, z = math.abs(x1 - x2), math.abs(y1 - y2), math.abs(z1 - z2)
     return x+y+z

@@ -60,6 +60,9 @@ local function deleteCube(x1, y1, z1, x2, y2, z2)
             for z = math.min(z1, z2), math.max(z1, z2) do
                 if block.get(x, y, z) == block.index('meownatica:meowdelenie') then
                     set_block(x, y, z, 0, 0)
+                elseif block.get(x, y, z) == block.index('meownatica:meowdelat') then
+                    data_meow.remove(x, y, z)
+                    set_block(x, y, z, 0, 0)
                 end
             end
         end
