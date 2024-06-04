@@ -1,9 +1,12 @@
 blocksupdate = false
-setmeowdelenie = true
 setblockontick = 200
-language = "rus"
 smartrotateon = true
+language = "eng"
+setmeowdelenie = true
 setair = false
 [meownatics]
-source1 = "update9.arbd"
+source2 = "fly.mbp"
+source1 = "save_meownatic_2.mbp"
+source3 = "save_meownatic_1.mbp"
+source4 = "meownatic_schem.mbp"
 

@@ -40,7 +40,6 @@ end
 function rotate_schem.rotate(x, y, z, id, state)
     --Получаем всю инфу о блоке
     if id ~= 'core:air' then
-        print(id)
         local name = id
         local pos = name:find(':')
         local name_mode = name:sub(1, pos - 1)
@@ -52,13 +51,13 @@ function rotate_schem.rotate(x, y, z, id, state)
             print('[MEOWNATICA] ' .. lang.get('block') .. ' ' .. name .. ' ' .. lang.get('not found'))
             return nil
         end
-        
+
         local model = ''
         if config['model'] ~= nil then model = string.lower(config['model']) end
 
         local rotate = ''
         if config['rotation'] ~= nil then rotate = string.lower(config['rotation']) end
-        
+
         local hitbox = {}
         local sides = {{}, {}, {}, {}, {}, {}}
         if (model == 'aabb' or model == 'custom') and (rotate == 'pipe' or rotate == 'pane') then
