@@ -3,6 +3,7 @@ local container = {}
 local information = {}
 local information_g = {}
 local queue_to_save = {}
+local schem_to_hud = {}
 
 function container.send(data)
     information = table_utils.copy(data)
@@ -38,6 +39,14 @@ function container.get_to_save()
     else
         return {}
     end
+end
+
+function container.sendhud(data)
+    schem_to_hud = table_utils.copy(data)
+end
+
+function container.gethud()
+    return schem_to_hud
 end
 
 return container
