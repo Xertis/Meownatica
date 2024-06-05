@@ -19,7 +19,7 @@ end
 function on_world_open()
     data_meow.open_metadata()
     console.add_command(
-        "m.schem.all",
+        "m.schem.list",
         lang.get('schem_all_console'),
         function ()
             local res = lang.get('meownatics in the config') .. ' ' .. reader.len() .. '\n'
@@ -28,7 +28,7 @@ function on_world_open()
         end
     )
     console.add_command(
-        "m.config.all",
+        "m.config.list",
         lang.get('config_all_console'),
         function ()
             local res = lang.get('config parameters') .. '\n'

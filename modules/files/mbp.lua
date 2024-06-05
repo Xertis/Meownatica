@@ -4,6 +4,7 @@ local MAX_BYTE = 255
 local MAX_UINT16 = 65535
 local MAX_UINT32 = 4294967295
 local VERSION_MBP = 1
+local TYPE_IDS = nil
 local mbp = {}
 
 local function add_to_blocks_array(buf, value)
@@ -22,7 +23,11 @@ local function add_to_blocks_array(buf, value)
         end
     elseif type(value) == 'table' then
         buf:put_byte(0)
-        buf:put_uint16(value[1])
+        if TYPE_IDS == 0 then
+            buf:put_byte(value[1])
+        elseif TYPE_IDS == 1 then
+            buf:put_uint16(value[1])
+        end
         buf:put_byte(value[2])
         buf:put_bool(value[3])
     end
@@ -33,7 +38,15 @@ local function put_version(buf)
 end
 
 local function put_ids_array(buf, blocks_ids)
-    buf:put_uint16(#blocks_ids)
+    if #blocks_ids <= MAX_BYTE then
+        buf:put_byte(0)
+        buf:put_byte(#blocks_ids)
+        TYPE_IDS = 0
+    else
+        buf:put_byte(1)
+        buf:put_uint16(#blocks_ids)
+        TYPE_IDS = 1
+    end
     for b, id in ipairs(blocks_ids) do
         buf:put_string(id)
     end
@@ -65,7 +78,13 @@ local function get_version(buf)
 end
 
 local function get_ids_array(buf)
-    local len = buf:get_uint16()
+    TYPE_IDS = buf:get_byte()
+    local len = nil
+    if TYPE_IDS == 0 then
+        len = buf:get_byte()
+    elseif TYPE_IDS == 1 then
+        len = buf:get_uint16()
+    end
     local ids = {}
     for i = 1, len do
         table.insert(ids, buf:get_string())
@@ -85,7 +104,12 @@ end
 local function read_block(buf)
     local type_data = buf:get_byte()
     if type_data == 0 then
-        local id = buf:get_uint16()
+        local id = nil
+        if TYPE_IDS == 0 then
+            id = buf:get_byte()
+        elseif TYPE_IDS == 1 then
+            id = buf:get_uint16()
+        end
         local rotation = buf:get_byte()
         local solid =  buf:get_bool()
         return {id, rotation, solid}
