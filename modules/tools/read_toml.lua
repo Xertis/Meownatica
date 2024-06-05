@@ -65,8 +65,10 @@ function reader.all_schem()
     local tbl = toml.deserialize(file.read('meownatica:meow_config.toml'))
     tbl = tbl['meownatics']
     local text = ''
+    local i = 1
     for idx, value in pairs(tbl) do
-        text = text .. value .. '\n'
+        text = text .. i .. '.\t' .. value .. '\n'
+        i = i + 1
     end
     return text
 end

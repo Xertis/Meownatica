@@ -181,7 +181,14 @@ function meow_schem.save_to_config(name, expection, replace, config)
     end
     if expection ~= nil then
         local find, idx = reader.find(expection)
+        local i = 1
+        local res = {}
         lines['meownatics'][idx] = nil
+        for id, value in pairs(lines['meownatics']) do
+            res['source' .. i] = value
+            i = i + 1
+        end
+        lines['meownatics'] = res
     end
     if replace ~= nil then
         if config == nil then

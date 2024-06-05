@@ -1,12 +1,12 @@
+setair = false
+setmeowdelenie = true
 blocksupdate = false
 setblockontick = 200
 smartrotateon = true
-language = "eng"
-setmeowdelenie = true
-setair = false
-[meownatics]
-source2 = "fly.mbp"
-source1 = "save_meownatic_2.mbp"
-source3 = "save_meownatic_1.mbp"
-source4 = "meownatic_schem.mbp"
+language = "rus"
 
+[meownatics]
+source4 = "fly.mbp"
+source1 = "save_meownatic_2.mbp"
+source2 = "save_meownatic_1.mbp"
+source3 = "meownatic_schem.mbp"
