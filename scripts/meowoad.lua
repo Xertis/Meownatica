@@ -26,11 +26,6 @@ end
 local if_first_scheme_loaded = false
 function on_placed(x, y, z)
     if if_first_scheme_loaded == false then
-        local packs = block.defs_count()
-
-        for i = 0, packs do
-            available_ids[#available_ids + 1] = block.name(i)
-        end
         
         local name, conv = '', ''
         meownatic_schem, conv, name = meow_change.change(false, true)
@@ -53,6 +48,10 @@ function on_interact(x, y, z, playerid)
     if item.name(id_item) == 'meownatica:block_edit' then
         hud.open_block(x, y, z)
     else
+        local packs = block.defs_count()
+        for i = 0, packs do
+            available_ids[#available_ids + 1] = block.name(i)
+        end
         if #meownatic_schem > 0 then
             local if_scheme_in_queue = false
             for key, value in ipairs(g_meownatic_global) do
