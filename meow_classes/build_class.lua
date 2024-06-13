@@ -6,31 +6,35 @@ local lang = load_script('meownatica:meow_data/lang.lua')
 function meow_build.build_reed(x, y, z, read_meowmatic)
     local point = 0
     --local if_placed = false
-    while point <= #read_meowmatic do
-        local index = (point - 1) % #read_meowmatic + 1 
-        local structure = read_meowmatic[index] 
-        if structure.id ~= 'core:air' then
-            if block.get(structure.x + x, structure.y + y, structure.z + z) == 0 then
-                --if_placed = true
-                block.set(structure.x + x, structure.y + y, structure.z + z, block.index("meownatica:meowreed"), 0, true)
+    if #read_meowmatic > 0 then
+        while point <= #read_meowmatic do
+            local index = (point - 1) % #read_meowmatic + 1 
+            local structure = read_meowmatic[index] 
+            if structure.id ~= 'core:air' then
+                if block.get(structure.x + x, structure.y + y, structure.z + z) == 0 then
+                    --if_placed = true
+                    block.set(structure.x + x, structure.y + y, structure.z + z, block.index("meownatica:meowreed"), 0, true)
+                end
             end
+            point = point + 1
         end
-        point = point + 1
+        --return if_placed
     end
-    --return if_placed
 end
 
 function meow_build.unbuild_reed(x, y, z, read_meowmatic)
     local point = 0
-    while point <= #read_meowmatic do
-        local index = (point - 1) % #read_meowmatic + 1 
-        local structure = read_meowmatic[index]
-        if structure.id ~= 'core:air' then
-            if block.get(structure.x + x, structure.y + y, structure.z + z) == block.index("meownatica:meowreed") then
-                block.set(structure.x + x, structure.y + y, structure.z + z, 0, 0, true)
+    if #read_meowmatic > 0 then
+        while point <= #read_meowmatic do
+            local index = (point - 1) % #read_meowmatic + 1 
+            local structure = read_meowmatic[index]
+            if structure.id ~= 'core:air' then
+                if block.get(structure.x + x, structure.y + y, structure.z + z) == block.index("meownatica:meowreed") then
+                    block.set(structure.x + x, structure.y + y, structure.z + z, 0, 0, true)
+                end
             end
+            point = point + 1
         end
-        point = point + 1
     end
 end
 
