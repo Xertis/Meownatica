@@ -46,7 +46,7 @@ console.add_command(
     lang.get('addschem_console'),
     function (meownatic)
         local parameter = meownatic[1]
-        if file.exists('meownatica:meownatics/' .. parameter) then
+        if file.exists(reader.sys_get('savepath') .. parameter) then
             meow_schem.save_to_config(parameter, nil)
             return parameter .. ' ' .. lang.get('was added')
         else

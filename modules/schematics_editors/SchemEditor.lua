@@ -209,7 +209,7 @@ function meow_schem.convert(name_format, finish_format, source)
     local format = name_format:match("%.([^%.]+)$")
     local path = instruction.find(format, finish_format)
     if path ~= '' then
-        instruction.convert("meownatica:meownatics/" .. source, path)
+        instruction.convert(reader.sys_get('savepath') .. source, path)
         return true
     else
         return false
