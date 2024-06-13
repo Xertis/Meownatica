@@ -76,7 +76,6 @@ function on_broken(x, y, z)
         deleteCube(data[1], data[2], data[3], data[4], data[5], data[6])
     end
     data_meow.remove(x, y, z)
-    data_meow.save_metadata()
 end
 
 function on_placed(x, y, z)
@@ -99,7 +98,6 @@ function on_placed(x, y, z)
             local data2 = {x2_delat, y2_delat, z2_delat, x1_delat, y1_delat, z1_delat}
             data_meow.add(x, y, z, data2, 0, 0)
             data_meow.add(x1_delat, y1_delat, z1_delat, data1, 0, 0)
-            data_meow.save_metadata()
         end
         container.send(save_meowmatic)
     end
