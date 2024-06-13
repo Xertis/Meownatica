@@ -89,6 +89,16 @@ function reader.ci_get(indx)
     return tbl['instruction' .. indx]
 end
 
+function reader.sys()
+    local tbl = toml.deserialize(file.read('meownatica:meow_data/sys_config.toml'))
+    return tbl
+end
+
+function reader.sys_get(key)
+    local tbl = toml.deserialize(file.read('meownatica:meow_data/sys_config.toml'))
+    return tbl[key]
+end
+
 function reader.ci_len()
     local tbl = toml.deserialize(file.read('meownatica:conversion_instructions/conversion_instructions.toml'))
     tbl = tbl['conversion_instructions']

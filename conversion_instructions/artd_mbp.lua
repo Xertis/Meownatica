@@ -2,6 +2,7 @@ local artd = require 'meownatica:files/artd'
 local arbd = require 'meownatica:tools/save_utils'
 local meow_schem = require 'meownatica:schematics_editors/SchemEditor'
 local posm = require 'meownatica:schematics_editors/PosManager'
+local toml = require 'meownatica:tools/read_toml'
 
 local convert_base = {}
 function convert_base:convert(path)
@@ -42,7 +43,7 @@ function convert_base:convert(path)
         end
     end
     local artd_table = arbd.convert_save(result)
-    arbd.write(artd_table, "meownatica:meownatics/" .. name .. '.mbp')
+    arbd.write(artd_table, toml.sys_get('savepath') .. name .. '.mbp')
     meow_schem.save_to_config(nil, nil, {name_format, name .. '.mbp'})
 end
 

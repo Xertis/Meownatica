@@ -1,9 +1,10 @@
-smartrotateon = true
-setblockontick = 200
 setair = false
 setmeowdelenie = true
-blocksupdate = false
 language = "rus"
+blocksupdate = false
+setblockontick = 200
+smartrotateon = true
 
 [meownatics]
-source1 = "save_meownatic_1.mbp"
+source2 = "save_meownatic_3.mbp"
+source1 = "save_meownatic_2.mbp"

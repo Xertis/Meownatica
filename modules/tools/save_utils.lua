@@ -78,7 +78,6 @@ function save_u.convert_save(array)
     )
     arbd_table[4] = RLE.encode_table(arbd_table[4])
     print(lang.get('is converted'))
-    arbd_table[5] = false
     return arbd_table
 end
 
