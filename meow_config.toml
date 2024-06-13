@@ -6,5 +6,3 @@ setblockontick = 200
 smartrotateon = true
 
 [meownatics]
-source2 = "save_meownatic_3.mbp"
-source1 = "save_meownatic_2.mbp"
