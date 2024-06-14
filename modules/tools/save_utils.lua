@@ -34,8 +34,6 @@ function save_u.convert_save(array)
     local temp_table_1 = {}
     local temp_table_2 = {}
     local blocks_id = {}
-    local prefabs = {}
-    local state = nil
 
     --## РАСЧЁТ ГЛУБИНЫ ##
     local max_pos = meow_schem.max_position(array)

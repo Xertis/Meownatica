@@ -3,6 +3,7 @@ local lang = load_script('meownatica:meow_data/lang.lua')
 local reader = require 'meownatica:tools/read_toml'
 local meow_change = load_script('meownatica:meow_classes/change_schem_class.lua')
 local meow_schem = require 'meownatica:schematics_editors/SchemEditor'
+local json_saver = require 'meownatica:files/json_saver'
 
 console.add_command(
     "m.schem.list",
@@ -13,6 +14,16 @@ console.add_command(
         return res
     end
 )
+
+console.add_command(
+    "m.schem.json meownatic:str",
+    lang.get('schem_all_console'),
+    function (args)
+        local path = args[1]
+        json_saver.save(reader.sys_get('savepath') .. path .. '.json')
+    end
+)
+
 console.add_command(
     "m.config.list",
     lang.get('config_all_console'),
