@@ -16,11 +16,12 @@ console.add_command(
 )
 
 console.add_command(
-    "m.schem.json meownatic:str",
-    lang.get('schem_all_console'),
+    "m.schem.json meownatic:str path:str",
+    lang.get('schemjson'),
     function (args)
-        local path = args[1]
-        json_saver.save(reader.sys_get('savepath') .. path .. '.json')
+        local path = args[2]
+        local name = args[1]
+        json_saver.save(name, reader.sys_get('savepath') .. path .. '.json')
     end
 )
 

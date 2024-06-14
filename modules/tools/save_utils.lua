@@ -103,12 +103,14 @@ local function create_cords(x1, y1, z1, x2, y2, z2, bind_block)
     return result
 end
 
-function save_u.convert_read(tbl)
+function save_u.convert_read(tbl, setair)
     local result = {}
     local blocks_id = tbl[2]
     local cords = dtc.dtc(tbl[3])
     local correct_cords = create_cords(cords[1][1], cords[1][2], cords[1][3], cords[2][1], cords[2][2], cords[2][3], cords[2][4])
-    local setair = reader.get('SetAir')
+    if setair == nil then
+        setair = reader.get('SetAir')
+    end
     tbl[4] = RLE.decode_table(tbl[4])
     for i = 1, #tbl[4] do
         local block_info = tbl[4][i]

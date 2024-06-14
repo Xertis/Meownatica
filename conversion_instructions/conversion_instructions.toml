@@ -1,3 +1,4 @@
 [conversion_instructions]
 instruction1 = "artd_mbp.lua"
 instruction2 = "lua_mbp.lua"
+instruction3 = "json_mbp.lua"

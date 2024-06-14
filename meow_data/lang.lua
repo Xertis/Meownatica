@@ -23,6 +23,7 @@ texts['addschem_console'] = {'Load meownatic', 'Загрузить мяунат�
 texts['delschem_console'] = {'Delete meownatic', 'Удалить мяунатик'}
 texts['materials'] = {'Materials:', 'Материалы:'}
 texts['setconfig_console'] = {'Changes the value of the parameter in the config to a new one', 'Меняет значение параметра в конфиге на новое'}
+texts['schemjson'] = {'Saves the meownatic in json format\nExample: m.schem.json test.mbp json_test', 'Сохраняет мяунатик в формате json\nПример: m.schem.json test.mbp json_test'}
 
 function lang.get(key)
     local language = reader.get('language')
