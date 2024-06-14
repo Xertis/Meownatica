@@ -11,3 +11,5 @@ function string_utils.string2value(str)
         return str
     end
 end
+
+return string_utils
