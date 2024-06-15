@@ -26,6 +26,19 @@ console.add_command(
 )
 
 console.add_command(
+    "m.schem.folder",
+    lang.get('consolefolder'),
+    function ()
+        local schemes = file.list(reader.sys_get('savepath'))
+        local res = lang.get('folder') .. '\n'
+        for id, value in pairs(schemes) do
+            res = res .. id .. ': ' .. file.resolve(value) .. '\n'
+        end
+        return res
+    end
+)
+
+console.add_command(
     "m.config.list",
     lang.get('config_all_console'),
     function ()

@@ -12,6 +12,7 @@ texts['block'] = {'Block:', 'Блок:'}
 texts['is converted'] = {'[MEOWNATICA] Meownatic is converted', '[MEOWNATICA] Мяунатик сконвертирован'}
 texts['was deleted'] = {'was deleted', 'был удалён'}
 texts['meownatic'] = {'meownatic', 'мяунатика'}
+texts['meownatics'] = {'meownatics:', 'мяунатики:'}
 texts['was added'] = {'has been added', 'был добавлен'}
 texts['meownatics in the config'] = {'meownatics in the config:', 'мяунатики в конфиге:'}
 texts['config parameters'] = {'config parameters:', 'значения конфига:'}
@@ -24,6 +25,8 @@ texts['delschem_console'] = {'Delete meownatic', 'Удалить мяунати�
 texts['materials'] = {'Materials:', 'Материалы:'}
 texts['setconfig_console'] = {'Changes the value of the parameter in the config to a new one', 'Меняет значение параметра в конфиге на новое'}
 texts['schemjson'] = {'Saves the meownatic in json format\nExample: m.schem.json test.mbp json_test', 'Сохраняет мяунатик в формате json\nПример: m.schem.json test.mbp json_test'}
+texts['consolefolder'] = {'Displays all the meownatics in the folder', 'Выводит все схемы в папке с мяунатиками'}
+texts['folder'] = {'folder:', 'папка:'}
 
 function lang.get(key)
     local language = reader.get('language')
