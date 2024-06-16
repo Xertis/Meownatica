@@ -117,7 +117,7 @@ local function read_block(buf)
         return buf:get_byte()
     elseif type_data == 2 then
         return buf:get_uint16()
-    else
+    elseif type_data == 3 then
         return buf:get_uint32()
     end
 end
