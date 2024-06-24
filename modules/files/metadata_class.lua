@@ -1,5 +1,6 @@
 local data_meow = { }
 local metadata_meow = {}
+local json = require 'meownatica:tools/json_reader'
 
 function data_meow.add(x1, y1, z1, data1_t, data2_t, data3_t)
     metadata_meow[#metadata_meow + 1] = {x = x1, y = y1, z = z1, data1 = data1_t, data2 = data2_t, data3 = data3_t}
@@ -32,62 +33,22 @@ function data_meow.write(x, y, z, data1, data2, data3)
 end
 
 function data_meow.save_metadata()
-    local function table_print(t)
-        if type(t) ~= "table" then
-            return 0
-        end
-    
-        local s = {"{"}
-        for i=1,#t do
-            if type(t[i]) == "table" then
-                s[#s + 1] = "{"
-                for j = 1, #t[i] do
-                    s[#s + 1] = t[i][j]
-                    if j < #t[i] then
-                        s[#s + 1] = ","
-                    end
-                end
-                s[#s+1] = "}"
-                if i < #t then
-                    s[#s+1] = ","
-                end
-            else
-                s[#s + 1] = tostring(t[i])
-                if i < #t then
-                    s[#s + 1] = ","
-                end
-            end
-        end
-        s[#s+1] = "}"
-        s = table.concat(s)
-        return s
-    end
-    local path = pack.data_file("meownatica", "meownatica_data.lua")
+    local path = pack.data_file("meownatica", "meownatica_data.json")
     if file.isfile(path) then
-        local data = 'metadata_meow_cache = {'
-        for key, value in ipairs(metadata_meow) do
-            executer_file = true
-            local data1 = table_print(value.data1)
-            local data2 = table_print(value.data2)
-            local data3 = table_print(value.data3)
-            data = data .. '\n' .. "{x = " .. value.x .. ", y = " .. value.y .. ", z = " .. value.z .. ", data1 = " .. data1 .. ", data2 = " .. data2 .. ", data3 = " .. data3 .. "},"
-        end
-        data = data .. '\n' .. '}'
-        file.write(path, data)
+        file.write(path, json.encode(metadata_meow))
     else 
         print('[Meownatica] Invalid file') 
     end
 end
 
 function data_meow.open_metadata()
-    local path = pack.data_file("meownatica", "meownatica_data.lua")
+    local path = pack.data_file("meownatica", "meownatica_data.json")
     if file.isfile(path) then
-        if file.read(path) ~= '--WAIT...' then
-            load_script(path)
-            metadata_meow = metadata_meow_cache
+        if file.read(path) ~= '//WAIT...' then
+            metadata_meow = json.decode(file.read(path))
         end
     else
-        file.write(path, '--WAIT...')
+        file.write(path, '//WAIT...')
     end
 end
 

@@ -1,0 +1,98 @@
+{
+    "config parameters": [
+        "config parameters:",
+        "значения конфига:"
+    ],
+    "materials_console": [
+        "Displays the materials of the meownatic",
+        "Выводит все материалы, нужные для постройки мяунатика"
+    ],
+    "meownatic": [
+        "meownatic",
+        "мяунатика"
+    ],
+    "materials": [
+        "Materials:",
+        "Материалы:"
+    ],
+    "count": [
+        "count:",
+        "кол-во:"
+    ],
+    "not found": [
+        "does not exist",
+        "не найден"
+    ],
+    "addschem_console": [
+        "Load meownatic",
+        "Загрузить мяунатик"
+    ],
+    "was added": [
+        "has been added",
+        "был добавлен"
+    ],
+    "meownatics": [
+        "meownatics:",
+        "мяунатики:"
+    ],
+    "Save Meownatic": [
+        "[MEOWNATICA] save meownatic...",
+        "[MEOWNATICA] сохранение мяунатика..."
+    ],
+    "Global is finish": [
+        "[MEOWNATICA:Global schem] The construction queue is finished",
+        "[MEOWNATICA:Global schem] Очередь на постройку схем завершена"
+    ],
+    "Local is finish": [
+        "[MEOWNATICA:Local schem] The construction queue is finished",
+        "[MEOWNATICA:Local schem] Очередь на постройку схем завершена"
+    ],
+    "not mods": [
+        "[MEOWNATICA] Meownatic is inserted incorrectly, install the following ContentPack to insert it correctly:",
+        "[MEOWNATICA] Мяунатик построен неправильно, установите перечисленнные ниже моды чтобы вставить схему правильно"
+    ],
+    "meownatics in the config": [
+        "meownatics in the config:",
+        "мяунатики в конфиге:"
+    ],
+    "delschem_console": [
+        "Delete meownatic",
+        "Удалить мяунатик"
+    ],
+    "schemjson": [
+        "Saves the meownatic in json format\nExample: m.schem.json test.mbp json_test",
+        "Сохраняет мяунатик в формате json\nПример: m.schem.json test.mbp json_test"
+    ],
+    "consolefolder": [
+        "Displays all the meownatics in the folder",
+        "Выводит все схемы в папке с мяунатиками"
+    ],
+    "setconfig_console": [
+        "Changes the value of the parameter in the config to a new one",
+        "Меняет значение параметра в конфиге на новое"
+    ],
+    "block": [
+        "Block:",
+        "Блок:"
+    ],
+    "is converted": [
+        "[MEOWNATICA] Meownatic is converted",
+        "[MEOWNATICA] Мяунатик сконвертирован"
+    ],
+    "folder": [
+        "folder:",
+        "папка:"
+    ],
+    "was deleted": [
+        "was deleted",
+        "был удалён"
+    ],
+    "schem_all_console": [
+        "Displays all loaded meownatics",
+        "Выводит все загруженные мяунатики"
+    ],
+    "config_all_console": [
+        "Displays all config parameters",
+        "Выводит все параметры конфига"
+    ]
+}

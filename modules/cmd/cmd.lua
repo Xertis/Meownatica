@@ -32,7 +32,7 @@ console.add_command(
         local schemes = file.list(reader.sys_get('savepath'))
         local res = lang.get('folder') .. '\n'
         for id, value in pairs(schemes) do
-            res = res .. id .. ': ' .. file.resolve(value) .. '\n'
+            res = res .. id .. '. ' .. file.resolve(value) .. '\n'
         end
         return res
     end

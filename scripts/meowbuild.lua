@@ -8,11 +8,14 @@ local g_meownatic = {}
 local schem_thread = {}
 
 local function delete_air(meownatic, setair)
-    local res = {}
     if setair == false then
-        for i = 1, #meownatic do
-            if meownatic[i].id ~= 'core:air' then
-                table.insert(res, meownatic[i])
+        local j = 0
+        local res = {}
+        
+        for i, b in pairs(meownatic) do
+            if b.id ~= 'core:air' then
+                j = j + 1
+                res[j] = b
             end
         end
         return res
