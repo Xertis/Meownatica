@@ -1,7 +1,7 @@
 local container = require 'meownatica:container_class'
 local meow_schem = require 'meownatica:schematics_editors/SchemEditor'
 local arbd = require 'meownatica:tools/save_utils'
-local lang = load_script('meownatica:meow_data/lang.lua')
+local lang = require 'meownatica:interface/lang'
 local reader = require 'meownatica:tools/read_toml'
 local num_file = 0
 

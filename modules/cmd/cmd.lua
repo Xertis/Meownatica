@@ -1,5 +1,5 @@
 local stru = require 'meownatica:tools/string_utils'
-local lang = load_script('meownatica:meow_data/lang.lua')
+local lang = require 'meownatica:interface/lang'
 local reader = require 'meownatica:tools/read_toml'
 local meow_change = load_script('meownatica:meow_classes/change_schem_class.lua')
 local meow_schem = require 'meownatica:schematics_editors/SchemEditor'
