@@ -2,7 +2,6 @@ local true_rotate = load_script('meownatica:meow_classes/SmartRotate.lua')
 local instruction = load_script('meownatica:meow_classes/find_instruction_class.lua')
 local meow_schem = {}
 local reader = require 'meownatica:tools/read_toml'
-local toml = require 'core:toml'
 local PosManager = require 'meownatica:schematics_editors/PosManager'
 
 --Поворот схемы
@@ -157,7 +156,7 @@ function meow_schem.mirroring(meownatic)
 end
 
 function meow_schem.save_to_config(name, expection, replace, config)
-    local lines = toml.deserialize(file.read("meownatica:meow_config.toml"))
+    local lines = toml.parse(file.read("meownatica:meow_config.toml"))
     local len = reader.len()
     if len == 0 then
         len = 1
@@ -202,7 +201,7 @@ function meow_schem.save_to_config(name, expection, replace, config)
             end
         end
     end
-    file.write('meownatica:meow_config.toml', toml.serialize(lines))
+    file.write('meownatica:meow_config.toml', toml.tostring(lines))
 end
 
 function meow_schem.convert(name_format, finish_format, source)
