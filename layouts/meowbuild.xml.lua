@@ -1,4 +1,4 @@
-local meow_build = load_script('meownatica:meow_classes/build_class.lua')
+local meow_build = require 'meownatica:world/build_schem'
 local meow_schem = require 'meownatica:schematics_editors/SchemEditor'
 local container = require 'meownatica:container_class'
 local reader = require 'meownatica:tools/read_toml'

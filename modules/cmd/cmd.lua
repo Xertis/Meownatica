@@ -1,7 +1,7 @@
 local stru = require 'meownatica:tools/string_utils'
 local lang = require 'meownatica:interface/lang'
 local reader = require 'meownatica:tools/read_toml'
-local meow_change = load_script('meownatica:meow_classes/change_schem_class.lua')
+local meow_change = require 'meownatica:schematics_editors/change_schem'
 local meow_schem = require 'meownatica:schematics_editors/SchemEditor'
 local json_saver = require 'meownatica:files/json_saver'
 

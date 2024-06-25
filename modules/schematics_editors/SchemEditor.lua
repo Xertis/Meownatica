@@ -1,5 +1,5 @@
-local true_rotate = load_script('meownatica:meow_classes/SmartRotate.lua')
-local instruction = load_script('meownatica:meow_classes/find_instruction_class.lua')
+local true_rotate = require 'meownatica:tools/smart_rotate'
+local instruction = require 'meownatica:logic/find_instruction'
 local meow_schem = {}
 local reader = require 'meownatica:tools/read_toml'
 local PosManager = require 'meownatica:schematics_editors/PosManager'

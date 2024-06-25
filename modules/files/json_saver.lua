@@ -1,5 +1,5 @@
 local module = {}
-local meow_change = load_script('meownatica:meow_classes/change_schem_class.lua')
+local meow_change = require 'meownatica:schematics_editors/change_schem'
 local svu = require 'meownatica:tools/save_utils'
 local json = require 'meownatica:tools/json_reader'
 

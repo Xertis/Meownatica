@@ -1,7 +1,7 @@
-local meow_build = load_script('meownatica:meow_classes/build_class.lua')
+local meow_build = require 'meownatica:world/build_schem'
 local meow_schem = require 'meownatica:schematics_editors/SchemEditor'
 local container = require 'meownatica:container_class'
-local meow_change = load_script('meownatica:meow_classes/change_schem_class.lua')
+local meow_change = require 'meownatica:schematics_editors/change_schem'
 local lang = require 'meownatica:interface/lang'
 local meownatic_schem = meow_change.change(false, true)
 local x = 0
