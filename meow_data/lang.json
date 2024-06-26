@@ -91,6 +91,10 @@
         "Displays all loaded meownatics",
         "Выводит все загруженные мяунатики"
     ],
+    "countblocks": [
+        "Count blocks: ",
+        "Кол-во блоков: "
+    ],
     "config_all_console": [
         "Displays all config parameters",
         "Выводит все параметры конфига"

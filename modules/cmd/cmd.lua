@@ -58,7 +58,7 @@ console.add_command(
             for _, entry in ipairs(meow_schem.materials(materials)) do
                 result = result .. "ID: " .. entry.id .. ' ' .. lang.get('count') .. ' ' .. entry.count .. '\n'
             end
-
+            result = result .. lang.get('countblocks') .. #materials
             return result
         else
             return parameter .. ' ' .. lang.get('not found')
