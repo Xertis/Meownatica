@@ -4,8 +4,8 @@ local lang = require 'meownatica:interface/lang'
 
 function meow_build.build_reed(x, y, z, read_meowmatic)
     if #read_meowmatic > 0 then
-        for structure in ipairs(read_meowmatic) do
-            if block.get(structure.x + x, structure.y + y, structure.z + z) == 0 then
+        for w, structure in ipairs(read_meowmatic) do
+            if block.get(structure.x + x, structure.y + y, structure.z + z) == 0 and structure.id ~= 'core:air' then
                 block.set(structure.x + x, structure.y + y, structure.z + z, block.index("meownatica:meowreed"), 0, true)
             end
         end
@@ -14,7 +14,7 @@ end
 
 function meow_build.unbuild_reed(x, y, z, read_meowmatic)
     if #read_meowmatic > 0 then
-        for structure in ipairs(read_meowmatic) do
+        for w, structure in ipairs(read_meowmatic) do
             if structure.id ~= 'core:air' then
                 if block.get(structure.x + x, structure.y + y, structure.z + z) == block.index("meownatica:meowreed") then
                     block.set(structure.x + x, structure.y + y, structure.z + z, 0, 0, true)
