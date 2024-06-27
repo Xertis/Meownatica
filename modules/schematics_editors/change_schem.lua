@@ -62,7 +62,6 @@ function meow_change.change(meownatica, change)
             return {}
         end
         if reader.schem(index):find(FORMAT) then
-            print(source1)
             local doc = arbd.read(source1)
             container.send_g(arbd.convert_read(doc))
             return container.get_g(), 0, reader.schem(index)
@@ -88,5 +87,3 @@ function meow_change.get_schem(meownatic_load, setair)
 end
 
 return meow_change
-
-    

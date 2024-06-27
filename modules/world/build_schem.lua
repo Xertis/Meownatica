@@ -1,39 +1,25 @@
 local meow_build = {}
-local json = require 'meownatica:tools/json_reader'
 local table_utils = require 'meownatica:tools/table_utils'
 local lang = require 'meownatica:interface/lang'
 
 function meow_build.build_reed(x, y, z, read_meowmatic)
-    local point = 0
-    --local if_placed = false
     if #read_meowmatic > 0 then
-        while point <= #read_meowmatic do
-            local index = (point - 1) % #read_meowmatic + 1 
-            local structure = read_meowmatic[index] 
-            if structure.id ~= 'core:air' then
-                if block.get(structure.x + x, structure.y + y, structure.z + z) == 0 then
-                    --if_placed = true
-                    block.set(structure.x + x, structure.y + y, structure.z + z, block.index("meownatica:meowreed"), 0, true)
-                end
+        for structure in ipairs(read_meowmatic) do
+            if block.get(structure.x + x, structure.y + y, structure.z + z) == 0 then
+                block.set(structure.x + x, structure.y + y, structure.z + z, block.index("meownatica:meowreed"), 0, true)
             end
-            point = point + 1
         end
-        --return if_placed
     end
 end
 
 function meow_build.unbuild_reed(x, y, z, read_meowmatic)
-    local point = 0
     if #read_meowmatic > 0 then
-        while point <= #read_meowmatic do
-            local index = (point - 1) % #read_meowmatic + 1 
-            local structure = read_meowmatic[index]
+        for structure in ipairs(read_meowmatic) do
             if structure.id ~= 'core:air' then
                 if block.get(structure.x + x, structure.y + y, structure.z + z) == block.index("meownatica:meowreed") then
                     block.set(structure.x + x, structure.y + y, structure.z + z, 0, 0, true)
                 end
             end
-            point = point + 1
         end
     end
 end
@@ -81,33 +67,6 @@ function meow_build.build_schem(x, y, z, read_meowmatic, set_air, blocks_update,
         return read_meowmatic, lose_blocks
     else
         return 'over', lose_blocks
-    end
-end
-
-function meow_build.build_layer(x, y, z, read_meowmatic, set_air, blocks_update, layer)
-    local point = 0
-    if blocks_update then
-        blocks_update = false
-    else
-        blocks_update = true
-    end
-    while point <= #read_meowmatic do
-        local index = (point - 1) % #read_meowmatic + 1 
-        local structure = read_meowmatic[index]
-        if block.get(structure.x + x, structure.y + y, structure.z + z) ~= block.index("meownatica:meowoad") then
-            if structure.id == "core:air" and set_air == true then
-                if layer == structure.y then
-                    block.set(structure.x + x, structure.y + y, structure.z + z, block.index(structure.id), structure.state.rotation, blocks_update)
-                end
-            else 
-                if structure.id ~= "core:air" then
-                    if layer == structure.y then
-                        block.set(structure.x + x, structure.y + y, structure.z + z, block.index(structure.id), structure.state.rotation, blocks_update)
-                    end
-                end
-            end
-        end
-        point = point + 1
     end
 end
 

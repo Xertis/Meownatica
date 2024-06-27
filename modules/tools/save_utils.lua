@@ -1,14 +1,11 @@
-local arbd = require 'meownatica:files/arbd'
 local data_buffer = require "core:data_buffer"
 local save_u = {}
-local table_utils = require 'meownatica:tools/table_utils'
 local lang = require 'meownatica:interface/lang'
 local mbp = require 'meownatica:files/mbp'
 local dtc = require 'meownatica:logic/DepthToCoords'
 local meow_schem = require 'meownatica:schematics_editors/PosManager'
 local RLE = require 'meownatica:logic/RLEcompression'
 local reader = require 'meownatica:tools/read_toml'
-local json = require 'meownatica:tools/json_reader'
 
 function save_u.write(array, path)
     local buf = data_buffer()
@@ -30,7 +27,7 @@ end
 
 function save_u.convert_save(array)
     --## ОБЪЯВЛЕНИЕ ПЕРЕМЕННЫХ ##
-    local arbd_table = {}
+    local save_tbl = {}
     local temp_table_1 = {}
     local temp_table_2 = {}
     local blocks_id = {}
@@ -58,25 +55,25 @@ function save_u.convert_save(array)
     end
 
     --## ЗАПИСЬ ДАННЫХ ##
-    arbd_table[1] = 'MBP [1]'
-    arbd_table[2] = blocks_id
+    save_tbl[1] = 'MBP [1]'
+    save_tbl[2] = blocks_id
 
     local binding = meow_schem.get_binding_block(array)
-    arbd_table[3] = {depthX, depthY, depthZ, binding}
+    save_tbl[3] = {depthX, depthY, depthZ, binding}
 
-    arbd_table[4] = temp_table_2
+    save_tbl[4] = temp_table_2
 
     --## ВЫВОД ##
     print(
         '[MEOWNATICA] \n             ' ..
-        'IDs count: ' .. #arbd_table[2] .. '\n             ' ..
-        'Blocks count: ' .. #arbd_table[4] .. '\n             ' ..
-        'Binding: ' .. arbd_table[3][4] .. '\n             ' ..
-        'Version: ' .. arbd_table[1]
+        'IDs count: ' .. #save_tbl[2] .. '\n             ' ..
+        'Blocks count: ' .. #save_tbl[4] .. '\n             ' ..
+        'Binding: ' .. save_tbl[3][4] .. '\n             ' ..
+        'Version: ' .. save_tbl[1]
     )
-    arbd_table[4] = RLE.encode_table(arbd_table[4])
+    save_tbl[4] = RLE.encode_table(save_tbl[4])
     print(lang.get('is converted'))
-    return arbd_table
+    return save_tbl
 end
 
 local function create_cords(x1, y1, z1, x2, y2, z2, bind_block)
@@ -115,7 +112,6 @@ function save_u.convert_read(tbl, setair)
     for i = 1, #tbl[4] do
         local block_info = tbl[4][i]
         local block_id = blocks_id[block_info[1]]
-        local state_idx = block_info[2]
         if (block_id ~= 'core:air') or (block_id == 'core:air' and setair) then
             if correct_cords then
                 local state = {

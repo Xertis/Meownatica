@@ -100,7 +100,7 @@ console.add_command(
     function (args)
         local parameter = args
         local result = false
-        parameter[2] = stru.string2value(parameter[2])
+        if type(parameter[2]) ~= "boolean" then parameter[2] = stru.string2value(string.lower(parameter[2])) end
         if parameter[2] ~= nil then
             if parameter[1] ~= 'meownatics' then
                 result = meow_schem.save_to_config(nil, nil, parameter, true)

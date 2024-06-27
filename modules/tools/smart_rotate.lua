@@ -9,32 +9,13 @@ end
 
 --find_tiny_value
 local function ftv(tbl)
-    maximum = tbl[1]
+    local maximum = tbl[1]
     for i = 1, #tbl do
         if tbl[i] > maximum then
             maximum = tbl[i]
         end
     end
     return maximum
-end
-
-local function checkElements(big_table, elements_to_search)
-    local all_elem = #big_table
-    local elem_count = 0
-    if #elements_to_search == all_elem then
-        for _, element in ipairs(elements_to_search, big_table) do
-            for i, item in ipairs(big_table) do
-                if element == item then
-                    elem_count = elem_count + 1
-                end
-            end
-        end
-    end
-    if elem_count == all_elem then
-        return true
-    else
-        return false
-    end
 end
 
 function rotate_schem.rotate(x, y, z, id, state)
@@ -45,6 +26,7 @@ function rotate_schem.rotate(x, y, z, id, state)
         local name_mode = name:sub(1, pos - 1)
         local name_block = name:sub(pos + 1)
         local config = ''
+        
         if file.isfile(name_mode .. ':' .. 'blocks' .. '/' .. name_block .. '.json') then
             config = json.decode(file.read(name_mode .. ':' .. 'blocks' .. '/' .. name_block .. '.json'))
         else
@@ -61,7 +43,7 @@ function rotate_schem.rotate(x, y, z, id, state)
         local hitbox = {}
         local sides = {{}, {}, {}, {}, {}, {}}
         if (model == 'aabb' or model == 'custom') and (rotate == 'pipe' or rotate == 'pane') then
-            --Получаем хитбокс
+
             if config['hitbox'] ~= nil then
                 hitbox = {config['hitbox']}
             elseif config['model-primitives'] ~= nil then

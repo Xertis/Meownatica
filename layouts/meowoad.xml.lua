@@ -2,15 +2,12 @@ local meow_build = require 'meownatica:world/build_schem'
 local meow_schem = require 'meownatica:schematics_editors/SchemEditor'
 local container = require 'meownatica:container_class'
 local meow_change = require 'meownatica:schematics_editors/change_schem'
-local lang = require 'meownatica:interface/lang'
 local meownatic_schem = meow_change.change(false, true)
 local x = 0
 local y = 0
 local z = 0
 local reader = require 'meownatica:tools/read_toml'
 local convert_schem = {}
-
-
 
 function on_open(invid, x1, y1, z1)
     x = x1

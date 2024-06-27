@@ -3,7 +3,6 @@ local container = require 'meownatica:container_class'
 local reader = require 'meownatica:tools/read_toml'
 local table_utils = require 'meownatica:tools/table_utils'
 local lang = require 'meownatica:interface/lang'
-local meow_schem = require 'meownatica:schematics_editors/SchemEditor'
 local g_meownatic = {}
 local schem_thread = {}
 

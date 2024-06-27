@@ -1,10 +1,8 @@
 local string_utils = {}
 
 function string_utils.string2value(str)
-    if str == "true" then
-        return true
-    elseif str == "false" then
-        return false
+    if str == "true" or str == "false" then
+        return str == "true"
     elseif tonumber(str) ~= nil then
         return tonumber(str)
     else

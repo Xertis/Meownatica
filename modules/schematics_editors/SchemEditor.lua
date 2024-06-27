@@ -112,13 +112,13 @@ function meow_schem.upmeow(meownatic)
 end
 
 function meow_schem.mirroring(meownatic)
-    max_x = PosManager.max_x(meownatic)
-    min_x = PosManager.min_x(meownatic)
-    max_z = PosManager.max_z(meownatic)
-    min_z = PosManager.min_z(meownatic)
+    local max_x = PosManager.max_x(meownatic)
+    local min_x = PosManager.min_x(meownatic)
+    local max_z = PosManager.max_z(meownatic)
+    local min_z = PosManager.min_z(meownatic)
 
-    dX = math.abs(max_x) + math.abs(min_x)
-    dZ = math.abs(max_z) + math.abs(min_z)
+    local dX = math.abs(max_x) + math.abs(min_x)
+    local dZ = math.abs(max_z) + math.abs(min_z)
     if dX <= dZ then
         for i = 1, #meownatic do
             local x = meownatic[i].x
