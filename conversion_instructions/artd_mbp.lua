@@ -36,7 +36,7 @@ function convert_base:convert(path)
                         table.insert(result, file_data[i])
                         i = i + 1
                     else
-                        table.insert(result, {x = x, y = y, z = z, id = 'core:air', state = {rotation = 0, solid = false, replaceable = false}})
+                        table.insert(result, {x = x, y = y, z = z, id = 'core:air', state = {rotation = 0, solid = false}})
                     end
                 end
             end
