@@ -40,10 +40,10 @@ console.add_command(
         local standart_format = reader.sys_get("fileformat")
 
         for i, file in pairs(files) do
-            if string.match(file, "%.([^%.]+)$") ~= nil then
-                local format = '.' .. string.match(file, "%.([^%.]+)$")
+            local format = string.match(file, "%.([^%.]+)$")
+            if format ~= nil then
                 local name = string.match(file, "([^/]+)$")
-                if format == standart_format then
+                if '.' .. format == standart_format then
                     meow_schem.save_to_config(name, nil)
                 end
             end
