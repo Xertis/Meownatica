@@ -14,6 +14,15 @@ function reader.get_all()
     return parameters
 end
 
+function reader.get_all_schem()
+    local tbl = toml.parse(file.read('meownatica:meow_config.toml'))
+    local parameters = {}
+    for idx, value in pairs(tbl['meownatics']) do
+        table.insert(parameters, value)
+    end
+    return parameters
+end
+
 function reader.schem(indx)
     local tbl = toml.parse(file.read('meownatica:meow_config.toml'))
     tbl = tbl['meownatics']

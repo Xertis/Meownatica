@@ -35,6 +35,14 @@
         "meownatics:",
         "мяунатики:"
     ],
+    "schemreload_help": [
+        "Takes all the meownatics from the folder and uploads them to the config",
+        "Берёт все мяунатики из папки и загружает их в конфиг"
+    ],
+    "schemreload_res": [
+        "The list of meownatics has been updated",
+        "Список мяунатиков был обновлён"
+    ],
     "Save Meownatic": [
         "[MEOWNATICA] save meownatic...",
         "[MEOWNATICA] сохранение мяунатика..."

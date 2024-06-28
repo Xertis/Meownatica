@@ -26,6 +26,31 @@ console.add_command(
 )
 
 console.add_command(
+    "m.schem.reload",
+    lang.get('schemreload_help'),
+    function ()
+        local files = file.list(reader.sys_get("savepath"))
+        local del_files = reader.get_all_schem()
+        for i, file in pairs(del_files) do
+            if reader.find(file) ~= nil then
+                meow_schem.save_to_config(nil, file)
+            end
+        end
+
+        local standart_format = reader.sys_get("fileformat")
+
+        for i, file in pairs(files) do
+            local format = '.' .. string.match(file, "%.([^%.]+)$")
+            local name = string.match(file, "([^/]+)$")
+            if format == standart_format then
+                meow_schem.save_to_config(name, nil)
+            end
+        end
+        return lang.get('schemreload_res')
+    end
+)
+
+console.add_command(
     "m.schem.folder",
     lang.get('consolefolder'),
     function ()

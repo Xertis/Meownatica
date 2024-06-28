@@ -33,7 +33,6 @@ function meow_build.build_schem(x, y, z, read_meowmatic, set_air, blocks_update,
             if table_utils.find(available_ids, id, '') then   
                 block.set(x, y, z, block.index(id), rotation, update)
             else
-                print('[MEOWNATICA] ' .. id .. ' ' .. lang.get('not found'))
                 table_utils.insert_unique(lose_blocks, id:match("(.*):"))
                 block.set(x, y, z, 0, rotation, update)
             end
