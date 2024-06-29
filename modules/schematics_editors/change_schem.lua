@@ -1,5 +1,5 @@
 local reader = require 'meownatica:tools/read_toml'
-local arbd = require 'meownatica:tools/save_utils'
+local save_u = require 'meownatica:tools/save_utils'
 local container = require 'meownatica:container_class'
 local meow_schem = require 'meownatica:schematics_editors/SchemEditor'
 local meow_change = { }
@@ -12,8 +12,8 @@ function meow_change.convert_schem(meownatic_load)
     local source1 = reader.sys_get('savepath') .. source
     local is_convert = meow_schem.convert(meownatic_load, FORMAT, meownatic_load)
     if is_convert then
-        local doc = arbd.read(source1)
-        container.send_g(arbd.convert_read(doc))
+        local doc = save_u.read(source1)
+        container.send_g(save_u.convert_read(doc))
         return container.get_g()
     else
         return 'not converted'
@@ -26,9 +26,9 @@ function meow_change.change(meownatica, change)
         if reader.len() > 0 then
             local source1 = reader.sys_get('savepath') .. reader.schem(index)
             if reader.schem(index):find(FORMAT) then
-                local doc = arbd.read(source1)
+                local doc = save_u.read(source1)
                 point2 = point2 + 1
-                container.send_g(arbd.convert_read(doc))
+                container.send_g(save_u.convert_read(doc))
                 return container.get_g(), 0, reader.schem(index)
                 -----------------------------------------------------
             else
@@ -44,8 +44,8 @@ function meow_change.change(meownatica, change)
         local index = (point2 - 1) % reader.len() + 1
         local source1 = reader.sys_get('savepath')  .. reader.schem(index)
         if reader.schem(index):find(FORMAT) then
-            local doc = arbd.read(source1)
-            container.send_g(arbd.convert_read(doc))
+            local doc = save_u.read(source1)
+            container.send_g(save_u.convert_read(doc))
             return container.get_g(), 0, reader.schem(index)
             -----------------------------------------------------
         else
@@ -62,8 +62,8 @@ function meow_change.change(meownatica, change)
             return {}
         end
         if reader.schem(index):find(FORMAT) then
-            local doc = arbd.read(source1)
-            container.send_g(arbd.convert_read(doc))
+            local doc = save_u.read(source1)
+            container.send_g(save_u.convert_read(doc))
             return container.get_g(), 0, reader.schem(index)
             -----------------------------------------------------
         else
@@ -72,16 +72,17 @@ function meow_change.change(meownatica, change)
     end
 end
 
-function meow_change.get_schem(meownatic_load, setair)
+function meow_change.get_schem(meownatic_load, setair, if_convert)
     local www, index = reader.find(meownatic_load)
     if index ~= nil then
         local source1 = reader.sys_get('savepath') .. reader.schem_full(index)
         if reader.schem_full(index):find(FORMAT) then
-            local doc = arbd.read(source1, setair)
-            return arbd.convert_read(doc, setair)
-            -----------------------------------------------------
-        else
-            return 'convert', reader.schem_full(index), reader.schem_full(index)
+            local doc = save_u.read(source1, setair)
+            if if_convert ~= false then
+                return save_u.convert_read(doc, setair)
+            else
+                return doc
+            end
         end
     end
 end

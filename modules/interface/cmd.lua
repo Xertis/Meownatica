@@ -4,6 +4,8 @@ local reader = require 'meownatica:tools/read_toml'
 local meow_change = require 'meownatica:schematics_editors/change_schem'
 local meow_schem = require 'meownatica:schematics_editors/SchemEditor'
 local json_saver = require 'meownatica:files/json_saver'
+local psm = require 'meownatica:schematics_editors/PosManager'
+local RLE = require 'meownatica:logic/RLEcompression'
 
 console.add_command(
     "m.schem.list",
@@ -21,7 +23,33 @@ console.add_command(
     function (args)
         local path = args[2]
         local name = args[1]
-        json_saver.save(name, reader.sys_get('savepath') .. path .. '.json')
+        local www, index = reader.find(name)
+        if index ~= nil then
+            json_saver.save(name, reader.sys_get('savepath') .. path .. '.json')
+        else
+            return name .. ' ' .. lang.get('not found')
+        end
+    end
+)
+
+console.add_command(
+    "m.schem.info meownatic:str",
+    lang.get('schemjson'),
+    function (args)
+        local name = args[1]
+        local schem = meow_change.get_schem(name, false, false)
+        if schem ~= nil then
+            local blocks = RLE.decode_table(schem[4])
+            local sizeX, sizeY, sizeZ, binding = unpack(schem[3])
+            return
+                'IDs count: ' .. #schem[2] .. '\n' ..
+                'Blocks count: ' .. #blocks .. '\n' ..
+                'Binding: ' .. binding .. '\n' ..
+                'Version: ' .. schem[1] .. '\n' ..
+                'Size (X, Y, Z): ' .. sizeX+1 .. ', ' .. sizeY+1 .. ', ' .. sizeZ+1
+        else
+            return name .. ' ' .. lang.get('not found')
+        end
     end
 )
 
@@ -79,7 +107,7 @@ console.add_command(
     lang.get('materials_console'),
     function (meownatic)
         local parameter = meownatic[1]
-        local materials = meow_change.get_schem(parameter)
+        local materials = meow_change.get_schem(parameter, false)
         if materials ~= nil then
             local result = lang.get('materials') .. '\n'
             for _, entry in ipairs(meow_schem.materials(materials)) do
@@ -116,7 +144,7 @@ console.add_command(
             meow_schem.save_to_config(nil, parameter)
             return parameter .. ' ' .. lang.get('was deleted')
         else
-            return 'Схемы ' .. parameter .. ' ' .. lang.get('not found')
+            return parameter .. ' ' .. lang.get('not found')
         end
     end
 )

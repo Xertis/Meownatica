@@ -33,8 +33,7 @@ function save_u.convert_save(array)
     local blocks_id = {}
 
     --## РАСЧЁТ ГЛУБИНЫ ##
-    local max_pos = meow_schem.max_position(array)
-    local min_pos = meow_schem.min_position(array)
+    local max_pos, min_pos = meow_schem.min_max_position(array)
     local depthX, depthY, depthZ = math.abs(min_pos[1] - max_pos[1]), math.abs(min_pos[2] - max_pos[2]), math.abs(min_pos[3] - max_pos[3])
 
     --## РАСЧЁТ АЙДИШНИКОВ БЛОКОВ ##
@@ -69,7 +68,8 @@ function save_u.convert_save(array)
         'IDs count: ' .. #save_tbl[2] .. '\n             ' ..
         'Blocks count: ' .. #save_tbl[4] .. '\n             ' ..
         'Binding: ' .. save_tbl[3][4] .. '\n             ' ..
-        'Version: ' .. save_tbl[1]
+        'Version: ' .. save_tbl[1] .. '\n             ' ..
+        'Size (X, Y, Z): ' .. depthX + 1 .. ', ' .. depthY + 1 .. ', ' .. depthZ + 1
     )
     save_tbl[4] = RLE.encode_table(save_tbl[4])
     print(lang.get('is converted'))
