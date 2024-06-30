@@ -10,13 +10,13 @@ local FORMAT = reader.sys_get('fileformat')
 function meow_change.convert_schem(meownatic_load)
     local source = meownatic_load:match("(.+)%..+") .. FORMAT
     local source1 = reader.sys_get('savepath') .. source
-    local is_convert = meow_schem.convert(meownatic_load, FORMAT, meownatic_load)
+    local is_convert, reason = meow_schem.convert(meownatic_load, FORMAT, meownatic_load)
     if is_convert then
         local doc = save_u.read(source1)
         container.send_g(save_u.convert_read(doc))
         return container.get_g()
     else
-        return 'not converted'
+        return 'not converted', reason
     end
 end
 

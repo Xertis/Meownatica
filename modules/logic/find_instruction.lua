@@ -24,7 +24,7 @@ end
 
 function findinstruct.convert(path_to_convert, path_instructions)
     local conv = load_script('meownatica:conversion_instructions/' .. path_instructions)
-    conv:convert(path_to_convert)
+    return conv.convert(path_to_convert)
 end
 
 

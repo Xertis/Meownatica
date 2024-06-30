@@ -67,11 +67,12 @@ end
 function convert()
     if #convert_schem > 0 then
         document.meowoad_console.text = 'Схема ' .. convert_schem[1].name .. ' конвертируется...'
-        meownatic_schem = meow_change.convert_schem(convert_schem[1].convert)
+        local reason = nil
+        meownatic_schem, reason = meow_change.convert_schem(convert_schem[1].convert)
         if meownatic_schem ~= 'not converted' then
             document.meowoad_console.text = 'Схема ' .. convert_schem[1].name .. ' \nсконвертирована!'
         else
-            document.meowoad_console.text = 'Отсутствует нужная инструкция конвертации,\nфайл не сконвертирован'
+            document.meowoad_console.text = reason .. '\nИтог: Файл не сконвертирован'
             container.get_g(meownatic_schem)
         end
         table.remove(convert_schem, 1)

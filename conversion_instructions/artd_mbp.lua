@@ -5,7 +5,7 @@ local posm = require 'meownatica:schematics_editors/PosManager'
 local toml = require 'meownatica:tools/read_toml'
 
 local convert_base = {}
-function convert_base:convert(path)
+function convert_base.convert(path)
     print(path)
     local function arbd_convert(tbl)
         local result = {}
@@ -45,6 +45,7 @@ function convert_base:convert(path)
     local artd_table = arbd.convert_save(result)
     arbd.write(artd_table, toml.sys_get('savepath') .. name .. '.mbp')
     meow_schem.save_to_config(nil, nil, {name_format, name .. '.mbp'})
+    return true
 end
 
 return convert_base
