@@ -1,8 +1,8 @@
+blocksupdate = false
+language = "rus"
 setair = false
 setmeowdelenie = true
-language = "rus"
-blocksupdate = false
-setblockontick = 200
+setblockontick = 1000
 smartrotateon = true
 
 [meownatics]
