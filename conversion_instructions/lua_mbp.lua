@@ -1,6 +1,7 @@
 local arbd = require 'meownatica:tools/save_utils'
 local meow_schem = require 'meownatica:schematics_editors/SchemEditor'
 local posm = require 'meownatica:schematics_editors/PosManager'
+local lang = require 'meownatica:interface/lang'
 local toml = require 'meownatica:tools/read_toml'
 local convert_base = {}
 
@@ -56,7 +57,7 @@ function convert_base.convert(path)
                     end
                 end
             else
-                return false, 'Для конвертации из lua в mbp должны быть\nустановлены моды из мяунатика'
+                return false, lang.get("LuaConvError1")
             end
         else
             solid = false

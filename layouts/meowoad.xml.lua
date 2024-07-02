@@ -2,6 +2,7 @@ local meow_build = require 'meownatica:world/build_schem'
 local meow_schem = require 'meownatica:schematics_editors/SchemEditor'
 local container = require 'meownatica:container_class'
 local meow_change = require 'meownatica:schematics_editors/change_schem'
+local lang = require 'meownatica:interface/lang'
 local meownatic_schem = meow_change.change(false, true)
 local x = 0
 local y = 0
@@ -53,9 +54,9 @@ function change()
     if meownatic_schem ~= 'convert' then
         meow_build.build_reed(x, y, z, meownatic_schem)
         container.send_g(meownatic_schem)
-        document.meowoad_console.text = 'Схема ' .. name .. ' загружена'
+        document.meowoad_console.text = lang.get('meownatic') .. ' ' .. name .. ' ' .. lang.get('installed')
     else
-        document.meowoad_console.text = 'Схема ' .. name .. ' \nнуждается в конвертации!'
+        document.meowoad_console.text = lang.get('meownatic') .. ' ' .. name .. ' \n' .. lang.get('needconv')
         local bol = true
         for i=1, #convert_schem do
             if convert_schem[i].name == name then bol = false end
@@ -66,17 +67,17 @@ end
 
 function convert()
     if #convert_schem > 0 then
-        document.meowoad_console.text = 'Схема ' .. convert_schem[1].name .. ' конвертируется...'
+        document.meowoad_console.text = lang.get('meownatic') .. convert_schem[1].name .. lang.get('in progress')
         local reason = nil
         meownatic_schem, reason = meow_change.convert_schem(convert_schem[1].convert)
         if meownatic_schem ~= 'not converted' then
-            document.meowoad_console.text = 'Схема ' .. convert_schem[1].name .. ' \nсконвертирована!'
+            document.meowoad_console.text = lang.get('meownatic') .. convert_schem[1].name .. '\n' .. lang.get('converted')
         else
-            document.meowoad_console.text = reason .. '\nИтог: Файл не сконвертирован'
+            document.meowoad_console.text = reason .. '\n' .. lang.get('convertError')
             container.get_g(meownatic_schem)
         end
         table.remove(convert_schem, 1)
     else
-        document.meowoad_console.text = 'Очередь на конвертацию пустая!'
+        document.meowoad_console.text = lang.get('ConvQueueClear')
     end
 end

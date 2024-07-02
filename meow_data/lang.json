@@ -9,7 +9,35 @@
     ],
     "meownatic": [
         "meownatic",
-        "мяунатика"
+        "мяунатик"
+    ],
+    "installed": [
+        "installed",
+        "установлен"
+    ],
+    "needconv": [
+        "needs to be converted",
+        "нуждается в конвертации"
+    ],
+    "in progress": [
+        " in progress...",
+        " в процессе..."
+    ],
+    "converted": [
+        "converted",
+        "сконвертирован"
+    ],
+    "ConvQueueClear": [
+        "The conversion queue is empty!",
+        "Очередь на конвертацию пустая!"
+    ],
+    "LuaConvError1": [
+        "To convert from lua to mbp mods \nfrom meownatic must be installed",
+        "Для конвертации из lua в mbp должны быть\nустановлены моды из мяунатика"
+    ],
+    "convertError": [
+        "Result: File not converted",
+        "Итог: Файл не сковертирован"
     ],
     "materials": [
         "Materials:",
