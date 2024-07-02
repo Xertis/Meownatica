@@ -1,6 +1,6 @@
 local container = require 'meownatica:container_class'
 local meow_schem = require 'meownatica:schematics_editors/SchemEditor'
-local arbd = require 'meownatica:tools/save_utils'
+local save_u = require 'meownatica:tools/save_utils'
 local lang = require 'meownatica:interface/lang'
 local reader = require 'meownatica:tools/read_toml'
 local num_file = 0
@@ -12,9 +12,9 @@ local function printStructures(tbl)
     end
     print(lang.get('Save Meownatic'))
 
-    arbd_table = arbd.convert_save(tbl)
+    local save_table = save_u.convert_save(tbl)
 
-    arbd.write(arbd_table, reader.sys_get('savepath') .. 'save_meownatic_' .. num_file .. reader.sys_get('fileformat'))
+    save_u.write(save_table, reader.sys_get('savepath') .. 'save_meownatic_' .. num_file .. reader.sys_get('fileformat'))
     meow_schem.save_to_config('save_meownatic_' .. num_file .. reader.sys_get('fileformat'))
 end
   
