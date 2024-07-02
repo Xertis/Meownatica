@@ -67,11 +67,11 @@ end
 
 function convert()
     if #convert_schem > 0 then
-        document.meowoad_console.text = lang.get('meownatic') .. convert_schem[1].name .. lang.get('in progress')
+        document.meowoad_console.text = lang.get('meownatic') .. ' ' .. convert_schem[1].name .. lang.get('in progress')
         local reason = nil
         meownatic_schem, reason = meow_change.convert_schem(convert_schem[1].convert)
         if meownatic_schem ~= 'not converted' then
-            document.meowoad_console.text = lang.get('meownatic') .. convert_schem[1].name .. '\n' .. lang.get('converted')
+            document.meowoad_console.text = lang.get('meownatic') .. ' ' .. convert_schem[1].name .. '\n' .. lang.get('converted')
         else
             document.meowoad_console.text = reason .. '\n' .. lang.get('convertError')
             container.get_g(meownatic_schem)
