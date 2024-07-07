@@ -17,7 +17,7 @@ function on_open(invid, x1, y1, z1)
 end
 
 function rotate_g()
-    meownatic_schem = container.get_g()
+    meownatic_schem = container.load().global_schem
     meow_build.unbuild_reed(x, y, z, meownatic_schem)
     if #meownatic_schem > 0 then
         meownatic_schem = meow_schem.rotate(meownatic_schem, reader.get('SmartRotateOn'))
@@ -27,7 +27,7 @@ function rotate_g()
 end
 
 function up_down_g()
-    meownatic_schem = container.get_g()
+    meownatic_schem = container.load().global_schem
     meow_build.unbuild_reed(x, y, z, meownatic_schem)
     if #meownatic_schem > 0 then
         meownatic_schem = meow_schem.upmeow(meownatic_schem)
@@ -37,7 +37,7 @@ function up_down_g()
 end
 
 function mirroring_g()
-    meownatic_schem = container.get_g()
+    meownatic_schem = container.load().global_schem
     meow_build.unbuild_reed(x, y, z, meownatic_schem)
     if #meownatic_schem > 0 then
         meownatic_schem = meow_schem.mirroring(meownatic_schem)
@@ -47,9 +47,10 @@ function mirroring_g()
 end
 
 function change()
-    meownatic_schem = container.get_g()
+    meownatic_schem = container.load().global_schem
     meow_build.unbuild_reed(x, y, z, meownatic_schem)
     local conv = 0
+    local name = nil
     meownatic_schem, conv, name = meow_change.change(meownatic_schem, true)
     if meownatic_schem ~= 'convert' then
         meow_build.build_reed(x, y, z, meownatic_schem)
@@ -58,8 +59,8 @@ function change()
     else
         document.meowoad_console.text = lang.get('meownatic') .. ' ' .. name .. ' \n' .. lang.get('needconv')
         local bol = true
-        for i=1, #convert_schem do
-            if convert_schem[i].name == name then bol = false end
+        for _, elem in ipairs(convert_schem) do
+            if elem.name == name then bol = false end
         end
         if bol == true then table.insert(convert_schem, {convert = conv, name = name}) end
     end

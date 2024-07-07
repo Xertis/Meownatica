@@ -18,14 +18,14 @@ local function ftv(tbl)
     return maximum
 end
 
-function rotate_schem.rotate(x, y, z, id, state)
-    --Получаем всю инфу о блоке
+function rotate_schem.rotate(id, state)
+
     if id ~= 'core:air' then
         local name = id
         local pos = name:find(':')
         local name_mode = name:sub(1, pos - 1)
         local name_block = name:sub(pos + 1)
-        local config = ''
+        local config = nil
         
         if file.isfile(name_mode .. ':' .. 'blocks' .. '/' .. name_block .. '.json') then
             config = json.decode(file.read(name_mode .. ':' .. 'blocks' .. '/' .. name_block .. '.json'))
@@ -34,10 +34,10 @@ function rotate_schem.rotate(x, y, z, id, state)
             return nil
         end
 
-        local model = ''
+        local model = nil
         if config['model'] ~= nil then model = string.lower(config['model']) end
 
-        local rotate = ''
+        local rotate = nil
         if config['rotation'] ~= nil then rotate = string.lower(config['rotation']) end
 
         local hitbox = {}
@@ -74,7 +74,6 @@ function rotate_schem.rotate(x, y, z, id, state)
                 end
             end
         end
-        --print("[MEOWNATICA] Расстояние до сторон внешнего куба: " .. table.concat(sides, ", "))
 
 
         if hitbox[1] ~= nil then

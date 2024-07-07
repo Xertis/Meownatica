@@ -36,7 +36,7 @@ function meow_schem.rotate(meownatic, smart_rotate)
             local z = meownatic[i].z
             local state_true = nil
             if smart_rotate == true then
-                state_true = true_rotate.rotate(x, y, z, meownatic[i].id, meownatic[i].state.rotation)
+                state_true = true_rotate.rotate(meownatic[i].id, meownatic[i].state.rotation)
             end
             if state_true ~= nil then
                 --Поворот на 90 градусов
@@ -207,7 +207,7 @@ end
 function meow_schem.convert(name_format, finish_format, source)
     local format = name_format:match("%.([^%.]+)$")
     local path = instruction.find(format, finish_format)
-    if path ~= '' then
+    if path ~= nil then
         return instruction.convert(reader.sys_get('savepath') .. source, path)
     else
         return false, 'Инструкция для конвертации не найдена'

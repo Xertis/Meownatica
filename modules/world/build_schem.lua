@@ -1,10 +1,9 @@
 local meow_build = {}
 local table_utils = require 'meownatica:tools/table_utils'
-local lang = require 'meownatica:interface/lang'
 
 function meow_build.build_reed(x, y, z, read_meowmatic)
     if #read_meowmatic > 0 then
-        for w, structure in ipairs(read_meowmatic) do
+        for _, structure in ipairs(read_meowmatic) do
             if block.get(structure.x + x, structure.y + y, structure.z + z) == 0 and structure.id ~= 'core:air' then
                 block.set(structure.x + x, structure.y + y, structure.z + z, block.index("meownatica:meowreed"), 0, true)
             end
@@ -14,7 +13,7 @@ end
 
 function meow_build.unbuild_reed(x, y, z, read_meowmatic)
     if #read_meowmatic > 0 then
-        for w, structure in ipairs(read_meowmatic) do
+        for _, structure in ipairs(read_meowmatic) do
             if structure.id ~= 'core:air' then
                 if block.get(structure.x + x, structure.y + y, structure.z + z) == block.index("meownatica:meowreed") then
                     block.set(structure.x + x, structure.y + y, structure.z + z, 0, 0, true)
@@ -44,7 +43,7 @@ function meow_build.build_schem(x, y, z, read_meowmatic, set_air, blocks_update,
     local bs = 0
 
     while point <= #read_meowmatic and bs < set_block_on_tick do
-        local index = (point - 1) % #read_meowmatic + 1 
+        local index = (point - 1) % #read_meowmatic + 1
         local schem = read_meowmatic[index]
         local block_in_cord = block.get(schem.x + x, schem.y + y, schem.z + z)
         if block_in_cord ~= -1 and block.name(block_in_cord) ~= schem.id then

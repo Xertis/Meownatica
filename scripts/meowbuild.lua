@@ -10,7 +10,7 @@ local function delete_air(meownatic, setair)
     if setair == false then
         local j = 0
         local res = {}
-        
+
         for i, b in pairs(meownatic) do
             if b.id ~= 'core:air' then
                 j = j + 1
