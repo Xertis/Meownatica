@@ -99,6 +99,7 @@ function meow_schem.upmeow(meownatic)
     for i = 1, #meownatic do
         local y = meownatic[i].y
         local state = meownatic[i].state.rotation
+        local _, sizeY, _ = block.get_size(block.index(meownatic[i].id))
         
         if state == 5 then
             meownatic[i].state.rotation = 4
@@ -106,7 +107,7 @@ function meow_schem.upmeow(meownatic)
             meownatic[i].state.rotation = 5
         end
 
-        meownatic[i].y = -y + max_y
+        meownatic[i].y = -y + max_y - (sizeY - 1)
     end
     return meownatic
 end
