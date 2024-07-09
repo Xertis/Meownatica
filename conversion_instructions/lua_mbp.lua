@@ -1,4 +1,4 @@
-local arbd = require 'meownatica:tools/save_utils'
+local save_u = require 'meownatica:tools/save_utils'
 local meow_schem = require 'meownatica:schematics_editors/SchemEditor'
 local posm = require 'meownatica:schematics_editors/PosManager'
 local lang = require 'meownatica:interface/lang'
@@ -49,15 +49,15 @@ function convert_base.convert(path)
                         table.insert(result, convert_meownatic[i])
                         i = i + 1
                     else
-                        table.insert(result, {x = x, y = y, z = z, id = 'core:air', state = {rotation = 0, solid = false}})
+                        table.insert(result, {x = x, y = y, z = z, id = 'core:air', state = {rotation = 0, solid = true}})
                     end
                 end
             end
         end
     end
 
-    local artd_table = arbd.convert_save(result)
-    arbd.write(artd_table, toml.sys_get('savepath') .. name .. '.mbp')
+    local save_table = save_u.convert_save(result)
+    save_u.write(save_table, toml.sys_get('savepath') .. name .. '.mbp')
     meow_schem.save_to_config(nil, nil, {name_format, name .. '.mbp'})
     return true
 end

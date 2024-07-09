@@ -6,7 +6,6 @@ local toml = require 'meownatica:tools/read_toml'
 
 local convert_base = {}
 function convert_base.convert(path)
-    print(path)
     local function arbd_convert(tbl)
         local result = {}
         for i = 1, #tbl do
@@ -15,7 +14,6 @@ function convert_base.convert(path)
         return result
     end
     local name_format = path:match(".+/(.+)")
-    print(name_format, path)
     local name = name_format:gsub("%.artd$", "")
     local file = file.read(path)
     local file_data = artd.deserialize(file)
@@ -36,7 +34,7 @@ function convert_base.convert(path)
                         table.insert(result, file_data[i])
                         i = i + 1
                     else
-                        table.insert(result, {x = x, y = y, z = z, id = 'core:air', state = {rotation = 0, solid = false}})
+                        table.insert(result, {x = x, y = y, z = z, id = 'core:air', state = {rotation = 0, solid = true}})
                     end
                 end
             end
