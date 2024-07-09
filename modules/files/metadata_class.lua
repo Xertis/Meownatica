@@ -3,7 +3,7 @@ local metadata_meow = {}
 local json = require 'meownatica:tools/json_reader'
 
 function data_meow.add(x1, y1, z1, data1_t)
-    metadata_meow[#metadata_meow + 1] = {x = x1, y = y1, z = z1, data1 = data1_t}
+    metadata_meow[#metadata_meow + 1] = {x = x1, y = y1, z = z1, data = data1_t}
 end
 
 function data_meow.remove(x, y, z)
@@ -19,7 +19,7 @@ function data_meow.read(x, y, z)
     if #metadata_meow > 0 then
         for key, value in ipairs(metadata_meow) do
             if value.x == x and value.y == y and value.z == z then
-                return value.data1
+                return value.data
             end
         end
     else
