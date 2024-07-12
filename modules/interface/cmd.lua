@@ -26,6 +26,7 @@ console.add_command(
         local www, index = reader.find(name)
         if index ~= nil then
             json_saver.save(name, reader.sys_get('savepath') .. path .. '.json')
+            return name .. ' ' .. lang.get('converted')
         else
             return name .. ' ' .. lang.get('not found')
         end
