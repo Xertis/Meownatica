@@ -127,9 +127,9 @@
         "Displays all loaded meownatics",
         "Выводит все загруженные мяунатики"
     ],
-    "countblocks": [
-        "Count blocks: ",
-        "Кол-во блоков: "
+    "countmaterials": [
+        "Count materials: ",
+        "Кол-во материалов: "
     ],
     "config_all_console": [
         "Displays all config parameters",

@@ -45,6 +45,7 @@ console.add_command(
             return
                 'IDs count: ' .. #schem[2] .. '\n' ..
                 'Blocks count: ' .. #blocks .. '\n' ..
+                'Entities count: ' .. #schem[5] .. '\n' ..
                 'Binding: ' .. binding .. '\n' ..
                 'Version: ' .. schem[1] .. '\n' ..
                 'Size (X, Y, Z): ' .. sizeX+1 .. ', ' .. sizeY+1 .. ', ' .. sizeZ+1
@@ -114,7 +115,7 @@ console.add_command(
             for _, entry in ipairs(meow_schem.materials(materials)) do
                 result = result .. "ID: " .. entry.id .. ' ' .. lang.get('count') .. ' ' .. entry.count .. '\n'
             end
-            result = result .. lang.get('countblocks') .. #materials
+            result = result .. lang.get('countmaterials') .. #materials
             return result
         else
             return parameter .. ' ' .. lang.get('not found')
