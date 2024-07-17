@@ -82,29 +82,29 @@ end
 
 local function copy_entities(x1, y1, z1, x2, y2, z2)
 
-    local function combine(table1, table2)
-        local result = {}
-        for i = 1, #table1 do
-            result[i] = math.abs(table1[i] - table2[i] + 1)
+    if reader.get('EntitiesSave') == true then
+        local function combine(table1, table2)
+            local result = {}
+            for i = 1, #table1 do
+                result[i] = math.abs(table1[i] - table2[i] + 1)
+            end
+            return result
         end
-        return result
-    end
 
-    local max_pos, min_pos = posm.min_max_in_cube(x1, y1, z1, x2, y2, z2)
-    local size = combine(max_pos, min_pos)
-    print(table.tostring(min_pos), table.tostring(max_pos), table.tostring(size))
+        local max_pos, min_pos = posm.min_max_in_cube(x1, y1, z1, x2, y2, z2)
+        local size = combine(max_pos, min_pos)
 
-    local uids = entities.get_all_in_box(min_pos, size)
+        local uids = entities.get_all_in_box(min_pos, size)
 
-    for _, uid in ipairs(uids) do
-        local entity = entities.get(uid)
-        local tsf = entity.transform
-        local pos = tsf:get_pos()
-        local rot = tsf:get_rot()
-        local id = entity:get_skeleton()
-        if id ~= "base:drop" then
-            print(id)
-            table.insert(save_meowmatic, {elem = 1, x = pos[1] - x1, y = pos[2] - y1, z = pos[3] - z1, id = id, rot = rot})
+        for _, uid in ipairs(uids) do
+            local entity = entities.get(uid)
+            local tsf = entity.transform
+            local pos = tsf:get_pos()
+            local rot = tsf:get_rot()
+            local id = entities.name(uid)
+            if id ~= "base:drop" then
+                table.insert(save_meowmatic, {elem = 1, x = pos[1] - x1, y = pos[2] - y1, z = pos[3] - z1, id = id, rot = rot})
+            end
         end
     end
 end

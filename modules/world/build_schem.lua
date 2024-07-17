@@ -59,7 +59,6 @@ function meow_build.build_schem(x, y, z, read_meowmatic, set_air, blocks_update,
                 end
             end
         elseif schem.elem == 1 then
-            print(11)
             if table_utils.find(available_ids, schem.id, '') then
                 local entity = entities.spawn(schem.id, {schem.x + x, schem.y + y, schem.z + z})
                 entity.transform:set_rot(schem.rot)
