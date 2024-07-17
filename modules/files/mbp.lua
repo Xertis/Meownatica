@@ -5,6 +5,7 @@ local MAX_UINT16 = 65535
 local MAX_UINT32 = 4294967295
 local VERSION_MBP = 1
 local TYPE_IDS = nil
+local rot_conv = require 'meownatica:logic/entity_rot2bytes'
 local mbp = {}
 
 local function add_to_blocks_array(buf, value)
@@ -31,6 +32,20 @@ local function add_to_blocks_array(buf, value)
         buf:put_byte(value[2])
         buf:put_bool(value[3])
     end
+end
+
+local function add_to_entity_array(buf, value)
+    if TYPE_IDS == 0 then
+        buf:put_byte(value[1])
+    elseif TYPE_IDS == 1 then
+        buf:put_uint16(value[1])
+    end
+    local byte1, byte2 = rot_conv.rot2Bytes(value[2])
+    buf:put_byte(byte1)
+    buf:put_byte(byte2)
+    buf:put_double(value[3])
+    buf:put_double(value[4])
+    buf:put_double(value[5])
 end
 
 local function put_version(buf)
@@ -66,11 +81,19 @@ local function put_blocks(buf, blocks)
     end
 end
 
+local function put_entities(buf, entities)
+    buf:put_uint32(#entities)
+    for b, entity in ipairs(entities) do
+        add_to_entity_array(buf, entity)
+    end
+end
+
 function mbp.serialize(buf, array)
     put_version(buf)
     put_ids_array(buf, array[2])
     put_depth(buf, array[3][1], array[3][2], array[3][3], array[3][4])
     put_blocks(buf, array[4])
+    put_entities(buf, array[5])
 end
 
 local function get_version(buf)
@@ -122,6 +145,20 @@ local function read_block(buf)
     end
 end
 
+local function read_entity(buf)
+    local id = nil
+    if TYPE_IDS == 0 then
+        id = buf:get_byte()
+    elseif TYPE_IDS == 1 then
+        id = buf:get_uint16()
+    end
+
+    local byte1, byte2 = buf:get_byte(), buf:get_byte()
+    local rot = rot_conv.bytes2Rot(byte1, byte2)
+    local x, y, z = buf:get_double(), buf:get_double(), buf:get_double()
+    return {id, rot, x, y, z}
+end
+
 local function get_blocks(buf)
     local len = buf:get_uint32()
     local result = {}
@@ -131,12 +168,22 @@ local function get_blocks(buf)
     return result
 end
 
+local function get_entities(buf)
+    local len = buf:get_uint32()
+    local result = {}
+    for i = 1, len do
+        table.insert(result, read_entity(buf))
+    end
+    return result
+end
+
 function mbp.deserialize(buf)
     local version = get_version(buf)
     local ids = get_ids_array(buf)
     local depth = get_depth(buf)
     local blocks = get_blocks(buf)
-    return {version, ids, depth, blocks}
+    local entities = get_entities(buf)
+    return {version, ids, depth, blocks, entities}
 end
 
 return mbp

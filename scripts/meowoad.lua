@@ -52,6 +52,10 @@ function on_interact(x, y, z, playerid)
         for i = 0, packs do
             available_ids[#available_ids + 1] = block.name(i)
         end
+        local entities = json.parse(file.read('world:indices.json'))['entities']
+        for i, entity in ipairs(entities) do
+            table.insert(available_ids, entity)
+        end
         if #meownatic_schem > 0 then
             local if_scheme_in_queue = false
             for key, value in ipairs(g_meownatic_global) do

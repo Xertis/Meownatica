@@ -5,18 +5,19 @@ local x1_delat, y1_delat, z1_delat = 0, 0, 0
 local data_meow = require 'meownatica:files/metadata_class'
 local reader = require 'meownatica:tools/read_toml'
 local container = require 'meownatica:container_class'
+local posm = require 'meownatica:schematics_editors/PosManager'
 
 local function createCube(x1, y1, z1, x2, y2, z2, x_p, y_p, z_p)
     for x = math.min(x1, x2), math.max(x1, x2) do
         for y = math.min(y1, y2), math.max(y1, y2) do
             for z = math.min(z1, z2), math.max(z1, z2) do
                 if block.get(x, y, z) ~= -1 then
-                    if (block.name(block.get(x, y, z)) ~= 'meownatica:meowdelat' and 
-                    block.name(block.get(x, y, z)) ~= 'meownatica:meowdelenie') 
+                    if (block.name(block.get(x, y, z)) ~= 'meownatica:meowdelat' and
+                    block.name(block.get(x, y, z)) ~= 'meownatica:meowdelenie')
                     and block.is_segment(x, y, z) == false then
-                        save_meowmatic[#save_meowmatic + 1] = {x = x - x_p, y = y - y_p, z = z - z_p, id = block.name(block.get(x, y, z)), state = {rotation = block.get_states(x, y, z), solid = block.is_solid_at(x, y, z)}}
+                        save_meowmatic[#save_meowmatic + 1] = {elem = 0, x = x - x_p, y = y - y_p, z = z - z_p, id = block.name(block.get(x, y, z)), state = {rotation = block.get_states(x, y, z), solid = block.is_solid_at(x, y, z)}}
                     else
-                        save_meowmatic[#save_meowmatic + 1] = {x = x - x_p, y = y - y_p, z = z - z_p, id = 'core:air', state = {rotation = 0, solid = false}}
+                        save_meowmatic[#save_meowmatic + 1] = {elem = 0, x = x - x_p, y = y - y_p, z = z - z_p, id = 'core:air', state = {rotation = 0, solid = false}}
                     end
                 else
                     return {}
@@ -79,6 +80,35 @@ function on_broken(x, y, z)
     data_meow.remove(x, y, z)
 end
 
+local function copy_entities(x1, y1, z1, x2, y2, z2)
+
+    local function combine(table1, table2)
+        local result = {}
+        for i = 1, #table1 do
+            result[i] = math.abs(table1[i] - table2[i] + 1)
+        end
+        return result
+    end
+
+    local max_pos, min_pos = posm.min_max_in_cube(x1, y1, z1, x2, y2, z2)
+    local size = combine(max_pos, min_pos)
+    print(table.tostring(min_pos), table.tostring(max_pos), table.tostring(size))
+
+    local uids = entities.get_all_in_box(min_pos, size)
+
+    for _, uid in ipairs(uids) do
+        local entity = entities.get(uid)
+        local tsf = entity.transform
+        local pos = tsf:get_pos()
+        local rot = tsf:get_rot()
+        local id = entity:get_skeleton()
+        if id ~= "base:drop" then
+            print(id)
+            table.insert(save_meowmatic, {elem = 1, x = pos[1] - x1, y = pos[2] - y1, z = pos[3] - z1, id = id, rot = rot})
+        end
+    end
+end
+
 function on_placed(x, y, z)
     if executer_delat == false then
         x1_delat, y1_delat, z1_delat = x, y, z
@@ -91,10 +121,13 @@ function on_placed(x, y, z)
             if y1_delat > y2_delat then
                 createCube(x1_delat, y1_delat, z1_delat, x2_delat, y2_delat, z2_delat, x, y, z)
                 create_ribs(x1_delat, y1_delat, z1_delat, x2_delat, y2_delat, z2_delat)
+                copy_entities(x2_delat, y2_delat, z2_delat, x1_delat, y1_delat, z1_delat)
             else
                 createCube(x2_delat, y2_delat, z2_delat, x1_delat, y1_delat, z1_delat, x1_delat, y1_delat, z1_delat)
                 create_ribs(x2_delat, y2_delat, z2_delat, x1_delat, y1_delat, z1_delat)
+                copy_entities(x1_delat, y1_delat, z1_delat, x2_delat, y2_delat, z2_delat)
             end
+            
             local data1 = {x1_delat, y1_delat, z1_delat, x2_delat, y2_delat, z2_delat}
             local data2 = {x2_delat, y2_delat, z2_delat, x1_delat, y1_delat, z1_delat}
             data_meow.add(x, y, z, data2)

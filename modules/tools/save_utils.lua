@@ -30,6 +30,7 @@ function save_u.convert_save(array)
     local save_tbl = {}
     local temp_table_1 = {}
     local temp_table_2 = {}
+    local temp_table_3 = {}
     local blocks_id = {}
 
     --## РАСЧЁТ ГЛУБИНЫ ##
@@ -46,11 +47,13 @@ function save_u.convert_save(array)
     end
 
     --## РАСЧЁТ БЛОКОВ ##
-    local i = 1
 
     for _, value in pairs(array) do
-        temp_table_2[i] = {temp_table_1[value.id], value.state.rotation, value.state.solid}
-        i = i + 1
+        if value.elem == 0 then
+            table.insert(temp_table_2, {temp_table_1[value.id], value.state.rotation, value.state.solid})
+        elseif value.elem == 1 then
+            table.insert(temp_table_3, {temp_table_1[value.id], value.rot, value.x, value.y, value.z})
+        end
     end
 
     --## ЗАПИСЬ ДАННЫХ ##
@@ -61,12 +64,14 @@ function save_u.convert_save(array)
     save_tbl[3] = {depthX, depthY, depthZ, binding}
 
     save_tbl[4] = temp_table_2
+    save_tbl[5] = temp_table_3
 
     --## ВЫВОД ##
     print(
         '[MEOWNATICA] \n             ' ..
         'IDs count: ' .. #save_tbl[2] .. '\n             ' ..
         'Blocks count: ' .. #save_tbl[4] .. '\n             ' ..
+        'Entities count: ' .. #save_tbl[5] .. '\n             ' ..
         'Binding: ' .. save_tbl[3][4] .. '\n             ' ..
         'Version: ' .. save_tbl[1] .. '\n             ' ..
         'Size (X, Y, Z): ' .. depthX + 1 .. ', ' .. depthY + 1 .. ', ' .. depthZ + 1
@@ -122,6 +127,7 @@ function save_u.convert_read(tbl, setair)
                 local cord = correct_cords[i]
                 if block_id ~= nil then
                     table.insert(result, {
+                        elem = 0,
                         x = cord[1],
                         y = cord[2],
                         z = cord[3],
@@ -131,6 +137,10 @@ function save_u.convert_read(tbl, setair)
                 end
             end
         end
+    end
+
+    for _, entity in ipairs(tbl[5]) do
+        table.insert(result, {elem = 1, id = blocks_id[entity[1]], rot = entity[2], x = entity[3], y = entity[4], z = entity[5]})
     end
 
     return result
