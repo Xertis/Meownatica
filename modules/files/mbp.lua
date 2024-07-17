@@ -76,14 +76,14 @@ end
 
 local function put_blocks(buf, blocks)
     buf:put_uint32(#blocks)
-    for b, block in ipairs(blocks) do
+    for _, block in ipairs(blocks) do
         add_to_blocks_array(buf, block)
     end
 end
 
 local function put_entities(buf, entities)
     buf:put_uint32(#entities)
-    for b, entity in ipairs(entities) do
+    for _, entity in ipairs(entities) do
         add_to_entity_array(buf, entity)
     end
 end

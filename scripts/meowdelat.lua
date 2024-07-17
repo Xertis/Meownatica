@@ -145,9 +145,11 @@ function on_interact(x, y, z)
         if y1_delat > y2_delat then
             createCube(x1_delat, y1_delat, z1_delat, x2_delat, y2_delat, z2_delat, x, y, z)
             create_ribs(x1_delat, y1_delat, z1_delat, x2_delat, y2_delat, z2_delat)
+            copy_entities(x2_delat, y2_delat, z2_delat, x1_delat, y1_delat, z1_delat)
         else
             createCube(x2_delat, y2_delat, z2_delat, x1_delat, y1_delat, z1_delat, x1_delat, y1_delat, z1_delat)
             create_ribs(x2_delat, y2_delat, z2_delat, x1_delat, y1_delat, z1_delat)
+            copy_entities(x1_delat, y1_delat, z1_delat, x2_delat, y2_delat, z2_delat)
         end
     end
     container.send(save_meowmatic)
