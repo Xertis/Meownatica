@@ -49,7 +49,7 @@ local function add_to_entity_array(buf, value)
 end
 
 local function put_version(buf)
-    buf:put_byte(VERSION_MBP)
+    buf:put_uint16(VERSION_MBP)
 end
 
 local function put_ids_array(buf, blocks_ids)
@@ -97,7 +97,7 @@ function mbp.serialize(buf, array)
 end
 
 local function get_version(buf)
-    return buf:get_byte()
+    return buf:get_uint16()
 end
 
 local function get_ids_array(buf)
