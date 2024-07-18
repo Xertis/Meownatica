@@ -43,9 +43,9 @@ local function add_to_entity_array(buf, value)
     local byte1, byte2 = rot_conv.rot2Bytes(value[2])
     buf:put_byte(byte1)
     buf:put_byte(byte2)
-    buf:put_double(value[3])
-    buf:put_double(value[4])
-    buf:put_double(value[5])
+    buf:put_single(value[3])
+    buf:put_single(value[4])
+    buf:put_single(value[5])
 end
 
 local function put_version(buf)
@@ -155,7 +155,7 @@ local function read_entity(buf)
 
     local byte1, byte2 = buf:get_byte(), buf:get_byte()
     local rot = rot_conv.bytes2Rot(byte1, byte2)
-    local x, y, z = buf:get_double(), buf:get_double(), buf:get_double()
+    local x, y, z = buf:get_single(), buf:get_single(), buf:get_single()
     return {id, rot, x, y, z}
 end
 

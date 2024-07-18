@@ -48,14 +48,16 @@ function on_interact(x, y, z, playerid)
     if item.name(id_item) == 'meownatica:block_edit' then
         hud.open_block(x, y, z)
     else
+
         local packs = block.defs_count()
         for i = 0, packs do
             available_ids[#available_ids + 1] = block.name(i)
         end
-        local entities = json.parse(file.read('world:indices.json'))['entities']
-        for i, entity in ipairs(entities) do
-            table.insert(available_ids, entity)
+        local entities_pack = entities.defs_count()
+        for i = 0, entities_pack do
+            available_ids[#available_ids + 1] = entities.def_name(i)
         end
+
         if #meownatic_schem > 0 then
             local if_scheme_in_queue = false
             for key, value in ipairs(g_meownatic_global) do
