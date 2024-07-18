@@ -33,7 +33,6 @@ function meow_schem.rotate(meownatic, smart_rotate)
         if meownatic[i].elem == 0 then
             if meownatic[i].state.solid == false or meownatic[i].state.solid == nil then
                 local x = meownatic[i].x
-                local y = meownatic[i].y
                 local z = meownatic[i].z
                 local state_true = nil
                 if smart_rotate == true then
@@ -50,6 +49,11 @@ function meow_schem.rotate(meownatic, smart_rotate)
             else
                 meownatic[i] = meow_schem.rotate_standart(meownatic[i])
             end
+        elseif meownatic[i].elem == 1 then
+            local x = meownatic[i].x
+            local z = meownatic[i].z
+            meownatic[i].x = -z + 1
+            meownatic[i].z = x
         end
     end
     return meownatic
@@ -99,19 +103,19 @@ end
 function meow_schem.upmeow(meownatic)
     local max_y = PosManager.max_y(meownatic)
     for i = 1, #meownatic do
+        local y = meownatic[i].y
+        local sizeY = 1
         if meownatic[i].elem == 0 then
-            local y = meownatic[i].y
             local state = meownatic[i].state.rotation
-            local _, sizeY, _ = block.get_size(block.index(meownatic[i].id))
-            
+            _, sizeY, _ = block.get_size(block.index(meownatic[i].id))
+
             if state == 5 then
                 meownatic[i].state.rotation = 4
             elseif state == 4 then
                 meownatic[i].state.rotation = 5
             end
-
-            meownatic[i].y = -y + max_y - (sizeY - 1)
         end
+        meownatic[i].y = -y + max_y - (sizeY - 1)
     end
     return meownatic
 end
@@ -140,6 +144,10 @@ function meow_schem.mirroring(meownatic)
                     state = 0
                 end
                 meownatic[i].state.rotation = state
+
+            elseif meownatic[i].elem == 1 then
+                local x = meownatic[i].x
+                meownatic[i].x = -x + max_x + 1
             end
         end
     else
@@ -158,6 +166,10 @@ function meow_schem.mirroring(meownatic)
                     state = 0
                 end
                 meownatic[i].state.rotation = state
+
+            elseif meownatic[i].elem == 1 then
+                local z = meownatic[i].z
+                meownatic[i].z = -z + max_z + 1
             end
         end
     end

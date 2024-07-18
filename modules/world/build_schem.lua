@@ -41,11 +41,11 @@ function meow_build.build_schem(x, y, z, read_meowmatic, set_air, blocks_update,
     end
     --build_block(structure.x + x, structure.y + y, structure.z + z, structure.id, structure.state.rotation, blocks_update, block_in_cord)
 
-    local point = 0
+    local point = 1
     local bs = 0
 
     while point <= #read_meowmatic and bs < set_block_on_tick do
-        local index = (point - 1) % #read_meowmatic + 1
+        local index = point
         local schem = read_meowmatic[index]
         if schem.elem == 0 then
             local block_in_cord = block.get(schem.x + x, schem.y + y, schem.z + z)
