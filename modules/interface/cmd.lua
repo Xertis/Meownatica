@@ -156,6 +156,7 @@ console.add_command(
     lang.get('setconfig_console'),
     function (args)
         local parameter = args
+        parameter[1] = string.lower(parameter[1])
         local result = false
         if type(parameter[2]) ~= "boolean" then parameter[2] = stru.string2value(string.lower(parameter[2])) end
         if parameter[2] ~= nil then

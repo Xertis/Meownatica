@@ -87,7 +87,7 @@ function on_blocks_tick(tps)
     end
     if #g_meownatic_global > 0 then
         schem_thread, lose_blocks = meow_build.build_schem(schem_thread.x, schem_thread.y, schem_thread.z, schem_thread.schem, reader.get('SetAir'),
-                                                            reader.get('BlocksUpdate'), reader.get('SetBlockOnTick'), available_ids, lose_blocks)
+                                                            reader.get('BlocksUpdate'), reader.get('SetBlockOnTick'), available_ids, lose_blocks, reader.get('SetEntities'))
         
         if schem_thread == 'over' then
             table.remove(g_meownatic_global, 1)

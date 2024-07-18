@@ -139,8 +139,10 @@ function save_u.convert_read(tbl, setair)
         end
     end
 
-    for _, entity in ipairs(tbl[5]) do
-        table.insert(result, {elem = 1, id = blocks_id[entity[1]], rot = entity[2], x = entity[3], y = entity[4], z = entity[5]})
+    if reader.get('SetEntities') == true then
+        for _, entity in ipairs(tbl[5]) do
+            table.insert(result, {elem = 1, id = blocks_id[entity[1]], rot = entity[2], x = entity[3], y = entity[4], z = entity[5]})
+        end
     end
 
     return result
