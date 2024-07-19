@@ -41,7 +41,6 @@ local function add_to_entity_array(buf, value)
         buf:put_uint16(value[1])
     end
     local quat = mat4.decompose(value[2])['quaternion']
-    print(table.tostring({data = value[2]}, true))
     buf:put_uint16(signs_e.encode(value[2]))
     buf:put_single(quat[1])
     buf:put_single(quat[2])
@@ -160,9 +159,6 @@ local function read_entity(buf)
     local qp1, qp2, qp3, qp4 = buf:get_single(), buf:get_single(), buf:get_single(), buf:get_single()
 
     local rot = signs_e.parse(signs, mat4.from_quat({qp1, qp2, qp3, qp4}))
-    print(json.tostring({data = rot}))
-    print(json.tostring({data = signs}))
-    print(json.tostring({data = mat4.from_quat({qp1, qp2, qp3, qp4})}))
     local x, y, z = buf:get_single(), buf:get_single(), buf:get_single()
     return {id, rot, x, y, z}
 end
