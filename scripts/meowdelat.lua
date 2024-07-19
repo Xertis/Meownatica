@@ -6,7 +6,6 @@ local data_meow = require 'meownatica:files/metadata_class'
 local reader = require 'meownatica:tools/read_toml'
 local container = require 'meownatica:container_class'
 local posm = require 'meownatica:schematics_editors/PosManager'
-local quat = require 'meownatica:logic/quaternion_zip'
 
 local function createCube(x1, y1, z1, x2, y2, z2, x_p, y_p, z_p)
     for x = math.min(x1, x2), math.max(x1, x2) do
@@ -102,7 +101,6 @@ local function copy_entities(x1, y1, z1, x2, y2, z2)
             local tsf = entity.transform
             local pos = tsf:get_pos()
             local rot = tsf:get_rot()
-
             local id = entities.def_name(entities.get_def(uid))
             if id ~= "base:drop" then
                 table.insert(save_meowmatic, {elem = 1, x = pos[1] - x1, y = pos[2] - y1, z = pos[3] - z1, id = id, rot = rot})

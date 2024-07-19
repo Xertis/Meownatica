@@ -5,7 +5,7 @@ local MAX_UINT16 = 65535
 local MAX_UINT32 = 4294967295
 local VERSION_MBP = 1
 local TYPE_IDS = nil
-local rot_conv = require 'meownatica:logic/entity_rot2bytes'
+local signs_e = require 'meownatica:logic/signs_encode'
 local mbp = {}
 
 local function add_to_blocks_array(buf, value)
@@ -40,9 +40,14 @@ local function add_to_entity_array(buf, value)
     elseif TYPE_IDS == 1 then
         buf:put_uint16(value[1])
     end
-    local byte1, byte2 = rot_conv.rot2Bytes(value[2])
-    buf:put_byte(byte1)
-    buf:put_byte(byte2)
+    local quat = mat4.decompose(value[2])['quaternion']
+    print(table.tostring({data = value[2]}, true))
+    buf:put_uint16(signs_e.encode(value[2]))
+    buf:put_single(quat[1])
+    buf:put_single(quat[2])
+    buf:put_single(quat[3])
+    buf:put_single(quat[4])
+
     buf:put_single(value[3])
     buf:put_single(value[4])
     buf:put_single(value[5])
@@ -116,7 +121,6 @@ local function get_ids_array(buf)
 end
 
 local function get_depth(buf)
-    local data = {}
     local X = buf:get_uint16()
     local Y = buf:get_uint16()
     local Z = buf:get_uint16()
@@ -152,9 +156,13 @@ local function read_entity(buf)
     elseif TYPE_IDS == 1 then
         id = buf:get_uint16()
     end
+    local signs = signs_e.decode(buf:get_uint16(), 16)
+    local qp1, qp2, qp3, qp4 = buf:get_single(), buf:get_single(), buf:get_single(), buf:get_single()
 
-    local byte1, byte2 = buf:get_byte(), buf:get_byte()
-    local rot = rot_conv.bytes2Rot(byte1, byte2)
+    local rot = signs_e.parse(signs, mat4.from_quat({qp1, qp2, qp3, qp4}))
+    print(json.tostring({data = rot}))
+    print(json.tostring({data = signs}))
+    print(json.tostring({data = mat4.from_quat({qp1, qp2, qp3, qp4})}))
     local x, y, z = buf:get_single(), buf:get_single(), buf:get_single()
     return {id, rot, x, y, z}
 end
