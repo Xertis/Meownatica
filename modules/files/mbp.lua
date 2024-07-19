@@ -6,24 +6,21 @@ local MAX_UINT32 = 4294967295
 local VERSION_MBP = 1
 local TYPE_IDS = nil
 local signs_e = require 'meownatica:logic/signs_encode'
+local byte_conv = require 'meownatica:logic/type_byte_convert'
 local mbp = {}
 
 local function add_to_blocks_array(buf, value)
     if type(value) == 'number' then
-        if value >= MAX_BYTE then
-            if value >= MAX_UINT16 then
-                buf:put_byte(3)
+        if value > MAX_BYTE then
+            if value > MAX_UINT16 then
                 buf:put_uint32(value)
             else
-                buf:put_byte(2)
                 buf:put_uint16(value)
             end
         else
-            buf:put_byte(1)
             buf:put_byte(value)
         end
     elseif type(value) == 'table' then
-        buf:put_byte(0)
         if TYPE_IDS == 0 then
             buf:put_byte(value[1])
         elseif TYPE_IDS == 1 then
@@ -31,6 +28,52 @@ local function add_to_blocks_array(buf, value)
         end
         buf:put_byte(value[2])
         buf:put_bool(value[3])
+    end
+end
+
+local function get_types(i, blocks)
+    local types = {}
+    for j=i, i+3 do
+        if j <= #blocks then
+            if type(blocks[j]) == 'table' then
+                table.insert(types, 0)
+            elseif type(blocks[j]) == 'number' then
+                if blocks[j] > MAX_BYTE then
+                    if blocks[j] > MAX_UINT16 then
+                        table.insert(types, 3)
+                    else
+                        table.insert(types, 2)
+                    end
+                else
+                    table.insert(types, 1)
+                end
+            end
+        else
+            for k=#types+1, 4 do
+                types[k] = 0
+            end
+            break
+        end
+    end
+    return types
+end
+
+local function put_blocks(buf, blocks)
+    buf:put_uint32(#blocks)
+    local types = get_types(1, blocks)
+    local temp = 4
+    buf:put_byte(byte_conv.ToByte(types))
+    for i=1, #blocks do
+        if temp == 0 then
+            types = get_types(i, blocks)
+            temp = 3
+            local byte = byte_conv.ToByte(types)
+            buf:put_byte(byte)
+            add_to_blocks_array(buf, blocks[i])
+        else
+            temp = temp - 1
+            add_to_blocks_array(buf, blocks[i])
+        end
     end
 end
 
@@ -78,13 +121,6 @@ local function put_depth(buf, DepthX, DepthY, DepthZ, Binding)
     buf:put_uint32(Binding)
 end
 
-local function put_blocks(buf, blocks)
-    buf:put_uint32(#blocks)
-    for _, block in ipairs(blocks) do
-        add_to_blocks_array(buf, block)
-    end
-end
-
 local function put_entities(buf, entities)
     buf:put_uint32(#entities)
     for _, entity in ipairs(entities) do
@@ -127,8 +163,7 @@ local function get_depth(buf)
     return {X, Y, Z, Bind}
 end
 
-local function read_block(buf)
-    local type_data = buf:get_byte()
+local function read_block(type_data, buf)
     if type_data == 0 then
         local id = nil
         if TYPE_IDS == 0 then
@@ -148,6 +183,26 @@ local function read_block(buf)
     end
 end
 
+local function get_blocks(buf)
+    local len = buf:get_uint32()
+    local result = {}
+    local types = byte_conv.ToTable(buf:get_byte())
+    local i = 1
+    local temp = 4
+    while i <= len do
+        if temp == 0 then
+            types = byte_conv.ToTable(buf:get_byte())
+            temp = 4
+        else
+            local point = (i - 1) % 4 + 1
+            table.insert(result, read_block(types[point], buf))
+            temp = temp - 1
+            i = i + 1
+        end
+    end
+    return result
+end
+
 local function read_entity(buf)
     local id = nil
     if TYPE_IDS == 0 then
@@ -161,15 +216,6 @@ local function read_entity(buf)
     local rot = signs_e.parse(signs, mat4.from_quat({qp1, qp2, qp3, qp4}))
     local x, y, z = buf:get_single(), buf:get_single(), buf:get_single()
     return {id, rot, x, y, z}
-end
-
-local function get_blocks(buf)
-    local len = buf:get_uint32()
-    local result = {}
-    for i = 1, len do
-        table.insert(result, read_block(buf))
-    end
-    return result
 end
 
 local function get_entities(buf)
@@ -186,6 +232,7 @@ function mbp.deserialize(buf)
     local ids = get_ids_array(buf)
     local depth = get_depth(buf)
     local blocks = get_blocks(buf)
+
     local entities = get_entities(buf)
     return {version, ids, depth, blocks, entities}
 end
