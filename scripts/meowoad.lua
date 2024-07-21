@@ -31,7 +31,12 @@ function on_placed(x, y, z)
         meownatic_schem, conv, name = meow_change.change(false, true)
         if_first_scheme_loaded = true
         if meownatic_schem == 'convert' then
-            meownatic_schem = meow_change.convert_schem(conv)
+            local schem = meow_change.convert_schem(conv)
+            if schem ~= 'not converted' then
+                meownatic_schem = schem
+            else
+                meownatic_schem = container.get_g()
+            end
         end
     else
         meownatic_schem = container.get_g()

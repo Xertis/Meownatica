@@ -75,7 +75,7 @@ function convert()
             document.meowoad_console.text = lang.get('meownatic') .. ' ' .. convert_schem[1].name .. '\n' .. lang.get('converted')
         else
             document.meowoad_console.text = reason .. '\n' .. lang.get('convertError')
-            container.get_g(meownatic_schem)
+            meownatic_schem = container.get_g()
         end
         table.remove(convert_schem, 1)
     else
