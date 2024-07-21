@@ -9,12 +9,12 @@ local signs_e = require 'meownatica:logic/signs_encode'
 local byte_conv = require 'meownatica:logic/type_byte_convert'
 local mbp = {}
 
-local function compress(x, y)
+local function block_state_compress(x, y)
     if y == true then return x end
     return x + 101
 end
 
-local function decompress(x)
+local function block_state_decompress(x)
     if x >= 101 then return x - 101, false end
     return x, true
 end
@@ -36,7 +36,7 @@ local function add_to_blocks_array(buf, value)
         elseif TYPE_IDS == 1 then
             buf:put_uint16(value[1])
         end
-        buf:put_byte(compress(value[2], value[3]))
+        buf:put_byte(block_state_compress(value[2], value[3]))
     end
 end
 
@@ -180,7 +180,7 @@ local function read_block(type_data, buf)
         elseif TYPE_IDS == 1 then
             id = buf:get_uint16()
         end
-        local rotation, solid = decompress(buf:get_byte())
+        local rotation, solid = block_state_decompress(buf:get_byte())
         return {id, rotation, solid}
     elseif type_data == 1 then
         return buf:get_byte()
