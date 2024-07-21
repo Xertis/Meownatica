@@ -23,10 +23,13 @@ console.add_command(
     function (args)
         local path = args[2]
         local name = args[1]
-        local www, index = reader.find(name)
-        if index ~= nil then
-            json_saver.save(name, reader.sys_get('savepath') .. path .. '.json')
-            return name .. ' ' .. lang.get('converted')
+        if file.exists(reader.sys_get('savepath') .. name) ~= false then
+            local result = json_saver.save(name, reader.sys_get('savepath') .. path .. '.json')
+            if result == true then
+                return name .. ' ' .. lang.get('converted')
+            else
+                return lang.get('convertError')
+            end
         else
             return name .. ' ' .. lang.get('not found')
         end

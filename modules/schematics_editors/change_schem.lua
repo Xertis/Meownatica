@@ -73,11 +73,9 @@ function meow_change.change(meownatica, change)
 end
 
 function meow_change.get_schem(meownatic_load, setair, if_convert)
-    local www, index = reader.find(meownatic_load)
-    if index ~= nil then
-        local source1 = reader.sys_get('savepath') .. reader.schem_full(index)
-        if reader.schem_full(index):find(FORMAT) then
-            local doc = save_u.read(source1, setair)
+    if file.exists(reader.sys_get('savepath') .. meownatic_load) ~= false then
+        if meownatic_load:find(FORMAT) then
+            local doc = save_u.read(reader.sys_get('savepath') .. meownatic_load, setair)
             if if_convert ~= false then
                 return save_u.convert_read(doc, setair)
             else

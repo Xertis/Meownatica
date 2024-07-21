@@ -10,6 +10,7 @@ function module.save(name, path)
         schem[1] = 1
         schem = json.encode(schem)
         file.write(path, schem)
+        return true
     end
 end
 
