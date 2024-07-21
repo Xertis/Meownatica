@@ -11,11 +11,11 @@ local mbp = {}
 
 local function block_state_compress(x, y)
     if y == true then return x end
-    return x + 101
+    return x + 129
 end
 
 local function block_state_decompress(x)
-    if x >= 101 then return x - 101, false end
+    if x > 128 then return x - 129, false end
     return x, true
 end
 
