@@ -15,7 +15,7 @@ local function createCube(x1, y1, z1, x2, y2, z2, x_p, y_p, z_p)
                     if (block.name(block.get(x, y, z)) ~= 'meownatica:meowdelat' and
                     block.name(block.get(x, y, z)) ~= 'meownatica:meowdelenie')
                     and block.is_segment(x, y, z) == false then
-                        save_meowmatic[#save_meowmatic + 1] = {elem = 0, x = x - x_p, y = y - y_p, z = z - z_p, id = block.name(block.get(x, y, z)), state = {rotation = block.get_states(x, y, z), solid = block.is_solid_at(x, y, z)}}
+                        save_meowmatic[#save_meowmatic + 1] = {elem = 0, x = x - x_p, y = y - y_p, z = z - z_p, id = block.name(block.get(x, y, z)), state = {rotation = block.get_rotation(x, y, z), solid = block.is_solid_at(x, y, z)}}
                     else
                         save_meowmatic[#save_meowmatic + 1] = {elem = 0, x = x - x_p, y = y - y_p, z = z - z_p, id = 'core:air', state = {rotation = 0, solid = false}}
                     end
