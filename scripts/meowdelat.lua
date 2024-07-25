@@ -83,6 +83,7 @@ end
 local function copy_entities(x1, y1, z1, x2, y2, z2)
 
     if reader.get('EntitiesSave') == true then
+
         local function combine(table1, table2)
             local result = {}
             for i = 1, #table1 do
@@ -91,7 +92,7 @@ local function copy_entities(x1, y1, z1, x2, y2, z2)
             return result
         end
 
-        local max_pos, min_pos = posm.min_max_in_cube(x1, y1, z1, x2, y2, z2)
+        local max_pos, min_pos = posm.min_max_in_cords(x1, y1, z1, x2, y2, z2)
         local size = combine(max_pos, min_pos)
 
         local uids = entities.get_all_in_box(min_pos, size)

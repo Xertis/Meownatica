@@ -22,46 +22,11 @@ function meow_schem.max_y(meownatic)
     return maximum
 end
 
-function meow_schem.min_max_in_cube(x1, y1, z1, x2, y2, z2)
-    local min_x = x1
-    local min_y = y1
-    local min_z = z1
+function meow_schem.min_max_in_cords(x1, y1, z1, x2, y2, z2)
+    local min_vec = {math.min(x1, x2), math.min(y1, y2), math.min(z1, z2)}
+    local max_vec = {math.max(x1, x2), math.max(y1, y2), math.max(z1, z2)}
 
-    local max_x = x2
-    local max_y = y2
-    local max_z = z2
-    for x = math.min(x1, x2), math.max(x1, x2) do
-        for y = math.min(y1, y2), math.max(y1, y2) do
-            for z = math.min(z1, z2), math.max(z1, z2) do
-                if min_x > x then
-                    min_x = x
-                end
-
-                if min_y > y then
-                    min_y = y
-                end
-
-                if min_z > z then
-                    min_z = z
-                end
-
-                ------------------
-
-                if max_x < x then
-                    max_x = x
-                end
-
-                if max_y < y then
-                    max_y = y
-                end
-
-                if max_z < z then
-                    max_z = z
-                end
-            end
-        end
-    end
-    return {max_x, max_y, max_z}, {min_x, min_y, min_z}
+    return max_vec, min_vec
 end
 
 function meow_schem.max_x(meownatic)
