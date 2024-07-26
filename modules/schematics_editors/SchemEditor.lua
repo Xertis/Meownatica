@@ -3,6 +3,7 @@ local instruction = require 'meownatica:logic/find_instruction'
 local meow_schem = {}
 local reader = require 'meownatica:tools/read_toml'
 local PosManager = require 'meownatica:schematics_editors/PosManager'
+local tblu = require 'meownatica:tools/table_utils'
 
 --Поворот схемы
 function meow_schem.rotate_standart(meownatic)
@@ -102,13 +103,22 @@ end
 --Переворот схемы вверх дном
 function meow_schem.upmeow(meownatic)
     local max_y = PosManager.max_y(meownatic)
+
+    local available_ids = {}
+    local packs = block.defs_count()
+    for i = 0, packs do
+        available_ids[#available_ids + 1] = block.name(i)
+    end
+
     for i = 1, #meownatic do
         local y = meownatic[i].y
         local sizeY = 1
         if meownatic[i].elem == 0 then
             local state = meownatic[i].state.rotation
-            _, sizeY, _ = block.get_size(block.index(meownatic[i].id))
-
+            if tblu.find(available_ids, meownatic[i].id) then
+                local id = block.index(meownatic[i].id)
+                _, sizeY, _ = block.get_size(id)
+            end
             if state == 5 then
                 meownatic[i].state.rotation = 4
             elseif state == 4 then
