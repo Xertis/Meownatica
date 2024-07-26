@@ -9,7 +9,7 @@ function convert_base.convert(path)
     local function arbd_convert(tbl)
         local result = {}
         for i = 1, #tbl do
-            result[#result + 1] = {x = tbl[i][1], y = tbl[i][2], z = tbl[i][3], id = tbl[i][4], state = {rotation = tonumber(tbl[i][5][1]), solid = tbl[i][5][2]}}
+            result[#result + 1] = {elem = 0, x = tbl[i][1], y = tbl[i][2], z = tbl[i][3], id = tbl[i][4], state = {rotation = tonumber(tbl[i][5][1]), solid = tbl[i][5][2]}}
         end
         return result
     end
@@ -34,7 +34,7 @@ function convert_base.convert(path)
                         table.insert(result, file_data[i])
                         i = i + 1
                     else
-                        table.insert(result, {x = x, y = y, z = z, id = 'core:air', state = {rotation = 0, solid = true}})
+                        table.insert(result, {elem = 0, x = x, y = y, z = z, id = 'core:air', state = {rotation = 0, solid = true}})
                     end
                 end
             end

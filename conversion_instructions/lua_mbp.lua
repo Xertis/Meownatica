@@ -32,7 +32,7 @@ function convert_base.convert(path)
             solid = false
         end
 
-        convert_meownatic[#convert_meownatic + 1] = {x = x, y = y, z = z, id = id, state = {rotation = rotation, solid = solid}}
+        convert_meownatic[#convert_meownatic + 1] = {elem = 0, x = x, y = y, z = z, id = id, state = {rotation = rotation, solid = solid}}
     end
 
     local max_pos = posm.max_position(convert_meownatic)
@@ -49,7 +49,7 @@ function convert_base.convert(path)
                         table.insert(result, convert_meownatic[i])
                         i = i + 1
                     else
-                        table.insert(result, {x = x, y = y, z = z, id = 'core:air', state = {rotation = 0, solid = true}})
+                        table.insert(result, {elem = 0, x = x, y = y, z = z, id = 'core:air', state = {rotation = 0, solid = true}})
                     end
                 end
             end
