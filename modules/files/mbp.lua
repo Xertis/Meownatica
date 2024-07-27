@@ -92,7 +92,7 @@ local function add_to_entity_array(buf, value)
     elseif TYPE_IDS == 1 then
         buf:put_uint16(value[1])
     end
-    local quat = mat4.decompose(value[2])['quaternion']
+    local quat = quat.from_mat4(value[2])
     buf:put_uint16(signs_e.encode(value[2]))
     buf:put_single(quat[1])
     buf:put_single(quat[2])
