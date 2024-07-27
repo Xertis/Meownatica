@@ -1,9 +1,3 @@
 {
-    "textures": [
-        "menu/blueprint",
-        "menu/hud_text",
-        "menu/hud_key",
-        "menu/hud_overlay"
-    ],
     "sounds": []
 }
