@@ -48,7 +48,7 @@ local function deserialize_array(index, lines, strictParse)
                 elseif rawValue == "0" then
                     value = false
                 else
-                    error("Invalid boolean value: "..rawvalue.." at line "..index)
+                    error("Invalid boolean value: "..rawValue.." at line "..index)
                 end
             else
                 value = rawValue == "1"
