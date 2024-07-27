@@ -1,10 +1,16 @@
-setblockontick = 200
-smartrotateon = true
-entitiessave = true
 setair = false
 setmeowdelenie = true
-blocksupdate = false
 setentities = true
+smartrotateon = true
+setblockontick = 200
+entitiessave = true
+blocksupdate = false
 language = "rus"
 
 [meownatics]
+source3 = "save_meownatic_3.mbp"
+source2 = "save_meownatic_2.mbp"
+source6 = "save_meownatic_2.mbp"
+source4 = "upd10.mbp"
+source1 = "save_meownatic_1.mbp"
+source5 = "save_meownatic_1.mbp"
