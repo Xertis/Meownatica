@@ -7,8 +7,8 @@ local function is_close(value1, value2)
     return math.abs(value1 - value2)
 end
 
---find_tiny_value
-local function ftv(tbl)
+--find_max_value
+local function fmv(tbl)
     local maximum = tbl[1]
     for i = 1, #tbl do
         if tbl[i] > maximum then
@@ -20,11 +20,12 @@ end
 
 function rotate_schem.rotate(id, state)
 
-    if id ~= 'core:air' then
-        local name = id
-        local pos = name:find(':')
-        local name_mode = name:sub(1, pos - 1)
-        local name_block = name:sub(pos + 1)
+    local name = id
+    local pos = name:find(':')
+    local name_mode = name:sub(1, pos - 1)
+    local name_block = name:sub(pos + 1)
+
+    if name_mode ~= 'core' then
         local config = nil
         
         if file.isfile(name_mode .. ':' .. 'blocks' .. '/' .. name_block .. '.json') then
@@ -42,6 +43,7 @@ function rotate_schem.rotate(id, state)
 
         local hitbox = {}
         local sides = {{}, {}, {}, {}, {}, {}}
+
         if (model == 'aabb' or model == 'custom') and (rotate == 'pipe' or rotate == 'pane') then
 
             if config['hitbox'] ~= nil then
@@ -75,9 +77,8 @@ function rotate_schem.rotate(id, state)
             end
         end
 
-
         if hitbox[1] ~= nil then
-            if rotate == 'pane' and ((ftv(sides[5]) < ftv(sides[6]) or ftv(sides[5]) > ftv(sides[6])) or (ftv(sides[3]) < ftv(sides[4]) or ftv(sides[3]) > ftv(sides[4]))) then
+            if rotate == 'pane' and ((fmv(sides[5]) < fmv(sides[6]) or fmv(sides[5]) > fmv(sides[6])) or (fmv(sides[3]) < fmv(sides[4]) or fmv(sides[3]) > fmv(sides[4]))) then
                 if state == 1 then
                     return 0
                 elseif state == 0 then

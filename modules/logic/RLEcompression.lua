@@ -111,10 +111,10 @@ function RLE.encode_table(data)
         if table_utils.equals(value, lastValue) then
             count = count + 1
         else
-            if lastValue and count > 2 then
+            if lastValue and count > 1 then
                 table.insert(encodedTable, count)
                 table.insert(encodedTable, lastValue)
-            elseif lastValue and count <= 2 then
+            elseif lastValue and count <= 1 then
                 for _, v in ipairs(tempValue) do
                     table.insert(encodedTable, v)
                 end
@@ -126,7 +126,7 @@ function RLE.encode_table(data)
         table.insert(tempValue, value)
     end
 
-    if count > 2 then
+    if count > 1 then
         table.insert(encodedTable, count)
         table.insert(encodedTable, lastValue)
     else
@@ -147,7 +147,7 @@ function RLE.decode_table(data)
         if valType == 'table' then
             table.insert(decodedTable, val)
         else
-            for j = 1, val - 1 do
+            for _=1, val - 1 do
                 table.insert(decodedTable, data[i+1])
             end
         end
