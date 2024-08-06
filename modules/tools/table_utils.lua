@@ -1,7 +1,14 @@
 local table_utils = {}
 
 function table_utils.easy_concat(tbl)
-    return table.concat(tbl, ", ")
+    local output = ""
+    for i, value in pairs(tbl) do
+        output = output .. tostring(value)
+        if i ~= #tbl then
+            output = output .. ", "
+        end
+    end
+    return output
 end
 
 function table_utils.equals(tbl1, tbl2)
