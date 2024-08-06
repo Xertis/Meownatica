@@ -1,14 +1,7 @@
 local table_utils = {}
 
 function table_utils.easy_concat(tbl)
-    local output = ""
-    for i, value in pairs(tbl) do
-        output = output .. tostring(value)
-        if i ~= #tbl then
-            output = output .. ", "
-        end
-    end
-    return output
+    return table.concat(tbl, ", ")
 end
 
 function table_utils.equals(tbl1, tbl2)
@@ -16,17 +9,17 @@ function table_utils.equals(tbl1, tbl2)
 end
 
 function table_utils.tbl_in_tbl(tbl, key)
-    local temp_table = {}
+    local key_str = table_utils.easy_concat(key)
     for _, b in ipairs(tbl) do
-        temp_table[table_utils.easy_concat(b)] = b
+        if table_utils.easy_concat(b) == key_str then
+            return b
+        end
     end
-    key = table_utils.easy_concat(key)
-    return temp_table[key]
 end
 
-function table_utils.find(table, element, state_is_true)
-    if table ~= state_is_true then
-        for _, value in pairs(table) do
+function table_utils.find(tbl, element, state_is_true)
+    if tbl ~= state_is_true then
+        for _, value in pairs(tbl) do
             if value == element then
                 return true
             end
