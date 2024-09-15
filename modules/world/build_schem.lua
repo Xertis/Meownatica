@@ -26,39 +26,32 @@ function meow_build.unbuild_reed(x, y, z, read_meowmatic)
 end
 
 function meow_build.build_schem(x, y, z, read_meowmatic, set_air, blocks_update, set_block_on_tick, available_ids, lose_blocks, set_entities)
+    blocks_update = not blocks_update
+    local bs = 0
 
-    blocks_update = blocks_update == false
-
-    local function build_block(x, y, z, id, rotation, update, block_in_cord)
+    local function build_block(schem, block_in_cord)
         if block.name(block_in_cord) ~= 'meownatica:meowoad' then
+            local id = schem.id
             if table_utils.find(available_ids, id, '') then
-                block.set(x, y, z, block.index(id), rotation, update)
+                block.set(schem.x + x, schem.y + y, schem.z + z, block.index(id), schem.state.rotation, blocks_update)
             else
                 table_utils.insert_unique(lose_blocks, id:match("(.*):"))
-                block.set(x, y, z, 0, rotation, update)
+                block.set(schem.x + x, schem.y + y, schem.z + z, 0, schem.state.rotation, blocks_update)
             end
         end
     end
-    --build_block(structure.x + x, structure.y + y, structure.z + z, structure.id, structure.state.rotation, blocks_update, block_in_cord)
 
-    local point = 1
-    local bs = 0
-
-    while point <= #read_meowmatic and bs < set_block_on_tick do
-        local index = point
-        local schem = read_meowmatic[index]
+    for point = 1, math.min(#read_meowmatic, set_block_on_tick) do
+        local schem = read_meowmatic[point]
         if schem.elem == 0 then
             local block_in_cord = block.get(schem.x + x, schem.y + y, schem.z + z)
             if block_in_cord ~= -1 and block.name(block_in_cord) ~= schem.id then
-                if schem.id ~= 'core:air' then
-                    build_block(schem.x + x, schem.y + y, schem.z + z, schem.id, schem.state.rotation, blocks_update, block_in_cord)
-                    bs = bs + 1
-                elseif schem.id == 'core:air' and set_air == true then
-                    build_block(schem.x + x, schem.y + y, schem.z + z, 'core:air', schem.state.rotation, blocks_update, block_in_cord)
-                    bs = bs + 1
+                if schem.id ~= 'core:air' or set_air then
+                    build_block(schem, block_in_cord)
                 end
             end
-        elseif schem.elem == 1 and set_entities == true then
+            bs = bs + 1
+        elseif schem.elem == 1 and set_entities then
             if table_utils.find(available_ids, schem.id, '') then
                 local entity = entities.spawn(schem.id, {schem.x + x, schem.y + y, schem.z + z})
                 entity.transform:set_rot(schem.rot)
@@ -67,12 +60,12 @@ function meow_build.build_schem(x, y, z, read_meowmatic, set_air, blocks_update,
             end
             bs = bs + 1
         end
-
-        table.remove(read_meowmatic, point)
-        point = point + 1
     end
 
-    -- Завершение
+    for _ = 1, bs do
+        table.remove(read_meowmatic, 1)
+    end
+
     if #read_meowmatic > 0 then
         return read_meowmatic, lose_blocks
     else
