@@ -19,7 +19,7 @@ local function printStructures(tbl)
     end
 end
   
-function on_use_on_block(x, y, z, playerid)
+function on_use()
     local save_meowmatic = container.get()
     printStructures(save_meowmatic)
 end

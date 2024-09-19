@@ -1,10 +1,11 @@
 setair = false
 setmeowdelenie = true
-setentities = true
+language = "rus"
+setentities = false
 smartrotateon = true
 setblockontick = 200
 entitiessave = true
 blocksupdate = false
-language = "rus"
 
 [meownatics]
+source1 = "save_meownatic_5.mbp"
