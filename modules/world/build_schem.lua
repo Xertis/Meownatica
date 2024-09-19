@@ -50,7 +50,6 @@ function meow_build.build_schem(x, y, z, read_meowmatic, set_air, blocks_update,
                     build_block(schem, block_in_cord)
                 end
             end
-            bs = bs + 1
         elseif schem.elem == 1 and set_entities then
             if table_utils.find(available_ids, schem.id, '') then
                 local entity = entities.spawn(schem.id, {schem.x + x, schem.y + y, schem.z + z})
@@ -58,8 +57,8 @@ function meow_build.build_schem(x, y, z, read_meowmatic, set_air, blocks_update,
             else
                 table_utils.insert_unique(lose_blocks, schem.id:match("(.*):"))
             end
-            bs = bs + 1
         end
+        bs = bs + 1
     end
 
     for _ = 1, bs do

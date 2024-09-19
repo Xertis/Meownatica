@@ -1,6 +1,7 @@
 local data_meow = require 'meownatica:files/metadata_class'
 local reader = require 'meownatica:tools/read_toml'
 require 'meownatica:interface/cmd'
+require "meownatica:voxelcraft/std"
 
 function on_world_open()
     if file.exists(reader.sys_get('savepath')) == false then

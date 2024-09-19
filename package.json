@@ -3,5 +3,8 @@
     "title": "Meownatica",
     "creator": "Xertis",
     "version": "0.10.2",
-    "description": "(UPDATE 10.2: Happy BD) Copy & Paste & Meow"
+    "description": "(UPDATE 10.2: Happy BD) Copy & Paste & Meow",
+    "dependencies": [
+        "voxelcraft"
+    ]
 }
