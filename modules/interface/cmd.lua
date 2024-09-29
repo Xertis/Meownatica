@@ -6,6 +6,7 @@ local meow_schem = require 'meownatica:schematics_editors/SchemEditor'
 local json_saver = require 'meownatica:files/json_saver'
 local psm = require 'meownatica:schematics_editors/PosManager'
 local RLE = require 'meownatica:logic/RLEcompression'
+local checker = require 'meownatica:tools/survival/build_check'
 
 console.add_command(
     "m.schem.list",

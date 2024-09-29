@@ -36,8 +36,8 @@ function data_meow.save_metadata()
     local path = pack.data_file("meownatica", "meownatica_data.json")
     if file.isfile(path) then
         file.write(path, json.encode(metadata_meow))
-    else 
-        print('[Meownatica] Invalid file') 
+    else
+        print('[Meownatica] Invalid file')
     end
 end
 

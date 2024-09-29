@@ -5,7 +5,7 @@ local lang = require 'meownatica:interface/lang'
 local reader = require 'meownatica:tools/read_toml'
 local num_file = 0
 
-local function printStructures(tbl)
+local function saving(tbl)
     if #tbl > 0 then
         num_file = num_file + 1
         while file.exists(reader.sys_get('savepath') .. 'save_meownatic_' .. num_file .. reader.sys_get('fileformat')) do
@@ -19,7 +19,7 @@ local function printStructures(tbl)
     end
 end
   
-function on_use_on_block(x, y, z, playerid)
+function on_use()
     local save_meowmatic = container.get()
-    printStructures(save_meowmatic)
+    saving(save_meowmatic)
 end
