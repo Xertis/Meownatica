@@ -1,7 +1,7 @@
 local data_buffer = require "core:data_buffer"
 local save_u = {}
 local lang = require 'meownatica:interface/lang'
-local mbp = require 'meownatica:files/mbp'
+local mbp = require 'meownatica:files/mbp_manager'
 local dtc = require 'meownatica:logic/DepthToCoords'
 local meow_schem = require 'meownatica:schematics_editors/PosManager'
 local RLE = require 'meownatica:logic/RLEcompression'
@@ -77,6 +77,7 @@ function save_u.convert_save(array)
         'Size (X, Y, Z): ' .. depthX + 1 .. ', ' .. depthY + 1 .. ', ' .. depthZ + 1
     )
     save_tbl[4] = RLE.encode_table(save_tbl[4])
+    save_tbl[6] = "Default description"
     print(lang.get('is converted'))
     return save_tbl
 end

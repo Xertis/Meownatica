@@ -8,7 +8,7 @@ local PARAMETERS = {
     ["setentities"] = {'Set Entities', 'bool', 'tooltip'},
     ["entitiessave"] = {'Entities Save', 'bool', 'tooltip'},
     ["blocksupdate"] = {'Blocks Update', 'bool', 'tooltip'},
-    ["language"] = {'Language', 'string', 'tooltip'},
+    ["language"] = {'Language (eng/rus)', 'string', 'tooltip'},
     ["smartrotateon"] = {'Smart Rotation', 'bool', 'tooltip'},
 }
 
@@ -19,6 +19,15 @@ local function create_checkbox(id, name, tooltip, cheaked)
     document.root:add(string.format(
         "<checkbox id='%s' consumer='function(x) set_value(\"%s\", x) end' checked='%s' tooltip='%s'>%s</checkbox>",
         id, id, cheaked, tooltip, name
+    ))
+end
+
+local function create_textbox(id, name, tooltip, text)
+    tooltip = tooltip or ''
+
+    document.root:add(string.format(
+        "<textbox id='%s' consumer='function(x) set_value(\"%s\", x) end' placeholder='%s' tooltip='%s'>%s</textbox>",
+        id, id, name, tooltip, text
     ))
 end
 
@@ -50,12 +59,30 @@ function set_value(id, val)
     end
 end
 
-function on_open()
+function on_open() 
+    local checkboxes = {}
+    local textboxes = {}
+    local trackbars = {}
+
     for name, value in pairs(PARAMETERS) do
         if value[2] == 'bool' then
-            create_checkbox(name, value[1], value[3], toml.get(name))
+            table.insert(checkboxes, {name, value[1], value[3]})
         elseif value[2] == 'number' then
-            create_trackbar(name, value[1], value[3], toml.get(name))
+            table.insert(trackbars, {name, value[1], value[3]})
+        elseif value[2] == 'string' then
+            table.insert(textboxes, {name, value[1], value[3]})
         end
+    end
+
+    for _, checkbox in ipairs(checkboxes) do
+        create_checkbox(checkbox[1], checkbox[2], checkbox[3], toml.get(checkbox[1]))
+    end
+
+    for _, trackbar in ipairs(trackbars) do
+        create_trackbar(trackbar[1], trackbar[2], trackbar[3], toml.get(trackbar[1]))
+    end
+
+    for _, textbox in ipairs(textboxes) do
+        create_textbox(textbox[1], textbox[2], textbox[3], toml.get(textbox[1]))
     end
 end

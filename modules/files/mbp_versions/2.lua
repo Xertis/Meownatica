@@ -137,8 +137,13 @@ local function put_entities(buf, entities)
     end
 end
 
+local function put_description(buf, description)
+    buf:put_string(description)
+end
+
 function mbp.serialize(buf, array)
     put_version(buf)
+    put_description(buf, array[6])
     put_ids_array(buf, array[2])
     put_depth(buf, array[3][1], array[3][2], array[3][3], array[3][4])
     put_blocks(buf, array[4])
@@ -235,14 +240,19 @@ local function get_entities(buf)
     return result
 end
 
+local function get_description(buf)
+    return buf:get_string()
+end
+
 function mbp.deserialize(buf)
     local version = get_version(buf)
+    local description = get_description(buf)
     local ids = get_ids_array(buf)
     local depth = get_depth(buf)
     local blocks = get_blocks(buf)
 
     local entities = get_entities(buf)
-    return {version, ids, depth, blocks, entities}
+    return {version, ids, depth, blocks, entities, description}
 end
 
 return mbp

@@ -46,13 +46,16 @@ console.add_command(
         if schem ~= nil then
             local blocks = RLE.decode_table(schem[4])
             local sizeX, sizeY, sizeZ, binding = unpack(schem[3])
+            local description = schem[6] or 'Deprecated version'
+            
             return
                 'IDs count: ' .. #schem[2] .. '\n' ..
                 'Blocks count: ' .. #blocks .. '\n' ..
                 'Entities count: ' .. #schem[5] .. '\n' ..
                 'Binding: ' .. binding .. '\n' ..
                 'Version: ' .. schem[1] .. '\n' ..
-                'Size (X, Y, Z): ' .. sizeX+1 .. ', ' .. sizeY+1 .. ', ' .. sizeZ+1
+                'Size (X, Y, Z): ' .. sizeX+1 .. ', ' .. sizeY+1 .. ', ' .. sizeZ+1 .. '\n' ..
+                'Description: ' .. description
         else
             return name .. ' ' .. lang.get('not found')
         end
