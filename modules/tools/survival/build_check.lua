@@ -46,6 +46,7 @@ function module.check(schem)
         end
         return true
     end
+    return false
 end
 
 function module.del(schem)
