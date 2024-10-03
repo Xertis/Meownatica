@@ -22,6 +22,19 @@ local function create_checkbox(id, name, tooltip, cheaked)
     ))
 end
 
+local function create_trackbar(id, name, tooltip, val)
+    tooltip = tooltip or ''
+    
+    document.root:add(string.format(
+        "<label id='%s' tooltip='%s'>%s</label>",
+        id .. "_label", tooltip, name .. ' (' .. val .. ')'
+    ))
+    document.root:add(string.format(
+        "<trackbar id='%s' consumer='function(x) set_value(\"%s\", x) end' value='%s' tooltip='%s' min='100' max='1000' step='10'>%s</trackbar>",
+        id, id, val, tooltip, name
+    ))
+end
+
 local function create_label(id, text)
 
     document.root:add(string.format(
@@ -32,12 +45,17 @@ end
 
 function set_value(id, val)
     meow_schem.save_to_config(nil, nil, {id, val}, true)
+    if PARAMETERS[id][2] == 'number' then
+        document[id .. '_label'].text = PARAMETERS[id][1] .. ' (' .. val .. ')'
+    end
 end
 
 function on_open()
     for name, value in pairs(PARAMETERS) do
         if value[2] == 'bool' then
             create_checkbox(name, value[1], value[3], toml.get(name))
+        elseif value[2] == 'number' then
+            create_trackbar(name, value[1], value[3], toml.get(name))
         end
     end
 end
