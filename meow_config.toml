@@ -1,10 +1,10 @@
 setair = false
-setmeowdelenie = true
-setentities = true
+setblockontick = 570
 smartrotateon = true
-setblockontick = 200
 entitiessave = true
-blocksupdate = false
+setentities = true
+blocksupdate = true
 language = "rus"
+setmeowdelenie = true
 
 [meownatics]

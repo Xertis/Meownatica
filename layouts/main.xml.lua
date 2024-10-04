@@ -7,6 +7,13 @@ function set_page(page)
     document.menu.page = page
 end
 
+function on_open()
+    document.meownatics.enabled = true
+    document.config.enabled = false
+
+    document.menu.page = "config"
+end
+
 function saving()
     save_u.save(nil, document.schem_description.text, document.schem_name.text)
 end
