@@ -3,9 +3,32 @@ local save_u = {}
 local lang = require 'meownatica:interface/lang'
 local mbp = require 'meownatica:files/mbp_manager'
 local dtc = require 'meownatica:logic/DepthToCoords'
-local meow_schem = require 'meownatica:schematics_editors/PosManager'
+local psm = require 'meownatica:schematics_editors/PosManager'
+local meow_schem = require 'meownatica:schematics_editors/SchemEditor'
 local RLE = require 'meownatica:logic/RLEcompression'
 local reader = require 'meownatica:tools/read_toml'
+local container = require 'meownatica:container_class'
+
+function save_u.save(tbl, description, name)
+    tbl = tbl or container.get()
+
+    if #tbl > 0 then
+        local num_file = 1
+
+        if not name or file.exists(reader.sys_get('savepath') .. name .. reader.sys_get('fileformat')) then
+            while file.exists(reader.sys_get('savepath') .. 'save_meownatic_' .. num_file .. reader.sys_get('fileformat')) do
+                num_file = num_file + 1
+            end
+            name = 'save_meownatic_' .. num_file
+        end
+
+        print(lang.get('Save Meownatic'))
+
+        local save_table = save_u.convert_save(tbl, description)
+        save_u.write(save_table, reader.sys_get('savepath') .. name .. reader.sys_get('fileformat'))
+        meow_schem.save_to_config(name .. reader.sys_get('fileformat'))
+    end
+end
 
 function save_u.write(array, path)
     local buf = data_buffer()
@@ -25,7 +48,7 @@ function save_u.read(path)
 end
 
 
-function save_u.convert_save(array)
+function save_u.convert_save(array, description)
     --## ОБЪЯВЛЕНИЕ ПЕРЕМЕННЫХ ##
     local save_tbl = {}
     local temp_table_1 = {}
@@ -34,7 +57,7 @@ function save_u.convert_save(array)
     local blocks_id = {}
 
     --## РАСЧЁТ ГЛУБИНЫ ##
-    local max_pos, min_pos = meow_schem.min_max_position(array)
+    local max_pos, min_pos = psm.min_max_position(array)
     local depthX, depthY, depthZ = math.abs(min_pos[1] - max_pos[1]), math.abs(min_pos[2] - max_pos[2]), math.abs(min_pos[3] - max_pos[3])
 
     --## РАСЧЁТ АЙДИШНИКОВ БЛОКОВ ##
@@ -60,11 +83,12 @@ function save_u.convert_save(array)
     save_tbl[1] = 'MBP [1]'
     save_tbl[2] = blocks_id
 
-    local binding = meow_schem.get_binding_block(array)
+    local binding = psm.get_binding_block(array)
     save_tbl[3] = {depthX, depthY, depthZ, binding}
 
     save_tbl[4] = temp_table_2
     save_tbl[5] = temp_table_3
+    save_tbl[6] = description or ""
 
     --## ВЫВОД ##
     print(
@@ -74,10 +98,10 @@ function save_u.convert_save(array)
         'Entities count: ' .. #save_tbl[5] .. '\n             ' ..
         'Binding: ' .. save_tbl[3][4] .. '\n             ' ..
         'Version: ' .. save_tbl[1] .. '\n             ' ..
-        'Size (X, Y, Z): ' .. depthX + 1 .. ', ' .. depthY + 1 .. ', ' .. depthZ + 1
+        'Size (X, Y, Z): ' .. depthX + 1 .. ', ' .. depthY + 1 .. ', ' .. depthZ + 1 .. '\n             ' ..
+        'description: ' .. save_tbl[6]
     )
     save_tbl[4] = RLE.encode_table(save_tbl[4])
-    save_tbl[6] = "Default description"
     print(lang.get('is converted'))
     return save_tbl
 end

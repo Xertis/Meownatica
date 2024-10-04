@@ -3,6 +3,11 @@
         <button id='meownatics' onclick='set_page("meownatics")'>Meownatics</button>
         <button id='config' onclick='set_page("config")'>Config</button>
     </panel>
+    <panel pos="7,292" size="248,0">
+        <button id='save' onclick="saving()">save</button>
+        <textbox id='schem_name' tooltip='tooltip'>Name</textbox>
+        <textbox id='schem_description' tooltip='tooltip'>Default description</textbox>
+    </panel>
     <pagebox id='menu' pos='260,6' size='400'>
     </pagebox>
 </container>
