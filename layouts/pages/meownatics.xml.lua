@@ -13,13 +13,46 @@ function refresh()
             local version = schem[1]
             local description = schem[6] or 'Deprecated version'
             document.root:add(gui.template("meownatic", {version = version, description = description, name = name}))
+        else
+            document.root:add(gui.template("meownatic", {version = "undefined", description = "undefined", name = name}))
         end
     end
+    document.root:add("<panel size='453,204' padding='2' color='#0000004C'><button id='add' onclick='add_meownatic()' z-index='2'>Add</button></panel>")
 
     if #meownatics <= 0 then
+        document.root:clear()
         document.root.size = {200,200}
         document.root.pos = {130,60}
         document.root:add("<image src='menu/not_found' size='200,200'/>")
+    end
+end
+
+function add_meownatic(name)
+    if not name then
+        document.root:clear()
+        for _, f in ipairs(file.list(toml.sys_get('savepath'))) do
+            local name = f:gsub("modules/", "")
+            name = name:gsub("%.lua$", "")
+            name = name:gsub("//", "/")
+            document.root:add(gui.template("meownatic_unload", {name = name}))
+        end
+    else
+
+    end
+end
+
+function add_meownatic(name)
+    if not name then
+        document.root:clear()
+        for _, f in ipairs(file.list(toml.sys_get('savepath'))) do
+            name = f:match("([^/]+)$")
+            document.root:add(gui.template("meownatic_unload", {name = name}))
+        end
+    else
+        name = name:match("([^/]+)$")
+
+        meow_schem.save_to_config(name, nil)
+        refresh()
     end
 end
 
