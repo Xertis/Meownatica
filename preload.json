@@ -2,6 +2,9 @@
     "textures": [
         "menu/load",
         "menu/meownatic",
-        "menu/not_found"
+        "menu/not_found",
+        "menu/icons/house",
+        "menu/icons/bridge",
+        "menu/icons/undefined"
     ]
 }
