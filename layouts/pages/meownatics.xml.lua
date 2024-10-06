@@ -12,9 +12,9 @@ function refresh()
         if schem then
             local version = schem[1]
             local description = schem[6] or 'Deprecated version'
-            document.meownatics:add(gui.template("meownatic", {version = version, description = description, name = name, icon = "house"}))
+            document.meownatics:add(gui.template("meownatic", {version = version, description = description, name = name, icon = "house", id = name}))
         else
-            document.meownatics:add(gui.template("meownatic", {version = "undefined", description = "undefined", name = name, icon = "undefined"}))
+            document.meownatics:add(gui.template("meownatic", {version = "undefined", description = "undefined", name = name, icon = "undefined", id = name}))
         end
     end
 
