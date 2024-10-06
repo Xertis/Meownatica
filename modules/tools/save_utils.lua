@@ -9,7 +9,7 @@ local RLE = require 'meownatica:logic/RLEcompression'
 local reader = require 'meownatica:tools/read_toml'
 local container = require 'meownatica:container_class'
 
-function save_u.save(tbl, description, name)
+function save_u.save(tbl, meta, name)
     tbl = tbl or container.get()
 
     if #tbl > 0 then
@@ -23,17 +23,17 @@ function save_u.save(tbl, description, name)
         end
 
         print(lang.get('Save Meownatic'))
+        local save_table = {}
+        save_table, meta = save_u.convert_save(tbl, meta)
 
-        local save_table = save_u.convert_save(tbl, description)
-        save_u.write(save_table, reader.sys_get('savepath') .. name .. reader.sys_get('fileformat'))
+        save_u.write(save_table, meta, reader.sys_get('savepath') .. name .. reader.sys_get('fileformat'))
         meow_schem.save_to_config(name .. reader.sys_get('fileformat'))
     end
 end
 
-function save_u.write(array, path)
+function save_u.write(array, meta, path)
     local buf = data_buffer()
-
-    mbp.serialize(buf, array)
+    mbp.serialize(buf, array, meta)
 
     file.write_bytes(path, buf:get_bytes())
     --file.write(path, json.encode(array))
@@ -48,7 +48,7 @@ function save_u.read(path)
 end
 
 
-function save_u.convert_save(array, description)
+function save_u.convert_save(array, meta)
     --## ОБЪЯВЛЕНИЕ ПЕРЕМЕННЫХ ##
     local save_tbl = {}
     local temp_table_1 = {}
@@ -88,7 +88,8 @@ function save_u.convert_save(array, description)
 
     save_tbl[4] = temp_table_2
     save_tbl[5] = temp_table_3
-    save_tbl[6] = description or ""
+    meta = meta or {description = ""}
+    meta["description"] = meta["description"] or ""
 
     --## ВЫВОД ##
     print(
@@ -99,11 +100,11 @@ function save_u.convert_save(array, description)
         'Binding: ' .. save_tbl[3][4] .. '\n             ' ..
         'Version: ' .. save_tbl[1] .. '\n             ' ..
         'Size (X, Y, Z): ' .. depthX + 1 .. ', ' .. depthY + 1 .. ', ' .. depthZ + 1 .. '\n             ' ..
-        'description: ' .. save_tbl[6]
+        'Meta: ' .. json.tostring(meta)
     )
     save_tbl[4] = RLE.encode_table(save_tbl[4])
     print(lang.get('is converted'))
-    return save_tbl
+    return save_tbl, meta
 end
 
 local function create_cords(x1, y1, z1, x2, y2, z2, bind_block)

@@ -7,6 +7,7 @@ local VERSION_MBP = 2
 local TYPE_IDS = nil
 local signs_e = require 'meownatica:logic/signs_encode'
 local byte_conv = require 'meownatica:logic/type_byte_convert'
+local bson = require 'meownatica:files/bson'
 local mbp = {}
 
 local function block_state_compress(x, y)
@@ -137,17 +138,13 @@ local function put_entities(buf, entities)
     end
 end
 
-local function put_description(buf, description)
-    buf:put_string(description)
-end
-
-function mbp.serialize(buf, array)
+function mbp.serialize(buf, array, meta)
     put_version(buf)
-    put_description(buf, array[6])
     put_ids_array(buf, array[2])
     put_depth(buf, array[3][1], array[3][2], array[3][3], array[3][4])
     put_blocks(buf, array[4])
     put_entities(buf, array[5])
+    bson.encode(buf, meta)
 end
 
 local function get_version(buf)
@@ -240,19 +237,15 @@ local function get_entities(buf)
     return result
 end
 
-local function get_description(buf)
-    return buf:get_string()
-end
-
 function mbp.deserialize(buf)
     local version = get_version(buf)
-    local description = get_description(buf)
     local ids = get_ids_array(buf)
     local depth = get_depth(buf)
     local blocks = get_blocks(buf)
 
     local entities = get_entities(buf)
-    return {version, ids, depth, blocks, entities, description}
+    local meta = bson.decode(buf)
+    return {version, ids, depth, blocks, entities}, meta
 end
 
 return mbp

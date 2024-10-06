@@ -17,7 +17,6 @@ local MIN_INT64 = -9223372036854775808
 local bson = {}
 local module = {}
 
-VERSION = 1
 TYPES_ARRAY = {"byte", "uint16", "uint32", "int16", "int32", "int64", "float32", "float64", "bool", "string", "hashmap", "array", "table"}
 TYPES_STRUCTURE = {
     byte = 1,
@@ -177,14 +176,10 @@ function module.encode_array(buf, arr)
 end
 
 function bson.encode(buf, array)
-    buf:put_uint16(VERSION)
-
     module.encode_array(buf, array)
 end
 
 function bson.decode(buf)
-    local version = buf:get_uint16()
-
     local is_tbl = buf:get_byte()
     local data = module.decode_array(buf)
     return data

@@ -11,8 +11,8 @@ end
 
 local module = {}
 
-function module.serialize(buf, array)
-    return mbp_versions[#mbp_versions].serialize(buf, array)
+function module.serialize(buf, array, meta)
+    return mbp_versions[#mbp_versions].serialize(buf, array, meta)
 end
 
 function module.deserialize(buf)

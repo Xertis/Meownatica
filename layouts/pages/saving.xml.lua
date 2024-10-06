@@ -9,7 +9,7 @@ local ICONS = {
 }
 
 function saving()
-    save_u.save(nil, document.schem_description.text, document.schem_name.text)
+    save_u.save(nil, {description = document.schem_description.text}, document.schem_name.text)
 end
 
 function refresh()

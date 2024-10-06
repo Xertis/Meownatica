@@ -57,7 +57,7 @@ function convert_base.convert(path)
     end
 
     local save_table = save_u.convert_save(result)
-    save_u.write(save_table, toml.sys_get('savepath') .. name .. '.mbp')
+    save_u.write(save_table, {description = "Converted"}, toml.sys_get('savepath') .. name .. '.mbp')
     meow_schem.save_to_config(nil, nil, {name_format, name .. '.mbp'})
     return true
 end

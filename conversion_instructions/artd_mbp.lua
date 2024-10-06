@@ -41,7 +41,7 @@ function convert_base.convert(path)
         end
     end
     local artd_table = arbd.convert_save(result)
-    arbd.write(artd_table, toml.sys_get('savepath') .. name .. '.mbp')
+    arbd.write(artd_table, {description = "Converted"}, toml.sys_get('savepath') .. name .. '.mbp')
     meow_schem.save_to_config(nil, nil, {name_format, name .. '.mbp'})
     return true
 end

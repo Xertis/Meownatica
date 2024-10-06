@@ -42,11 +42,16 @@ console.add_command(
     lang.get('schemjson'),
     function (args)
         local name = args[1]
-        local schem = meow_change.get_schem(name, false, false)
+        local schem, meta = meow_change.get_schem(name, false, false)
         if schem ~= nil then
             local blocks = RLE.decode_table(schem[4])
             local sizeX, sizeY, sizeZ, binding = unpack(schem[3])
-            local description = schem[6] or 'Deprecated version'
+
+            meta = meta or 'Deprecated version'
+
+            if type(meta) == "table"  then
+                meta = json.tostring(meta)
+            end
             
             return
                 'IDs count: ' .. #schem[2] .. '\n' ..
@@ -55,7 +60,7 @@ console.add_command(
                 'Binding: ' .. binding .. '\n' ..
                 'Version: ' .. schem[1] .. '\n' ..
                 'Size (X, Y, Z): ' .. sizeX+1 .. ', ' .. sizeY+1 .. ', ' .. sizeZ+1 .. '\n' ..
-                'Description: ' .. description
+                'Meta: ' .. meta
         else
             return name .. ' ' .. lang.get('not found')
         end

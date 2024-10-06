@@ -7,11 +7,12 @@ function refresh()
 
     document.meownatics:clear()
     for _, name in ipairs(meownatics) do
-        local schem = meow_change.get_schem(name, false, false)
+        local schem, meta = meow_change.get_schem(name, false, false)
 
         if schem then
             local version = schem[1]
-            local description = schem[6] or 'Deprecated version'
+            meta = meta or {description = "Deprecated version"}
+            local description = meta["description"]
             document.meownatics:add(gui.template("meownatic", {version = version, description = description, name = name, icon = "house", id = name}))
         else
             document.meownatics:add(gui.template("meownatic", {version = "undefined", description = "undefined", name = name, icon = "undefined", id = name}))
