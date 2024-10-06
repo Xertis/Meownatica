@@ -9,7 +9,7 @@ local ICONS = {
 }
 
 function saving()
-    save_u.save(nil, {description = document.schem_description.text}, document.schem_name.text)
+    save_u.save(nil, {description = document.schem_description.text, icon = document.m_icon.src}, document.schem_name.text)
 end
 
 function refresh()
@@ -45,7 +45,7 @@ end
 function on_open()
     refresh()
     local schem_name, schem_description = document.schem_name.text .. '.mbp', document.schem_description.text
-    document.meownatic:add(gui.template("meownatic", {version = 2, description = schem_description, name = schem_name, icon = "house", id = 'm'}))
+    document.meownatic:add(gui.template("meownatic", {version = 2, description = schem_description, name = schem_name, icon = "menu/icons/house", id = 'm'}))
     meownatic_update()
 end
 

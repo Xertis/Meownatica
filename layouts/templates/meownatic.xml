@@ -15,5 +15,5 @@
             onclick='del_meownatic("%{name}")'>
         <image src='gui/delete_icon' size='32,32' color='#FFFFFF50'/>
     </button>
-    <image id="%{id}_icon" pos='8,8' src='menu/icons/%{icon}' size='64'/>
+    <image id="%{id}_icon" pos='8,8' src='%{icon}' size='64'/>
 </container>
