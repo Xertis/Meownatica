@@ -6,6 +6,8 @@
         "menu/icons/house",
         "menu/icons/bridge",
         "menu/icons/undefined",
-        "menu/icons/penrose_triangle"
+        "menu/icons/penrose_triangle",
+        "menu/icons/spaceship",
+        "menu/icons/cat"
     ]
 }

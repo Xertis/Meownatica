@@ -14,8 +14,8 @@ function refresh()
 
             meta = meta or {}
             local description = meta["description"] or "Deprecated version"
-            local icon = meta["icon"] or "menu/icons/house"
-            document.meownatics:add(gui.template("meownatic", {version = version, description = description, name = name, icon = icon, id = name}))
+            local icon = meta["icon"] or "house"
+            document.meownatics:add(gui.template("meownatic", {version = version, description = description, name = name, icon = "menu/icons/" .. icon, id = name}))
         else
             document.meownatics:add(gui.template("meownatic", {version = "undefined", description = "undefined", name = name, icon = "menu/icons/undefined", id = name}))
         end

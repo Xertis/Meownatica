@@ -4,9 +4,8 @@ local reader = require 'meownatica:tools/read_toml'
 local meow_change = require 'meownatica:schematics_editors/change_schem'
 local meow_schem = require 'meownatica:schematics_editors/SchemEditor'
 local json_saver = require 'meownatica:files/json_saver'
-local psm = require 'meownatica:schematics_editors/PosManager'
 local RLE = require 'meownatica:logic/RLEcompression'
-local checker = require 'meownatica:tools/survival/build_check'
+local json_comber = require 'meownatica:tools/json_comber'
 
 console.add_command(
     "m.schem.list",
@@ -50,7 +49,7 @@ console.add_command(
             meta = meta or 'Deprecated version'
 
             if type(meta) == "table"  then
-                meta = json.tostring(meta)
+                meta = json_comber(meta)
             end
             
             return

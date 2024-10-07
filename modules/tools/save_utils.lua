@@ -8,6 +8,7 @@ local meow_schem = require 'meownatica:schematics_editors/SchemEditor'
 local RLE = require 'meownatica:logic/RLEcompression'
 local reader = require 'meownatica:tools/read_toml'
 local container = require 'meownatica:container_class'
+local json_comber = require 'meownatica:tools/json_comber'
 
 function save_u.save(tbl, meta, name)
     tbl = tbl or container.get()
@@ -89,7 +90,6 @@ function save_u.convert_save(array, meta)
     save_tbl[4] = temp_table_2
     save_tbl[5] = temp_table_3
     meta = meta or {description = ""}
-    meta["description"] = meta["description"] or ""
 
     --## ВЫВОД ##
     print(
@@ -100,7 +100,7 @@ function save_u.convert_save(array, meta)
         'Binding: ' .. save_tbl[3][4] .. '\n             ' ..
         'Version: ' .. save_tbl[1] .. '\n             ' ..
         'Size (X, Y, Z): ' .. depthX + 1 .. ', ' .. depthY + 1 .. ', ' .. depthZ + 1 .. '\n             ' ..
-        'Meta: ' .. json.tostring(meta)
+        'Meta: ' .. json_comber(meta)
     )
     save_tbl[4] = RLE.encode_table(save_tbl[4])
     print(lang.get('is converted'))
