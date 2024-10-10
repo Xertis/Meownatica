@@ -1,12 +1,15 @@
 <container id='meownatic_%{id}' size='0,80' color='#00000040' hover-color='#00000080'> 
     <label id="%{id}_name" pos='78,6'>%{name}</label> 
+
     <label id="%{id}_description" pos='80,28' size='455,50' multiline='true' color='#FFFFFFB2'> 
         %{description} 
     </label> 
+
     <label color='#CCFFE5B2' size='300,20' align='right'  
            gravity='bottom-right'> 
         version: %{version} 
     </label>
+
     <button margin='4'
             gravity='center-right'
             color='#00000000'
@@ -15,5 +18,15 @@
             onclick='del_meownatic("%{name}")'>
         <image src='gui/delete_icon' size='32,32' color='#FFFFFF50'/>
     </button>
+
+    <button margin='4'
+            pos="75,45"
+            color='#00000000'
+            hover-color='#FFFFFF2B'
+            padding='0'
+            onclick='settings("%{name}")'>
+        <image src='mgui/gui_icons/settings' size='32,32' color='#FFFFFF50'/>
+    </button>
+
     <image id="%{id}_icon" pos='8,8' src='%{icon}' size='64'/>
 </container>

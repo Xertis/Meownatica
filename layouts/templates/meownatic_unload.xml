@@ -6,6 +6,6 @@
             hover-color='#FFFFFF2B'
             padding='0'
             onclick='add_meownatic("%{name}")'>
-        <image src='menu/load' size='32,32' color='#FFFFFF50'/>
+        <image src='mgui/load' size='32,32' color='#FFFFFF50'/>
     </button>
 </container>

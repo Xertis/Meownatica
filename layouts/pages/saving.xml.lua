@@ -15,7 +15,7 @@ end
 function refresh()
     local x_plus, y_plus = 0, 0
     for _, icon in ipairs(ICONS) do
-        document.root:add(gui.template("icon", {icon = icon, name = x_plus}))
+        document.root:add(gui.template("icon", {icon = 'mgui/meownatic_icons/' .. icon, name = x_plus}))
 
         local pos = document["icon_" .. x_plus].pos
         document["icon_" .. x_plus].pos = {pos[1] + 25 + 80 * x_plus, pos[2] - 80 * y_plus + 200}
@@ -36,14 +36,15 @@ function meownatic_update()
 end
 
 function icon_update(icon)
-    document.m_icon.src = "menu/icons/" .. icon
+    document.m_icon.src = icon
 end
 
 function on_open()
     refresh()
     local schem_name = document.schem_name.text .. '.mbp'
-    document.meownatic:add(gui.template("meownatic", {version = 2, description = document.schem_description.text, name = schem_name, icon = "menu/icons/house", id = 'm'}))
+    document.meownatic:add(gui.template("meownatic", {version = 2, description = document.schem_description.text, name = schem_name, icon = "mgui/meownatic_icons/house", id = 'm'}))
     meownatic_update()
 end
 
 function del_meownatic() end
+function settings() end

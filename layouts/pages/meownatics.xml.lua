@@ -1,6 +1,9 @@
 local toml = require 'meownatica:tools/read_toml'
 local meow_change = require 'meownatica:schematics_editors/change_schem'
 local meow_schem = require 'meownatica:schematics_editors/SchemEditor'
+local mbp = require 'meownatica:files/mbp_manager'
+local data_buffer = require "core:data_buffer"
+local save_u = require 'meownatica:tools/save_utils'
 
 function refresh()
     local meownatics = toml.get_all_schem()
@@ -15,9 +18,9 @@ function refresh()
             meta = meta or {}
             local description = meta["description"] or "Deprecated version"
             local icon = meta["icon"] or "house"
-            document.meownatics:add(gui.template("meownatic", {version = version, description = description, name = name, icon = "menu/icons/" .. icon, id = name}))
+            document.meownatics:add(gui.template("meownatic", {version = version, description = description, name = name, icon = "mgui/meownatic_icons/" .. icon, id = name}))
         else
-            document.meownatics:add(gui.template("meownatic", {version = "undefined", description = "undefined", name = name, icon = "menu/icons/undefined", id = name}))
+            document.meownatics:add(gui.template("meownatic", {version = "undefined", description = "undefined", name = name, icon = "mgui/meownatic_icons/undefined", id = name}))
         end
     end
 
@@ -25,7 +28,7 @@ function refresh()
         document.meownatics:clear()
         document.meownatics.size = {200,200}
         document.meownatics.pos = {130,60}
-        document.meownatics:add("<image src='menu/not_found' size='200,200'/>")
+        document.meownatics:add("<image src='mgui/not_found' size='200,200'/>")
     end
 end
 
@@ -59,6 +62,19 @@ function add_meownatic(name)
 
         meow_schem.save_to_config(name, nil)
         refresh()
+    end
+end
+
+function settings(name)
+    local path = toml.sys_get('savepath') .. name
+    local meownatic = data_buffer(file.read_bytes(path))
+    if mbp.check_format(name) then
+        local meownatic_version, max_version = mbp.get_version(meownatic)
+        if meownatic_version ~= max_version then
+            local meownatic = mbp.deserialize(meownatic)
+            save_u.write(meownatic, {description = ''}, path)
+            refresh()
+        end
     end
 end
 

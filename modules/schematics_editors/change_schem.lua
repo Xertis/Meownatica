@@ -2,10 +2,9 @@ local reader = require 'meownatica:tools/read_toml'
 local save_u = require 'meownatica:tools/save_utils'
 local container = require 'meownatica:container_class'
 local meow_schem = require 'meownatica:schematics_editors/SchemEditor'
+local mbp = require 'meownatica:files/mbp_manager'
 local meow_change = { }
 local meow_point = 2
-
-local FORMAT = reader.sys_get('fileformat')
 
 function meow_change.convert_schem(meownatic_load)
     local source = meownatic_load:match("(.+)%..+") .. FORMAT
@@ -27,7 +26,7 @@ function meow_change.change(meownatica)
             meow_point = meow_point + 1
             local source = reader.sys_get('savepath') .. reader.schem(index)
             local is_exists = file.exists(source)
-            if reader.schem(index):find(FORMAT) and is_exists then
+            if mbp.check_format(reader.schem(index)) and is_exists then
                 local doc = save_u.read(source)
                 container.send_g(save_u.convert_read(doc))
                 return container.get_g(), 0, reader.schem(index)
@@ -54,7 +53,7 @@ function meow_change.change(meownatica)
 
         local is_exists = file.exists(source)
 
-        if reader.schem(index):find(FORMAT) and is_exists then
+        if mbp.check_format(reader.schem(index)) and is_exists then
             local doc = save_u.read(source)
             container.send_g(save_u.convert_read(doc))
             return container.get_g(), 0, reader.schem(index)
@@ -69,7 +68,7 @@ end
 
 function meow_change.get_schem(meownatic_load, setair, if_convert)
     if file.exists(reader.sys_get('savepath') .. meownatic_load) ~= false then
-        if meownatic_load:find(FORMAT) then
+        if mbp.check_format(meownatic_load) then
             if if_convert ~= false then
                 local doc = save_u.read(reader.sys_get('savepath') .. meownatic_load, setair)
                 return save_u.convert_read(doc, setair)
