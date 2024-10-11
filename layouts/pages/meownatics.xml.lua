@@ -18,7 +18,10 @@ function refresh()
             meta = meta or {}
             local description = meta["description"] or "Deprecated version"
             local icon = meta["icon"] or "house"
+            
             document.meownatics:add(gui.template("meownatic", {version = version, description = description, name = name, icon = "mgui/meownatic_icons/" .. icon, id = name}))
+            local a, b = mbp.get_version(name)
+            if a ~= b then document[name .. '_settings'].visible = true end
         else
             document.meownatics:add(gui.template("meownatic", {version = "undefined", description = "undefined", name = name, icon = "mgui/meownatic_icons/undefined", id = name}))
         end

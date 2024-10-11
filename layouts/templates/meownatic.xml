@@ -20,10 +20,12 @@
     </button>
 
     <button margin='4'
+            id="%{id}_settings"
             pos="75,45"
             color='#00000000'
             hover-color='#FFFFFF2B'
             padding='0'
+            visible='false'
             onclick='settings("%{name}")'>
         <image src='mgui/gui_icons/settings' size='32,32' color='#FFFFFF50'/>
     </button>

@@ -1,4 +1,5 @@
 local toml = require 'meownatica:tools/read_toml'
+local data_buffer = require "core:data_buffer"
 local mbp_versions = {}
 local FORMAT = toml.sys_get('fileformat')
 
@@ -36,14 +37,19 @@ function module.check_format(name)
 end
 
 
-function module.get_version(buf, is_deserialize)
+function module.get_version(buf)
     local version = nil
 
-    if is_deserialize then
-        version = module.deserialize(buf)[1]
+    local function a(buff)
+        version = buff:get_uint16()
+        buff:set_position(1)
+    end
+
+    if type(buf) ~= 'string' then
+        a(buf)
     else
-        version = buf:get_uint16()
-        buf:set_position(1)
+        local path = toml.sys_get('savepath') .. buf
+        a(data_buffer(file.read_bytes(path)))
     end
 
     local max_version = #mbp_versions
