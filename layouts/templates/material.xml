@@ -1,7 +1,7 @@
 <container id='material_%{id}' size='0,60' color='#00000040' hover-color='#00000080'> 
     <label id="%{id}_name" pos='78,6'>%{name}</label> 
 
-    <label id="%{id}_id" pos='80,23' size='455,50' multiline='true' color='#FFFFFFB2'> 
+    <label id="%{id}_id" pos='78,23' size='455,50' multiline='true' color='#FFFFFFB2'> 
         %{id} 
     </label> 
 
