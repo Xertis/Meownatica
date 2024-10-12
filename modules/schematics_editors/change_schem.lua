@@ -6,6 +6,8 @@ local mbp = require 'meownatica:files/mbp_manager'
 local meow_change = { }
 local meow_point = 2
 
+local FORMAT = reader.sys_get('fileformat')
+
 function meow_change.convert_schem(meownatic_load)
     local source = meownatic_load:match("(.+)%..+") .. FORMAT
     local source = reader.sys_get('savepath') .. source

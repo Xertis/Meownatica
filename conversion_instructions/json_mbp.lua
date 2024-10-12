@@ -10,6 +10,7 @@ function convert_base.convert(path)
 
     local res = json.decode(file.read(path))
     local meta = res[#res]
+    meta = meta or {description = ''}
 
     sv.write(res, meta, toml.sys_get('savepath') .. name .. '.mbp')
     meow_schem.save_to_config(nil, nil, {name_format, name .. '.mbp'})
