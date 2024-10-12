@@ -10,6 +10,7 @@ local PARAMETERS = {
     ["blocksupdate"] = {'Blocks Update', 'bool', 'tooltip'},
     ["language"] = {'Language (eng/rus)', 'string', 'tooltip'},
     ["smartrotateon"] = {'Smart Rotation', 'bool', 'tooltip'},
+    ["onplaced"] = {'On Placed', 'bool', 'tooltip'},
 }
 
 

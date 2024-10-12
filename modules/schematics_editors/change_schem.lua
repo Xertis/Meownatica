@@ -23,8 +23,8 @@ end
 
 function meow_change.change(meownatica)
     if meownatica ~= false then
-        local index = (meow_point - 1) % reader.len() + 1
-        if reader.len() > 0 then
+        local index = (meow_point - 1) % reader.len("meownatics") + 1
+        if reader.len("meownatics") > 0 then
             meow_point = meow_point + 1
             local source = reader.sys_get('savepath') .. reader.schem(index)
             local is_exists = file.exists(source)
@@ -46,7 +46,7 @@ function meow_change.change(meownatica)
         local index = 1
         meow_point = 2
         local source = ''
-        if reader.len() > 0 then
+        if reader.len("meownatics") > 0 then
             source = reader.sys_get('savepath') .. reader.schem(index)
         else
             container.send_g({})

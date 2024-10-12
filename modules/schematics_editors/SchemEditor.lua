@@ -188,26 +188,25 @@ end
 
 function meow_schem.save_to_config(name, expection, replace, config)
     local lines = toml.parse(file.read("meownatica:meow_config.toml"))
-    local len = reader.len()
+    local len = reader.len("meownatics")
     if len == 0 then
         len = 1
     end
     if name ~= nil then
         local name_to_save = 'source' .. len
-        if reader.indx_is_real(name_to_save) == false then
-            print(value, idx, name_to_save)
+        if not reader.get('meownatics')[name_to_save] then
             lines['meownatics'][name_to_save] = name
         else
             local i = len + 1
             while true do
-                if reader.indx_is_real('source' .. i) == false then
+                if not reader.get('meownatics')['source' .. i] then
                     lines['meownatics']['source' .. i] = name
                     break
                 else
                     i = i + 1
                 end
             end
-        end     
+        end
     end
     if expection ~= nil then
         local find, idx = reader.find(expection)

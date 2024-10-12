@@ -11,7 +11,7 @@ console.add_command(
     "m.schem.list",
     lang.get('schem_all_console'),
     function ()
-        local res = lang.get('meownatics in the config') .. ' ' .. reader.len() .. '\n'
+        local res = lang.get('meownatics in the config') .. ' ' .. reader.len("meownatics") .. '\n'
         res = res .. reader.all_schem()
         return res
     end

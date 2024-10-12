@@ -1,9 +1,10 @@
-setair = false
-setblockontick = 570
+setblockontick = 490
 smartrotateon = true
-entitiessave = true
+blocksupdate = false
+setair = false
+onplaced = true
 setentities = true
-blocksupdate = true
+entitiessave = true
 language = "rus"
 setmeowdelenie = true
 

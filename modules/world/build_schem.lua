@@ -25,7 +25,7 @@ function meow_build.unbuild_reed(x, y, z, read_meowmatic)
     end
 end
 
-function meow_build.build_schem(x, y, z, read_meowmatic, set_air, blocks_update, set_block_on_tick, available_ids, lose_blocks, set_entities)
+function meow_build.build_schem(x, y, z, read_meowmatic, set_air, blocks_update, set_block_on_tick, available_ids, lose_blocks, set_entities, on_placed)
     blocks_update = not blocks_update
     local bs = 0
 
@@ -34,6 +34,7 @@ function meow_build.build_schem(x, y, z, read_meowmatic, set_air, blocks_update,
             local id = schem.id
             if table_utils.find(available_ids, id, '') then
                 block.set(schem.x + x, schem.y + y, schem.z + z, block.index(id), schem.state.rotation, blocks_update)
+                if on_placed then events.emit(id .. '.placed', schem.x + x, schem.y + y, schem.z + z) end
             else
                 table_utils.insert_unique(lose_blocks, id:match("(.*):"))
                 block.set(schem.x + x, schem.y + y, schem.z + z, 0, schem.state.rotation, blocks_update)

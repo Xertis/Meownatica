@@ -1,21 +1,19 @@
 local reader = {}
 
+local function load_toml()
+    return toml.parse(file.read('meownatica:meow_config.toml'))
+end
+
 function reader.get(parameter)
     local parameter = string.lower(parameter)
-    return toml.parse(file.read('meownatica:meow_config.toml'))[parameter] 
+    return load_toml()[parameter]
 end
 
-function reader.get_all()
-    local parameters = {}
-    local tbl = toml.parse(file.read('meownatica:meow_config.toml'))
-    for idx, value in pairs(tbl) do
-        table.insert(parameters, {id = idx, value = value})
-    end
-    return parameters
-end
-
+--Возвращает названия всех схем из конфига 
+--In: nil
+--Out: {"example.mbp"}
 function reader.get_all_schem()
-    local tbl = toml.parse(file.read('meownatica:meow_config.toml'))
+    local tbl = load_toml()
     local parameters = {}
     for idx, value in pairs(tbl['meownatics']) do
         table.insert(parameters, value)
@@ -23,43 +21,32 @@ function reader.get_all_schem()
     return parameters
 end
 
+--Возвращает схему по индексу
+--In: 1
+--Out: "example.mbp"
 function reader.schem(indx)
-    local tbl = toml.parse(file.read('meownatica:meow_config.toml'))
+    local tbl = load_toml()
     tbl = tbl['meownatics']
     return tbl['source' .. indx]
 end
 
-function reader.schem_full(indx)
-    local tbl = toml.parse(file.read('meownatica:meow_config.toml'))
-    tbl = tbl['meownatics']
-    return tbl[indx]
-end
-
-function reader.indx_is_real(indx, config)
-    local indx = string.lower(indx)
-    local tbl = toml.parse(file.read('meownatica:meow_config.toml'))
-    if config == nil then
-        tbl = tbl['meownatics']
-    end
-    if tbl[indx] ~= nil then
-        return true
-    else
-        return false
-    end
-end
-
-function reader.len()
-    local tbl = toml.parse(file.read('meownatica:meow_config.toml'))
-    tbl = tbl['meownatics']
+--Возвращает длинну по индексу
+--In: "meownatics"
+--Out: 5
+function reader.len(key)
+    local tbl = reader.get(key)
     local i = 0
-    for idx, value in pairs(tbl) do
+    for _, _ in pairs(tbl) do
         i = i + 1
     end
     return i
 end
 
+--Возвращает все параметры в виде строки
+--In: nil
+--Out: мне лень писать
 function reader.all_parameters()
-    local tbl = toml.parse(file.read('meownatica:meow_config.toml'))
+    local tbl = load_toml()
     local text = ''
     for idx, value in pairs(tbl) do
         if idx ~= 'meownatics' then
@@ -69,8 +56,11 @@ function reader.all_parameters()
     return text
 end
 
+--Возвращает все схемы в виде строки
+--In: nil
+--Out: мне лень писать
 function reader.all_schem()
-    local tbl = toml.parse(file.read('meownatica:meow_config.toml'))
+    local tbl = load_toml()
     tbl = tbl['meownatics']
     local text = ''
     local i = 1
@@ -81,12 +71,14 @@ function reader.all_schem()
     return text
 end
 
-function reader.find(text)
-    local tbl = toml.parse(file.read('meownatica:meow_config.toml'))
-    tbl = tbl['meownatics']
-    for idx, value in pairs(tbl) do
-        if tbl[idx] == text then
-            return tbl[idx], idx
+--Возвращает значение и индекс элемента, если находит его
+--In: значение
+--Out: значение, индекс
+function reader.find(source)
+    local tbl = load_toml()['meownatics']
+    for idx, _ in pairs(tbl) do
+        if tbl[idx] == source then
+            return source, idx
         end
     end
 end
