@@ -21,7 +21,7 @@ function refresh()
             
             document.meownatics:add(gui.template("meownatic", {version = version, description = description, name = name, icon = "mgui/meownatic_icons/" .. icon, id = name}))
             local a, b = mbp.get_version(name)
-            if a ~= b then document[name .. '_settings'].visible = true end
+            if a ~= b then document[name .. '_conversion'].visible = true end
         else
             document.meownatics:add(gui.template("meownatic", {version = "undefined", description = "undefined", name = name, icon = "mgui/meownatic_icons/undefined", id = name}))
         end
@@ -68,7 +68,7 @@ function add_meownatic(name)
     end
 end
 
-function settings(name)
+function conversion(name)
     local path = toml.sys_get('savepath') .. name
     local meownatic = data_buffer(file.read_bytes(path))
     if mbp.check_format(name) then

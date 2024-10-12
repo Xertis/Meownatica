@@ -20,14 +20,14 @@
     </button>
 
     <button margin='4'
-            id="%{id}_settings"
+            id="%{id}_conversion"
             pos="75,45"
             color='#00000000'
             hover-color='#FFFFFF2B'
             padding='0'
             visible='false'
-            onclick='settings("%{name}")'>
-        <image src='mgui/gui_icons/settings' size='32,32' color='#FFFFFF50'/>
+            onclick='conversion("%{name}")'>
+        <image src='mgui/gui_icons/conversion' size='32,32' color='#FFFFFF50'/>
     </button>
 
     <image id="%{id}_icon" pos='8,8' src='%{icon}' size='64'/>
