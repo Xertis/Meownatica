@@ -224,7 +224,7 @@ function meow_schem.save_to_config(name, expection, replace, config)
             local find, idx = reader.find(replace[1])
             lines['meownatics'][idx] = replace[2]
         else
-            if reader.indx_is_real(replace[1], true) then
+            if reader.get(replace[1]) then
                 lines[replace[1]] = replace[2]
             else
                 return false

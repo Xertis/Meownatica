@@ -1,16 +1,17 @@
 local toml = require 'meownatica:tools/read_toml'
 local meow_schem = require 'meownatica:schematics_editors/SchemEditor'
+local lang = require 'meownatica:interface/lang'
 
 local PARAMETERS = {
-    ["setair"] = {'Set Air', 'bool', 'tooltip'},
-    ["setmeowdelenie"] = {'Set Meow Delenie', 'bool', 'tooltip'},
-    ["setblockontick"] = {'Set Blocks On Tick', 'number', 'tooltip'},
-    ["setentities"] = {'Set Entities', 'bool', 'tooltip'},
-    ["entitiessave"] = {'Entities Save', 'bool', 'tooltip'},
-    ["blocksupdate"] = {'Blocks Update', 'bool', 'tooltip'},
-    ["language"] = {'Language (eng/rus)', 'string', 'tooltip'},
-    ["smartrotateon"] = {'Smart Rotation', 'bool', 'tooltip'},
-    ["onplaced"] = {'On Placed', 'bool', 'tooltip'},
+    ["setair"] = {'Set Air', 'bool', lang.get("setair tooltip")},
+    ["setmeowdelenie"] = {'Set Meow Delenie', 'bool', lang.get("setmeowdelenie tooltip")},
+    ["setblockontick"] = {'Set Blocks On Tick', 'number', lang.get("setblockontick tooltip")},
+    ["setentities"] = {'Set Entities', 'bool', lang.get("setentities tooltip")},
+    ["entitiessave"] = {'Entities Save', 'bool', lang.get("entitiessave tooltip")},
+    ["blocksupdate"] = {'Blocks Update', 'bool', lang.get("blocksupdate tooltip")},
+    ["language"] = {'Language (eng/rus)', 'string', lang.get("language tooltip")},
+    ["smartrotateon"] = {'Smart Rotation', 'bool', lang.get("smartrotateon tooltip")},
+    ["onplaced"] = {'On Placed', 'bool', lang.get("onplaced tooltip")},
 }
 
 

@@ -134,5 +134,41 @@
     "config_all_console": [
         "Displays all config parameters",
         "Выводит все параметры конфига"
+    ],
+    "setair tooltip": [
+        "Install meownatic air blocks?",
+        "Устанавливать блоки воздуха из мяунатика?"
+    ],
+    "setmeowdelenie tooltip": [
+        "Install the meownatic allocation blocks?",
+        "Устанавливать блоки выделения мяунатика?"
+    ],
+    "setblockontick tooltip": [
+        "Number of installed blocks per tick?",
+        "Кол-во устанавливаемых блоков за один тик"
+    ],
+    "setentities tooltip": [
+        "Install meownatic entities?",
+        "Устанавливать сущностей из мяунатика?"
+    ],
+    "entitiessave tooltip": [
+        "Save entities in meownatic?",
+        "Сохранять сущностей в мяунатик?"
+    ],
+    "blocksupdate tooltip": [
+        "Calling the on_update function?",
+        "Вызывать функцию on_update?"
+    ],
+    "language tooltip": [
+        "(rus/eng) Selects the console output language",
+        "(rus/eng) Выбирает язык консольных выводов"
+    ],
+    "smartrotateon tooltip": [
+        "It an smart rotation function that allows you to rotate the blocks correctly during their rotation",
+        "Позволяет правильно поворачивать блоки во время вращения мяунатика"
+    ],
+    "onplaced tooltip": [
+        "Calling the on_placed function?",
+        "Вызывать функцию on_placed?"
     ]
 }
