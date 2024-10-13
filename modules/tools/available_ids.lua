@@ -18,4 +18,13 @@ function module.get_blocks()
     return available_ids
 end
 
+function module.get_entities()
+    local available_ids = {}
+    local packs = entities.defs_count()
+    for i = 0, packs do
+        available_ids[#available_ids + 1] = entities.def_name(i)
+    end
+    return available_ids
+end
+
 return module

@@ -8,6 +8,8 @@ local avids = require 'meownatica:tools/available_ids'
 local tblu = require 'meownatica:tools/table_utils'
 
 local avid_items = avids.get_items()
+local avid_entities = avids.get_entities()
+local avid_blocks = avids.get_blocks()
 
 local function refresh()
     local meownatics = toml.get_all_schem()
@@ -80,7 +82,16 @@ function materials(name)
                         math.floor(entry.count / stack_size), entry.count % stack_size
                     )
                 end
-                document.meownatics:add(gui.template("material", {name = block.caption(block.index(entry.id)), count = count, id = entry.id, icon = item.icon(item.index(entry.id .. '.item'))}))
+
+                local caption = nil
+                if tblu.find(avid_entities, entry.id) then
+                    caption = entry.id
+                elseif tblu.find(avid_blocks, entry.id) then
+                    caption = block.caption(block.index(entry.id))
+                end
+
+                document.meownatics:add(gui.template("material", {name = caption, count = count, id = entry.id, icon = item.icon(item.index(entry.id .. '.item')),
+                tooltip = entry.id}))
             else
                 document.meownatics:add(gui.template("material", {name = entry.id, id = '', count = "count: " .. entry.count, icon = "mgui/meownatic_icons/undefined"}))
             end
