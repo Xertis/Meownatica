@@ -1,7 +1,24 @@
 local reader = {}
 
+local PATH_TO_CONFIG = nil
+
+function reader.sys()
+    local tbl = toml.parse(file.read('meownatica:meow_data/sys_config.toml'))
+    return tbl
+end
+
+function reader.sys_get(key)
+    local tbl = toml.parse(file.read('meownatica:meow_data/sys_config.toml'))
+    return tbl[key]
+end
+
+if file.exists(reader.sys_get('configpath')) == false then
+    file.write(reader.sys_get('configpath'), file.read('meownatica:meow_data/meownatica_config_default.toml'))
+end
+PATH_TO_CONFIG = reader.sys_get('configpath')
+
 local function load_toml()
-    return toml.parse(file.read('meownatica:meow_config.toml'))
+    return toml.parse(file.read(PATH_TO_CONFIG))
 end
 
 function reader.get(parameter)
@@ -87,16 +104,6 @@ function reader.ci_get(indx)
     local tbl = toml.parse(file.read('meownatica:conversion_instructions/conversion_instructions.toml'))
     tbl = tbl['conversion_instructions']
     return tbl['instruction' .. indx]
-end
-
-function reader.sys()
-    local tbl = toml.parse(file.read('meownatica:meow_data/sys_config.toml'))
-    return tbl
-end
-
-function reader.sys_get(key)
-    local tbl = toml.parse(file.read('meownatica:meow_data/sys_config.toml'))
-    return tbl[key]
 end
 
 function reader.ci_len()

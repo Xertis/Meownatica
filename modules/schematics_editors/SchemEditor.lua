@@ -187,7 +187,7 @@ function meow_schem.mirroring(meownatic)
 end
 
 function meow_schem.save_to_config(name, expection, replace, config)
-    local lines = toml.parse(file.read("meownatica:meow_config.toml"))
+    local lines = toml.parse(file.read(reader.sys_get('configpath')))
     local len = reader.len("meownatics")
     if len == 0 then
         len = 1
@@ -224,14 +224,14 @@ function meow_schem.save_to_config(name, expection, replace, config)
             local find, idx = reader.find(replace[1])
             lines['meownatics'][idx] = replace[2]
         else
-            if reader.get(replace[1]) then
+            if reader.get(replace[1]) ~= nil then
                 lines[replace[1]] = replace[2]
             else
                 return false
             end
         end
     end
-    file.write('meownatica:meow_config.toml', toml.tostring(lines))
+    file.write(reader.sys_get('configpath'), toml.tostring(lines))
 end
 
 function meow_schem.convert(name_format, finish_format, source)

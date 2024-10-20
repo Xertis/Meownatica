@@ -1,0 +1,11 @@
+smartrotateon = true
+setblockontick = 430
+language = "eng"
+setentities = true
+setair = false
+entitiessave = true
+blocksupdate = false
+onplaced = true
+setmeowdelenie = true
+
+[meownatics]
