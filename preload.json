@@ -10,6 +10,7 @@
         "mgui/meownatic_icons/penrose_triangle",
         "mgui/meownatic_icons/spaceship",
         "mgui/meownatic_icons/cat",
-        "mgui/gui_icons/settings"
+        "mgui/gui_icons/settings",
+        "mgui/gui_icons/materials"
     ]
 }
