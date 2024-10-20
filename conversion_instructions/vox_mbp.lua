@@ -2,6 +2,8 @@ local sv = require 'meownatica:tools/save_utils'
 local meow_schem = require 'meownatica:schematics_editors/SchemEditor'
 local toml = require 'meownatica:tools/read_toml'
 local RLE = require 'meownatica:logic/RLEcompression'
+local fragment = require 'meownatica:files/fragment_saver'
+local tblu = require 'meownatica:tools/table_utils'
 
 local function conv(originalArray, DepthX, DepthY, DepthZ)
     local newArray = {}
@@ -29,6 +31,10 @@ function convert_base.convert(path)
     local blocks = {}
 
     depth = {depth[1] - 1, depth[2] - 1, depth[3] - 1, 1}
+
+    if tblu.get_index(block_names, "core:struct_air") then
+        block_names[tblu.get_index(block_names, "core:struct_air")] = 'core:air'
+    end
 
     for i=1, #bs do
         if i % 2 == 0 then

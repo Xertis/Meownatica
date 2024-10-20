@@ -6,6 +6,7 @@ local meow_schem = require 'meownatica:schematics_editors/SchemEditor'
 local json_saver = require 'meownatica:files/json_saver'
 local RLE = require 'meownatica:logic/RLEcompression'
 local json_comber = require 'meownatica:tools/json_comber'
+local fragment = require 'meownatica:files/fragment_saver'
 
 console.add_command(
     "m.schem.list",
@@ -25,6 +26,25 @@ console.add_command(
         local name = args[1]
         if file.exists(reader.sys_get('savepath') .. name) ~= false then
             local result = json_saver.save(name, reader.sys_get('savepath') .. path .. '.json')
+            if result == true then
+                return name .. ' ' .. lang.get('converted')
+            else
+                return lang.get('convertError')
+            end
+        else
+            return name .. ' ' .. lang.get('not found')
+        end
+    end
+)
+
+console.add_command(
+    "m.schem.fragment meownatic:str path:str",
+    lang.get('schemfragment'),
+    function (args)
+        local path = args[2]
+        local name = args[1]
+        if file.exists(reader.sys_get('savepath') .. name) ~= false then
+            local result = fragment.save(name, reader.sys_get('savepath') .. path .. '.vox')
             if result == true then
                 return name .. ' ' .. lang.get('converted')
             else

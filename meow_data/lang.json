@@ -99,6 +99,10 @@
         "Saves the meownatic in json format\nExample: m.schem.json test.mbp json_test",
         "Сохраняет мяунатик в формате json\nПример: m.schem.json test.mbp json_test"
     ],
+    "schemfragment": [
+        "Saves the meownatic in fragment format\nExample: m.schem.fragment test.mbp fragment_test",
+        "Сохраняет мяунатик в формате фрагментов\nПример: m.schem.fragment test.mbp fragment_test"
+    ],
     "consolefolder": [
         "Displays all the meownatics in the folder",
         "Выводит все схемы в папке с мяунатиками"

@@ -24,6 +24,14 @@ function table_utils.tbl_in_tbl(tbl, key)
     end
 end
 
+function table_utils.get_index(tbl, element)
+    for i, value in pairs(tbl) do
+        if value == element then
+            return i
+        end
+    end
+end
+
 function table_utils.find(tbl, element, state_is_true)
     if tbl ~= state_is_true then
         for _, value in pairs(tbl) do
