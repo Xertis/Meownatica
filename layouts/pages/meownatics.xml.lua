@@ -83,12 +83,7 @@ function materials(name)
                     )
                 end
 
-                local caption = nil
-                if tblu.find(avid_entities, entry.id) then
-                    caption = entry.id
-                elseif tblu.find(avid_blocks, entry.id) then
-                    caption = block.caption(block.index(entry.id))
-                end
+                local caption = item.caption(item.index(entry.id .. '.item'))
 
                 document.meownatics:add(gui.template("material", {name = caption, count = count, id = entry.id, icon = item.icon(item.index(entry.id .. '.item')),
                 tooltip = entry.id}))
