@@ -27,7 +27,7 @@ local function convert_to_vox(blocks)
     return bs
 end
 
-function module.save(name, path)
+function module.save(name, path, struct_air)
     local schem, meta = meow_change.get_schem(name, true, false)
     if schem ~= nil then
         local ids = schem[2]
@@ -35,7 +35,7 @@ function module.save(name, path)
         local blocks = reverse_to_vox(RLE.decode_table(schem[4]), depth[1]+1, depth[2]+1, depth[3]+1)
         blocks = convert_to_vox(blocks)
 
-        if tblu.get_index(ids, "core:air") then
+        if struct_air and tblu.get_index(ids, "core:air") then
             ids[tblu.get_index(ids, "core:air")] = 'core:struct_air'
         end
 

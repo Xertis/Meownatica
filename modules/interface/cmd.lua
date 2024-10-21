@@ -38,13 +38,14 @@ console.add_command(
 )
 
 console.add_command(
-    "m.schem.fragment meownatic:str path:str",
+    "m.schem.fragment meownatic:str path:str struct_air:str",
     lang.get('schemfragment'),
     function (args)
         local path = args[2]
         local name = args[1]
+        local struct_air = args[3]
         if file.exists(reader.sys_get('savepath') .. name) ~= false then
-            local result = fragment.save(name, reader.sys_get('savepath') .. path .. '.vox')
+            local result = fragment.save(name, reader.sys_get('savepath') .. path .. '.vox', struct_air)
             if result == true then
                 return name .. ' ' .. lang.get('converted')
             else
