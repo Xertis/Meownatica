@@ -1,4 +1,4 @@
 savepath = 'core:meownatics/'
-configpath = 'core:config/meownatica_config.toml'
+configpath = 'config:meownatica/meownatica_config.toml'
 fileformat = '.mbp'
 saveitem = ''

@@ -1,5 +1,5 @@
+local pathu = require 'meownatica:tools/path_utils'
 local reader = {}
-
 local PATH_TO_CONFIG = nil
 
 function reader.sys()
@@ -12,9 +12,22 @@ function reader.sys_get(key)
     return tbl[key]
 end
 
-if file.exists(reader.sys_get('configpath')) == false then
+if not file.exists(reader.sys_get('configpath')) then
+    pathu.path_create(reader.sys_get('configpath'))
     file.write(reader.sys_get('configpath'), file.read('meownatica:meow_data/meownatica_config_default.toml'))
+else
+    local default = toml.parse(file.read('meownatica:meow_data/meownatica_config_default.toml'))
+    local config = toml.parse(file.read(reader.sys_get('configpath')))
+    for p, _ in pairs(default) do
+        if config[p] == nil then
+            file.write(reader.sys_get('configpath'), toml.tostring(default))
+            break
+        else
+            default[p] = config[p]
+        end
+    end
 end
+
 PATH_TO_CONFIG = reader.sys_get('configpath')
 
 local function load_toml()
