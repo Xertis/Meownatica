@@ -20,11 +20,9 @@ else
     local config = toml.parse(file.read(reader.sys_get('configpath')))
     for p, _ in pairs(default) do
         if config[p] == nil then
-            file.write(reader.sys_get('configpath'), toml.tostring(default))
-            break
-        else
-            default[p] = config[p]
+            config[p] = default[p]
         end
+        file.write(reader.sys_get('configpath'), toml.tostring(config))
     end
 end
 
