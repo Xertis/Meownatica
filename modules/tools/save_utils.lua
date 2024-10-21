@@ -1,6 +1,6 @@
 local data_buffer = require "core:data_buffer"
 local save_u = {}
-local lang = require 'meownatica:interface/lang'
+local lang = require 'meownatica:frontend/lang'
 local mbp = require 'meownatica:files/mbp_manager'
 local dtc = require 'meownatica:logic/DepthToCoords'
 local psm = require 'meownatica:schematics_editors/PosManager'

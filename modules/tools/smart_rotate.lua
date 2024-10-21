@@ -1,5 +1,5 @@
 local json = require "meownatica:tools/json_reader"
-local lang = require 'meownatica:interface/lang'
+local lang = require 'meownatica:frontend/lang'
 
 local rotate_schem = {}
 

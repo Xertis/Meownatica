@@ -2,7 +2,7 @@ local meow_build = require 'meownatica:world/build_schem'
 local container = require 'meownatica:container_class'
 local reader = require 'meownatica:tools/read_toml'
 local table_utils = require 'meownatica:tools/table_utils'
-local lang = require 'meownatica:interface/lang'
+local lang = require 'meownatica:frontend/lang'
 local g_meownatic = {}
 local schem_thread = {}
 

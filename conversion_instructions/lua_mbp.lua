@@ -1,7 +1,7 @@
 local save_u = require 'meownatica:tools/save_utils'
 local meow_schem = require 'meownatica:schematics_editors/SchemEditor'
 local posm = require 'meownatica:schematics_editors/PosManager'
-local lang = require 'meownatica:interface/lang'
+local lang = require 'meownatica:frontend/lang'
 local toml = require 'meownatica:tools/read_toml'
 local json = require 'meownatica:tools/json_reader'
 local convert_base = {}

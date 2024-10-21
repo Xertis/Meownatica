@@ -1,6 +1,6 @@
 local toml = require 'meownatica:tools/read_toml'
 local meow_schem = require 'meownatica:schematics_editors/SchemEditor'
-local lang = require 'meownatica:interface/lang'
+local lang = require 'meownatica:frontend/lang'
 
 local PARAMETERS = {
     ["setair"] = {'Set Air', 'bool', lang.get("setair tooltip")},
