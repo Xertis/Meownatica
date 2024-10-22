@@ -45,6 +45,15 @@ function table_utils.find(tbl, element, state_is_true)
     end
 end
 
+function table.finds(tbl, elements)
+    for _, element in pairs(elements) do
+        if not table_utils.find(tbl, element) then
+            return false
+        end
+    end
+    return true
+end
+
 function table_utils.insert_unique(tbl, elem)
     if tbl ~= nil then
         if table_utils.find(tbl, elem) == false then
