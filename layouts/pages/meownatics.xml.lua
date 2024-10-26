@@ -19,7 +19,7 @@ local function refresh()
         if schem then
             local version = schem[1]
             meta = meta or {}
-            local description = meta["description"] or "Deprecated version"
+            local description = meta["description"] or ' '
             local icon = meta["icon"] or "house"
             
             document.meownatics:add(gui.template("meownatic", {version = version, description = description, name = name, icon = "mgui/meownatic_icons/" .. icon, id = name}))

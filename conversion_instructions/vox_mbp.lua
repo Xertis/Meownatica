@@ -5,7 +5,7 @@ local RLE = require 'meownatica:logic/RLEcompression'
 local fragment = require 'meownatica:files/fragment_saver'
 local tblu = require 'meownatica:tools/table_utils'
 
-local function conv(originalArray, DepthX, DepthY, DepthZ)
+local function reverse_to_mbp(originalArray, DepthX, DepthY, DepthZ)
     local newArray = {}
 
     for x = 1, DepthX do
@@ -42,7 +42,7 @@ function convert_base.convert(path)
         end
     end
 
-    blocks = conv(blocks, depth[1]+1, depth[2]+1, depth[3]+1)
+    blocks = reverse_to_mbp(blocks, depth[1]+1, depth[2]+1, depth[3]+1)
     local meownatic = {0, block_names, depth, RLE.encode_table(blocks), {}}
     sv.write(meownatic, {description = "Converted"}, toml.sys_get('savepath') .. name .. '.mbp')
     meow_schem.save_to_config(nil, nil, {name_format, name .. '.mbp'})

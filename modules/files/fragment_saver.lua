@@ -18,10 +18,10 @@ local function reverse_to_vox(originalArray, DepthX, DepthY, DepthZ)
     return newArray
 end
 
-local function convert_to_vox(blocks)
+local function convert_to_vox(blocks, x)
     local bs = {}
     for _, block in ipairs(blocks) do
-        table.insert(bs, block[1]-1)
+        table.insert(bs, block[1]-x)
         table.insert(bs, block[2])
     end
     return bs
@@ -33,17 +33,21 @@ function module.save(name, path, struct_air)
         local ids = schem[2]
         local depth = schem[3]
         local blocks = reverse_to_vox(RLE.decode_table(schem[4]), depth[1]+1, depth[2]+1, depth[3]+1)
-        blocks = convert_to_vox(blocks)
+
 
         if struct_air and tblu.get_index(ids, "core:air") then
             ids[tblu.get_index(ids, "core:air")] = 'core:struct_air'
         end
 
+        blocks = convert_to_vox(blocks, 1)
+
         local fragment = {}
-        fragment['size'] = {depth[1]+1, depth[2]+1, depth[3]+1}
+        fragment['size'] = {depth[3]+1, depth[2]+1, depth[1]+1}
         fragment['voxels'] = blocks
         fragment['block-names'] = ids
         fragment['version'] = 1
+
+        print(toml.tostring({x = fragment}))
 
         file.write_bytes(path, bjson.tobytes(fragment))
         return true
