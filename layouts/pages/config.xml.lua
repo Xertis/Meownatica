@@ -12,6 +12,7 @@ local PARAMETERS = {
     ["language"] = {'Language (eng/rus)', 'string', lang.get("language tooltip")},
     ["smartrotateon"] = {'Smart Rotation', 'bool', lang.get("smartrotateon tooltip")},
     ["onplaced"] = {'On Placed', 'bool', lang.get("onplaced tooltip")},
+    ["onbroken"] = {'On Broken', 'bool', lang.get("onbroken tooltip")}
 }
 
 

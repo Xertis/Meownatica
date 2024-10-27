@@ -49,6 +49,20 @@ function reader.get_all_schem()
     return parameters
 end
 
+--Возвращает все параметры из конфига 
+--In: nil
+--Out: {setair = true}
+function reader.get_all_parameters()
+    local tbl = load_toml()
+    local parameters = {}
+    for idx, value in pairs(tbl) do
+        if idx ~= "meownatics" then
+            parameters[idx] = value
+        end
+    end
+    return parameters
+end
+
 --Возвращает схему по индексу
 --In: 1
 --Out: "example.mbp"

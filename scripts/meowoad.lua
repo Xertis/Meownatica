@@ -48,32 +48,25 @@ end
 
 function on_interact(x, y, z, playerid)
     meownatic_schem = container.get_g()
-    local id_inv, id_slot = player.get_inventory(playerid)
-    local id_item, werwerew = inventory.get(id_inv, id_slot)
-    if item.name(id_item) == 'meownatica:block_edit' then
-        hud.open_block(x, y, z)
-    else
+    local packs = block.defs_count()
+    for i = 0, packs do
+        available_ids[#available_ids + 1] = block.name(i)
+    end
+    local entities_pack = entities.defs_count()
+    for i = 0, entities_pack do
+        available_ids[#available_ids + 1] = entities.def_name(i)
+    end
 
-        local packs = block.defs_count()
-        for i = 0, packs do
-            available_ids[#available_ids + 1] = block.name(i)
-        end
-        local entities_pack = entities.defs_count()
-        for i = 0, entities_pack do
-            available_ids[#available_ids + 1] = entities.def_name(i)
-        end
-
-        if #meownatic_schem > 0 then
-            local if_scheme_in_queue = false
-            for key, value in ipairs(g_meownatic_global) do
-                if value.x == x and value.y == y and value.z == z then
-                    if_scheme_in_queue = true
-                    break
-                end
+    if #meownatic_schem > 0 then
+        local if_scheme_in_queue = false
+        for key, value in ipairs(g_meownatic_global) do
+            if value.x == x and value.y == y and value.z == z then
+                if_scheme_in_queue = true
+                break
             end
-            if if_scheme_in_queue == false then
-                g_meownatic_global[#g_meownatic_global + 1] = {schem = table_utils.copy(meownatic_schem), x = x, y = y, z = z}
-            end
+        end
+        if if_scheme_in_queue == false then
+            g_meownatic_global[#g_meownatic_global + 1] = {schem = table_utils.copy(meownatic_schem), x = x, y = y, z = z}
         end
     end
 end
@@ -91,9 +84,7 @@ function on_blocks_tick(tps)
         schem_thread = table_utils.copy(g_meownatic_global[1])
     end
     if #g_meownatic_global > 0 then
-        schem_thread, lose_blocks = meow_build.build_schem(schem_thread.x, schem_thread.y, schem_thread.z, schem_thread.schem, reader.get('SetAir'),
-                                                            reader.get('BlocksUpdate'), reader.get('SetBlockOnTick'), available_ids, lose_blocks,
-                                                            reader.get('SetEntities'), reader.get('OnPlaced'))
+        schem_thread, lose_blocks = meow_build.build_schem(schem_thread.x, schem_thread.y, schem_thread.z, schem_thread.schem, available_ids, lose_blocks)
         
         if schem_thread == 'over' then
             table.remove(g_meownatic_global, 1)

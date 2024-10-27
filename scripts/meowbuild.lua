@@ -44,22 +44,16 @@ end
 
 function on_interact(x, y, z, playerid)
     local save_meowmatic = container.get()
-    local id_inv, id_slot = player.get_inventory(playerid)
-    local id_item, werwerew = inventory.get(id_inv, id_slot)
-    if item.name(id_item) == 'meownatica:block_edit' then
-        hud.open_block(x, y, z)
-    else
-        if #save_meowmatic > 0 then
-            local if_scheme_in_queue = false
-            for key, value in ipairs(g_meownatic) do
-                if value.x == x and value.y == y and value.z == z then
-                    if_scheme_in_queue = true
-                    break
-                end
+    if #save_meowmatic > 0 then
+        local if_scheme_in_queue = false
+        for key, value in ipairs(g_meownatic) do
+            if value.x == x and value.y == y and value.z == z then
+                if_scheme_in_queue = true
+                break
             end
-            if if_scheme_in_queue == false then
-                g_meownatic[#g_meownatic + 1] = {schem = delete_air(table_utils.copy(save_meowmatic, reader.get('SetAir'))), x = x, y = y, z = z}
-            end
+        end
+        if if_scheme_in_queue == false then
+            g_meownatic[#g_meownatic + 1] = {schem = delete_air(table_utils.copy(save_meowmatic, reader.get('SetAir'))), x = x, y = y, z = z}
         end
     end
 end
@@ -76,9 +70,7 @@ function on_blocks_tick(tps)
         schem_thread = table_utils.copy(g_meownatic[1])
     end
     if #g_meownatic > 0 then
-        schem_thread = meow_build.build_schem(schem_thread.x, schem_thread.y, schem_thread.z, schem_thread.schem, reader.get('SetAir'),
-                                            reader.get('BlocksUpdate'), reader.get('SetBlockOnTick'), '', nil,
-                                            reader.get('SetEntities'), reader.get('OnPlaced'))
+        schem_thread = meow_build.build_schem(schem_thread.x, schem_thread.y, schem_thread.z, schem_thread.schem, '', nil)
         if schem_thread == 'over' then
             table.remove(g_meownatic, 1)
         end

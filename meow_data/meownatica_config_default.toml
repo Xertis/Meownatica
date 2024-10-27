@@ -6,6 +6,7 @@ setair = false
 entitiessave = true
 blocksupdate = false
 onplaced = true
+onbroken = true
 setmeowdelenie = true
 
 [meownatics]

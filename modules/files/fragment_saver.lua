@@ -18,10 +18,10 @@ local function reverse_to_vox(originalArray, DepthX, DepthY, DepthZ)
     return newArray
 end
 
-local function convert_to_vox(blocks, x)
+local function convert_to_vox(blocks)
     local bs = {}
     for _, block in ipairs(blocks) do
-        table.insert(bs, block[1]-x)
+        table.insert(bs, block[1]-1)
         table.insert(bs, block[2])
     end
     return bs
@@ -39,7 +39,7 @@ function module.save(name, path, struct_air)
             ids[tblu.get_index(ids, "core:air")] = 'core:struct_air'
         end
 
-        blocks = convert_to_vox(blocks, 1)
+        blocks = convert_to_vox(blocks)
 
         local fragment = {}
         fragment['size'] = {depth[3]+1, depth[2]+1, depth[1]+1}

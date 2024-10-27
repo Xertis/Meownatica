@@ -174,5 +174,9 @@
     "onplaced tooltip": [
         "Calling the on_placed function?",
         "Вызывать функцию on_placed?"
+    ],
+    "onbroken tooltip": [
+        "Calling the on_broken function?",
+        "Вызывать функцию on_broken?"
     ]
 }
