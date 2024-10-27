@@ -38,7 +38,7 @@
             padding='0'
             visible='false'
             onclick='materials("%{name}")'>
-        <image src='mgui/gui_icons/settings' size='32,32' color='#FFFFFF50'/>
+        <image src='mgui/gui_icons/materials' size='31,31' color='#FFFFFF50'/>
     </button>
 
     <image id="%{id}_icon" pos='8,8' src='%{icon}' size='64'/>
