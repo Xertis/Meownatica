@@ -4,7 +4,7 @@
 
     <panel pos="1,286" size="451,0">
         <button id='save' onclick="saving()">save</button>
-        <textbox id='schem_name' tooltip='tooltip' consumer="meownatic_update">Name</textbox>
-        <textbox id='schem_description' tooltip='tooltip' consumer="meownatic_update">Default description</textbox>
+        <textbox id='schem_name' tooltip='tooltip' validator="meownatic_update">Name</textbox>
+        <textbox id='schem_description' tooltip='tooltip' validator="meownatic_update">Default description</textbox>
     </panel>
 </container>

@@ -178,5 +178,17 @@
     "onbroken tooltip": [
         "Calling the on_broken function?",
         "Вызывать функцию on_broken?"
+    ],
+    "schem_name tooltip": [
+        "Meownatic name",
+        "Имя мяунатика"
+    ],
+    "schem_description tooltip": [
+        "Meownatic description",
+        "Описание мяунатика"
+    ],
+    "schem_icon tooltip": [
+        "Meownatic icon",
+        "Иконка мяунатика"
     ]
 }

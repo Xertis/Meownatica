@@ -8,8 +8,6 @@ local avids = require 'meownatica:tools/available_ids'
 local tblu = require 'meownatica:tools/table_utils'
 
 local avid_items = avids.get_items()
-local avid_entities = avids.get_entities()
-local avid_blocks = avids.get_blocks()
 
 local function refresh()
     local meownatics = toml.get_all_schem()
