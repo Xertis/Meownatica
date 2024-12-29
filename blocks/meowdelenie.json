@@ -8,5 +8,6 @@
     "replaceable": true,
     "picking-item": "meownatica:meowdelat.item",
     "hidden": true,
+    "translucent": true,
     "shadeless": true
 }

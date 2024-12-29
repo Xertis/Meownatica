@@ -7,5 +7,6 @@
     "selectable": true,
     "picking-item": "meownatica:meowoad.item",
     "hidden": true,
+    "translucent": true,
     "shadeless": true
 }
