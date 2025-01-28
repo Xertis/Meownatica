@@ -69,6 +69,7 @@ function on_interact(x, y, z, playerid)
             g_meownatic_global[#g_meownatic_global + 1] = {schem = table_utils.copy(meownatic_schem), x = x, y = y, z = z}
         end
     end
+    return true
 end
 
 local say_over_tick = false

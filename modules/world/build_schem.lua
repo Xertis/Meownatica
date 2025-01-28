@@ -6,8 +6,12 @@ function meow_build.build_reed(x, y, z, read_meowmatic)
     if #read_meowmatic > 0 then
         for _, structure in ipairs(read_meowmatic) do
             if structure.elem == 0 then
-                if block.get(structure.x + x, structure.y + y, structure.z + z) == 0 and structure.id ~= 'core:air' then
-                    block.set(structure.x + x, structure.y + y, structure.z + z, block.index("meownatica:meowreed"), 0, true)
+                local pos = {structure.x + x, structure.y + y, structure.z + z}
+                if block.get(pos[1], pos[2], pos[3]) == 0 and structure.id ~= 'core:air' then
+                    block.set(pos[1], pos[2], pos[3], block.index("meownatica:meowreed"), 0, true)
+
+                    --gfx.blockwraps.wrap(pos, "blocks:" .. block.get_textures(block.index(structure.id))[1])
+                    --gfx.blockwraps.wrap(pos, "blocks:stone")
                 end
             end
         end
@@ -42,11 +46,11 @@ function meow_build.build_schem(x, y, z, read_meowmatic, available_ids, lose_blo
             local id = schem.id
             if on_broken then events.emit(block.name(block_in_cord) .. ".broken", schem.x + x, schem.y + y, schem.z + z) end
             if table_utils.find(available_ids, id, '') then
-                block.set(schem.x + x, schem.y + y, schem.z + z, block.index(id), schem.state.rotation, blocks_update)
+                block.place(schem.x + x, schem.y + y, schem.z + z, block.index(id), schem.state.rotation, blocks_update)
                 if on_placed then events.emit(id .. '.placed', schem.x + x, schem.y + y, schem.z + z) end
             else
                 table_utils.insert_unique(lose_blocks, id:match("(.*):"))
-                block.set(schem.x + x, schem.y + y, schem.z + z, 0, schem.state.rotation, blocks_update)
+                block.place(schem.x + x, schem.y + y, schem.z + z, 0, schem.state.rotation, blocks_update)
             end
         end
     end

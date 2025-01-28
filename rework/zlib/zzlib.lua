@@ -12,7 +12,7 @@
 local unpack = table.unpack or unpack
 local infl
 
-local data_buffer = require "core:data_buffer"
+local data_buffer = require "files/buffer/deprecated/data_buffer"
 
 local lua_version = tonumber(_VERSION:match("^Lua (.*)"))
 if not lua_version or lua_version < 5.3 then

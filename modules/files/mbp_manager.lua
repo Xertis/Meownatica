@@ -1,5 +1,5 @@
 local toml = require 'meownatica:tools/read_toml'
-local data_buffer = require "core:data_buffer"
+local data_buffer = require "files/buffer/deprecated/data_buffer"
 local mbp_versions = {}
 local FORMAT = toml.sys_get('fileformat')
 
@@ -22,6 +22,7 @@ end
 function module.deserialize(buf)
     local version = buf:get_uint16()
     buf:set_position(1)
+
     return mbp_versions[version].deserialize(buf)
 end
 

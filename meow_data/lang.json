@@ -179,6 +179,10 @@
         "Calling the on_broken function?",
         "Вызывать функцию on_broken?"
     ],
+    "blockwraps tooltip": [
+        "Show block wraps?",
+        "Показывать обёртки блоков?"
+    ],
     "schem_name tooltip": [
         "Meownatic name",
         "Имя мяунатика"

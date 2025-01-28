@@ -56,6 +56,7 @@ function on_interact(x, y, z, playerid)
             g_meownatic[#g_meownatic + 1] = {schem = delete_air(table_utils.copy(save_meowmatic, reader.get('SetAir'))), x = x, y = y, z = z}
         end
     end
+    return true
 end
 
 local say_over_tick = false

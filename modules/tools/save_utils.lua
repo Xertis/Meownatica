@@ -1,4 +1,4 @@
-local data_buffer = require "core:data_buffer"
+local data_buffer = require "files/buffer/deprecated/data_buffer"
 local save_u = {}
 local lang = require 'meownatica:frontend/lang'
 local mbp = require 'meownatica:files/mbp_manager'

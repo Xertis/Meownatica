@@ -154,6 +154,7 @@ function on_interact(x, y, z)
         end
     end
     container.send(save_meowmatic)
+    return true
 end
 
 return save_meowmatic
