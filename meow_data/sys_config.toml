@@ -1,4 +1,0 @@
-savepath = 'export:meownatics/'
-configpath = 'config:meownatica/meownatica_config.toml'
-fileformat = '.mbp'
-saveitem = ''

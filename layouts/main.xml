@@ -1,9 +1,0 @@
-<container size='718,418' color='#0F1E2DB2' context='menu'>
-    <panel pos='6' size='250' color='0' interval='1'>
-        <button id='meownatics' onclick='set_page("meownatics")'>Meownatics</button>
-        <button id='config' onclick='set_page("config")'>Config</button>
-        <button id='saving' onclick='set_page("saving")'>Saving</button>
-    </panel>
-    <pagebox id='menu' pos='260,6' size='400'>
-    </pagebox>
-</container>
