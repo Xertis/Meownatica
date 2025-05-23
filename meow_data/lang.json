@@ -1,0 +1,198 @@
+{
+    "config parameters": [
+        "config parameters:",
+        "значения конфига:"
+    ],
+    "materials_console": [
+        "Displays the materials of the meownatic",
+        "Выводит все материалы, нужные для постройки мяунатика"
+    ],
+    "meownatic": [
+        "meownatic",
+        "мяунатик"
+    ],
+    "installed": [
+        "installed",
+        "установлен"
+    ],
+    "needconv": [
+        "needs to be converted",
+        "нуждается в конвертации"
+    ],
+    "in progress": [
+        " in progress...",
+        " в процессе..."
+    ],
+    "converted": [
+        "has been converted",
+        "сконвертирован"
+    ],
+    "ConvQueueClear": [
+        "The conversion queue is empty!",
+        "Очередь на конвертацию пустая!"
+    ],
+    "LuaConvError1": [
+        "To convert from lua to mbp mods \nfrom meownatic must be installed",
+        "Для конвертации из lua в mbp должны быть\nустановлены моды из мяунатика"
+    ],
+    "convertError": [
+        "Result: File not converted",
+        "Итог: Файл не сковертирован"
+    ],
+    "materials": [
+        "Materials:",
+        "Материалы:"
+    ],
+    "count": [
+        "count:",
+        "кол-во:"
+    ],
+    "not found": [
+        "does not exist",
+        "не найден"
+    ],
+    "addschem_console": [
+        "Load meownatic",
+        "Загрузить мяунатик"
+    ],
+    "was added": [
+        "has been added",
+        "был добавлен"
+    ],
+    "meownatics": [
+        "meownatics:",
+        "мяунатики:"
+    ],
+    "schemreload_help": [
+        "Takes all the meownatics from the folder and uploads them to the config",
+        "Берёт все мяунатики из папки и загружает их в конфиг"
+    ],
+    "schemreload_res": [
+        "The list of meownatics has been updated",
+        "Список мяунатиков был обновлён"
+    ],
+    "Save Meownatic": [
+        "[MEOWNATICA] save meownatic...",
+        "[MEOWNATICA] сохранение мяунатика..."
+    ],
+    "Global is finish": [
+        "[MEOWNATICA:Global schem] The construction queue is finished",
+        "[MEOWNATICA:Global schem] Очередь на постройку схем завершена"
+    ],
+    "Local is finish": [
+        "[MEOWNATICA:Local schem] The construction queue is finished",
+        "[MEOWNATICA:Local schem] Очередь на постройку схем завершена"
+    ],
+    "not mods": [
+        "[MEOWNATICA] Meownatic is inserted incorrectly, install the following ContentPack to insert it correctly:",
+        "[MEOWNATICA] Мяунатик построен неправильно, установите перечисленные ниже моды, чтобы вставить мяунатик правильно"
+    ],
+    "meownatics in the config": [
+        "meownatics in the config:",
+        "мяунатики в конфиге:"
+    ],
+    "delschem_console": [
+        "Delete meownatic",
+        "Удалить мяунатик"
+    ],
+    "schemjson": [
+        "Saves the meownatic in json format\nExample: m.schem.json test.mbp json_test",
+        "Сохраняет мяунатик в формате json\nПример: m.schem.json test.mbp json_test"
+    ],
+    "schemfragment": [
+        "Saves the meownatic in fragment format\nExample: m.schem.fragment test.mbp fragment_test true",
+        "Сохраняет мяунатик в формате фрагментов\nПример: m.schem.fragment test.mbp fragment_test true"
+    ],
+    "consolefolder": [
+        "Displays all the meownatics in the folder",
+        "Выводит все схемы в папке с мяунатиками"
+    ],
+    "setconfig_console": [
+        "Changes the value of the parameter in the config to a new one",
+        "Меняет значение параметра в конфиге на новое"
+    ],
+    "block": [
+        "Block:",
+        "Блок:"
+    ],
+    "is converted": [
+        "[MEOWNATICA] Meownatic is converted",
+        "[MEOWNATICA] Мяунатик сконвертирован"
+    ],
+    "folder": [
+        "folder:",
+        "папка:"
+    ],
+    "was deleted": [
+        "was deleted",
+        "был удалён"
+    ],
+    "schem_all_console": [
+        "Displays all loaded meownatics",
+        "Выводит все загруженные мяунатики"
+    ],
+    "countmaterials": [
+        "Count materials: ",
+        "Кол-во материалов: "
+    ],
+    "config_all_console": [
+        "Displays all config parameters",
+        "Выводит все параметры конфига"
+    ],
+    "setair tooltip": [
+        "Install meownatic air blocks?",
+        "Устанавливать блоки воздуха из мяунатика?"
+    ],
+    "setmeowdelenie tooltip": [
+        "Install the meownatic allocation blocks?",
+        "Устанавливать блоки выделения мяунатика?"
+    ],
+    "setblockontick tooltip": [
+        "Number of installed blocks per tick?",
+        "Кол-во устанавливаемых блоков за один тик"
+    ],
+    "setentities tooltip": [
+        "Install meownatic entities?",
+        "Устанавливать сущностей из мяунатика?"
+    ],
+    "entitiessave tooltip": [
+        "Save entities in meownatic?",
+        "Сохранять сущностей в мяунатик?"
+    ],
+    "blocksupdate tooltip": [
+        "Calling the on_update function?",
+        "Вызывать функцию on_update?"
+    ],
+    "language tooltip": [
+        "(rus/eng) Selects the console output language",
+        "(rus/eng) Выбирает язык консольных выводов"
+    ],
+    "smartrotateon tooltip": [
+        "It an smart rotation function that allows you to rotate the blocks correctly during their rotation",
+        "Позволяет правильно поворачивать блоки во время вращения мяунатика"
+    ],
+    "onplaced tooltip": [
+        "Calling the on_placed function?",
+        "Вызывать функцию on_placed?"
+    ],
+    "onbroken tooltip": [
+        "Calling the on_broken function?",
+        "Вызывать функцию on_broken?"
+    ],
+    "blockwraps tooltip": [
+        "Show block wraps?",
+        "Показывать обёртки блоков?"
+    ],
+    "schem_name tooltip": [
+        "Meownatic name",
+        "Имя мяунатика"
+    ],
+    "schem_description tooltip": [
+        "Meownatic description",
+        "Описание мяунатика"
+    ],
+    "schem_icon tooltip": [
+        "Meownatic icon",
+        "Иконка мяунатика"
+    ]
+}

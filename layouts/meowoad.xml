@@ -1,0 +1,12 @@
+<inventory size="524,350">
+    <textbox id="meowoad_console" padding="15,5,15,5" pos="120,10" size="365, 320" placeholder="Console..." multiline="true">
+
+    </textbox>
+    <panel pos="10, 10" size="100,0">
+        <button padding="10,5,10,5" onclick="rotate_g()">rotate</button>
+        <button padding="10,5,10,5" onclick="up_down_g()">up_down</button>
+        <button padding="10,5,10,5" onclick="mirroring_g()">mirroring</button>
+        <button padding="10,5,10,5" onclick="change()">change</button>
+        <button padding="10,5,10,5" onclick="convert()">convert</button>
+    </panel>
+</inventory>

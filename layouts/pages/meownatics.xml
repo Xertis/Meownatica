@@ -1,0 +1,8 @@
+<container pos='0' size='500,600'>
+    <panel id="meownatics" size='453,204' pos="0,40" interval='8' color='0' max-length='380'>
+    </panel>
+
+    <panel pos='0' size='453,30' color='0' interval='1'>
+        <button id='add' onclick='add_meownatic()' z-index='2'>Add</button>
+    </panel>
+</container>
