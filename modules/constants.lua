@@ -1,0 +1,6 @@
+CONFIG = nil
+
+CURRENT_BLUEPRINT = nil
+
+CURRENT_BORDER_ID = 1
+BORDERS = { {}, {} }

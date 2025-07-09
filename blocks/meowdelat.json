@@ -1,3 +1,8 @@
 {
-    "texture": "meowdelat"
+    "texture": "meowdelat",
+    "fields": {
+        "pair_x": {"type": "int32"},
+        "pair_y": {"type": "int32"},
+        "pair_z": {"type": "int32"}
+    }
 }
