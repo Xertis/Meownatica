@@ -43,7 +43,6 @@ console.add_command(
             return "Ошибка при чтении файла"
         end
 
-        --CURRENT_BLUEPRINT.id = #BLUEPRINTS+1
         table.insert(BLUEPRINTS, blueprint)
 
         return "Схема загружена в память"
@@ -55,7 +54,7 @@ console.add_command(
     "Выбрать схему",
     function (args)
         if BLUEPRINTS[args[1]] ~= nil then
-            CURRENT_BLUEPRINT.id = args[1]
+            utils.blueprint.change(args[1])
             return "Схема выбрана"
         else
             return "Схемы с таким индексом не существует"
@@ -95,16 +94,67 @@ console.add_command(
 )
 
 console.add_command(
-    "m.schem.place x:int~pos.x y:int~pos.y z:int~pos.z",
+    "m.schem.place",
     "Устанавливает выбранную схему",
+    function (args)
+        local x, y, z = unpack(CURRENT_BLUEPRINT.preview_pos)
+
+        if not x then
+            return "Превью не установлено"
+        end
+
+        local blue_print = BLUEPRINTS[CURRENT_BLUEPRINT.id]
+
+        if blue_print then
+            blue_print:build({x, y, z})
+            CURRENT_BLUEPRINT.preview_pos = {}
+            return "Схема установлена"
+        else
+            return "Схема не загружена"
+        end
+    end
+)
+
+console.add_command(
+    "m.schem.preview x:int~pos.x y:int~pos.y z:int~pos.z",
+    "Устанавливает превью выбранной схемы",
     function (args)
         local x, y, z = math.floor(args[1]), math.floor(args[2]), math.floor(args[3])
 
         local blue_print = BLUEPRINTS[CURRENT_BLUEPRINT.id]
 
         if blue_print then
-            blue_print:build({x, y, z})
+            if CURRENT_BLUEPRINT.preview_pos[1] ~= nil then
+                blue_print:unbuild_preview(CURRENT_BLUEPRINT.preview_pos)
+            end
+
+            local new_preview_pos = {x, y, z}
+            blue_print:build_preview(new_preview_pos)
+            CURRENT_BLUEPRINT.preview_pos = new_preview_pos
             return "Схема установлена"
+        else
+            return "Схема не загружена"
+        end
+    end
+)
+
+console.add_command(
+    "m.schem.rotate axis_x:int=0 axis_y:int=0 axis_z:int=0",
+    "Поворачивает выбраанную схему",
+    function (args)
+        local rotation_vec = args
+
+        local blue_print = BLUEPRINTS[CURRENT_BLUEPRINT.id]
+
+        if blue_print then
+            if CURRENT_BLUEPRINT.preview_pos[1] == nil then
+                return "Превью не установлено"
+            end
+
+            blue_print:unbuild_preview(CURRENT_BLUEPRINT.preview_pos)
+            blue_print:rotate(rotation_vec)
+            blue_print:build_preview(CURRENT_BLUEPRINT.preview_pos)
+            return "Схема повёрнута"
         else
             return "Схема не загружена"
         end

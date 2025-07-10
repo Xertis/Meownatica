@@ -1,7 +1,8 @@
 utils = {
     vec = {},
     math = {},
-    table = {}
+    table = {},
+    blueprint = {}
 }
 
 function utils.vec.min(vec1, vec2)
@@ -73,4 +74,15 @@ function utils.table.rep(tbl, unit, count)
     end
 
     return tbl
+end
+
+function utils.blueprint.change(indx)
+    if CURRENT_BLUEPRINT.preview_pos[1] ~= nil then
+        BLUEPRINTS[CURRENT_BLUEPRINT.id]:unbuild_preview(CURRENT_BLUEPRINT.preview_pos)
+    end
+
+    if BLUEPRINTS[indx] then
+        CURRENT_BLUEPRINT.id = indx
+        CURRENT_BLUEPRINT.preview_pos = {}
+    end
 end

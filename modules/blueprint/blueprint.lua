@@ -129,6 +129,29 @@ function BluePrint:build(origin_pos)
     end
 end
 
+function BluePrint:build_preview(origin_pos)
+    local preview_id = block.index("meownatica:preview")
+    for _, _block in ipairs(self.blocks) do
+        local pos = vec3.add(origin_pos, _block.pos)
+        local block_id = block.index(self.indexes.from[_block.id].name)
+
+        if block_id ~= 0 and block.get(pos[1], pos[2], pos[3]) == 0 then
+            block.set(pos[1], pos[2], pos[3], preview_id)
+        end
+    end
+end
+
+function BluePrint:unbuild_preview(origin_pos)
+    local preview_id = block.index("meownatica:preview")
+    for _, _block in ipairs(self.blocks) do
+        local pos = vec3.add(origin_pos, _block.pos)
+
+        if block.get(pos[1], pos[2], pos[3]) == preview_id then
+            block.set(pos[1], pos[2], pos[3], 0)
+        end
+    end
+end
+
 function BluePrint:index_to_pos(index)
     local sizeX, sizeY, sizeZ = unpack(self.size)
     local total_blocks = sizeX * sizeY * sizeZ

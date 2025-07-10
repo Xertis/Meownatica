@@ -37,8 +37,8 @@ local function set_blueprint(pos1, pos2, origin)
     if #blocks == 0 then return end
 
     local blue_print = BluePrint.new(blocks, origin)
-    CURRENT_BLUEPRINT.id = #BLUEPRINTS+1
     table.insert(BLUEPRINTS, blue_print)
+    utils.blueprint.change(#BLUEPRINTS)
 end
 
 function on_breaking(x, y, z)
