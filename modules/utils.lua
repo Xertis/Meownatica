@@ -2,7 +2,8 @@ utils = {
     vec = {},
     math = {},
     table = {},
-    blueprint = {}
+    blueprint = {},
+    mat4 = {}
 }
 
 function utils.vec.min(vec1, vec2)
@@ -18,6 +19,14 @@ function utils.vec.max(vec1, vec2)
         math.max(vec1[1], vec2[1]),
         math.max(vec1[2], vec2[2]),
         math.max(vec1[3], vec2[3])
+    }
+end
+
+function utils.vec.floor(vec)
+    return {
+        math.floor(vec[1]),
+        math.floor(vec[2]),
+        math.floor(vec[3])
     }
 end
 
@@ -85,4 +94,28 @@ function utils.blueprint.change(indx)
         CURRENT_BLUEPRINT.id = indx
         CURRENT_BLUEPRINT.preview_pos = {}
     end
+end
+
+local function mat4_mul(matrices)
+    local result = mat4.idt()
+
+    for _, matrix in ipairs(matrices) do
+        result = mat4.mul(result, matrix)
+    end
+
+    return result
+end
+
+function utils.mat4.vec_to_mat(vector)
+    local matrices = {}
+    for pos, axis in ipairs(vector) do
+        local vec = {0, 0, 0}
+
+        if axis ~= 0 then
+            vec[pos] = 1
+            table.insert(matrices, mat4.rotate(vec, axis))
+        end
+    end
+
+    return mat4_mul(matrices)
 end

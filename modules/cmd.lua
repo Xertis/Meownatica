@@ -78,9 +78,12 @@ console.add_command(
 )
 
 console.add_command(
-    "m.schem.save path:str index:int",
+    "m.schem.save path:str index:int=-1",
     "Сохраняет выбранную схему",
     function (args)
+        if args[2] == -1 then
+            args[2] = CURRENT_BLUEPRINT.id
+        end
         local path = string.format("%s/%s", BLUEPRINT_SAVE_PATH, args[1])
 
         local status, _ = pcall(mbp.write, path, BLUEPRINTS[args[2]])
@@ -155,6 +158,28 @@ console.add_command(
             blue_print:rotate(rotation_vec)
             blue_print:build_preview(CURRENT_BLUEPRINT.preview_pos)
             return "Схема повёрнута"
+        else
+            return "Схема не загружена"
+        end
+    end
+)
+
+console.add_command(
+    "m.schem.center",
+    "Отцентрирует центр поворота схемы",
+    function (args)
+        local blue_print = BLUEPRINTS[CURRENT_BLUEPRINT.id]
+
+        if blue_print then
+            if CURRENT_BLUEPRINT.preview_pos[1] == nil then
+                return "Превью не установлено"
+            end
+
+            blue_print:unbuild_preview(CURRENT_BLUEPRINT.preview_pos)
+            local center = blue_print:get_center_pos()
+            blue_print:move_origin(center)
+            blue_print:build_preview(CURRENT_BLUEPRINT.preview_pos)
+            return "Схема отцентрирована"
         else
             return "Схема не загружена"
         end

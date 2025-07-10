@@ -1,3 +1,5 @@
+local rotator = require "blueprint/logic/rotation"
+
 local BluePrint = {}
 BluePrint.__index = BluePrint
 
@@ -54,11 +56,17 @@ local function __pre_process_indexes(blocks)
 end
 
 local function __change_origin(blocks, new_origin)
-    for _, block in ipairs(blocks) do
-        block.pos = vec3.sub(block.pos, new_origin)
+    local origin_index = 1
+    for id, block in ipairs(blocks) do
+        local pos = vec3.sub(block.pos, new_origin)
+        block.pos = pos
+
+        if pos[1] == 0 and pos[2] == 0 and pos[3] == 0 then
+            origin_index = id
+        end
     end
 
-    return blocks
+    return blocks, origin_index
 end
 
 function BluePrint.new(blocks, origin)
@@ -68,6 +76,8 @@ function BluePrint.new(blocks, origin)
     self.size, self.origin = __pre_process(self.blocks, origin)
     self.indexes = __pre_process_indexes(self.blocks)
     self.name = "default_name.mbp"
+    self.rotation_vector = {0, 0, 0}
+    self.rotation_matrix = utils.mat4.vec_to_mat(self.rotation_vector)
 
     self.meta = {
         description = '',
@@ -78,79 +88,58 @@ function BluePrint.new(blocks, origin)
 end
 
 function BluePrint:move_origin(new_origin)
-    self.blocks = __change_origin(self.blocks, new_origin)
+    self.blocks, self.origin = __change_origin(self.blocks, new_origin)
 end
 
 function BluePrint:rotate(rotation)
-    local rad_x = math.rad(rotation[1] or 0)
-    local rad_y = math.rad(rotation[2] or 0)
-    local rad_z = math.rad(rotation[3] or 0)
-
-    local cos_x, sin_x = math.cos(rad_x), math.sin(rad_x)
-    local cos_y, sin_y = math.cos(rad_y), math.sin(rad_y)
-    local cos_z, sin_z = math.cos(rad_z), math.sin(rad_z)
-
-    for _, block in ipairs(self.blocks) do
-        local x, y, z = block.pos[1], block.pos[2], block.pos[3]
-
-        if rad_x ~= 0 then
-            local new_y = y * cos_x - z * sin_x
-            local new_z = y * sin_x + z * cos_x
-            y, z = new_y, new_z
-        end
-
-        if rad_y ~= 0 then
-            local new_x = x * cos_y + z * sin_y
-            local new_z = -x * sin_y + z * cos_y
-            x, z = new_x, new_z
-        end
-
-        if rad_z ~= 0 then
-            local new_x = x * cos_z - y * sin_z
-            local new_y = x * sin_z + y * cos_z
-            x, y = new_x, new_y
-        end
-
-        block.pos[1], block.pos[2], block.pos[3] = x, y, z
-    end
-
-    return self
+    self.rotation_vector = rotation
+    self.rotation_matrix = utils.mat4.vec_to_mat(rotation)
 end
 
 function BluePrint:build(origin_pos)
-    for _, _block in ipairs(self.blocks) do
-        local pos = vec3.add(origin_pos, _block.pos)
-        local states = _block.states
-        local id = block.index(self.indexes.from[_block.id].name)
+    local rotated = rotator.dual_pass_rotated(self.blocks, self.rotation_matrix)
+    for _, blk in ipairs(rotated) do
+        local p = blk.pos
+        local world_x = origin_pos[1] + p[1]
+        local world_y = origin_pos[2] + p[2]
+        local world_z = origin_pos[3] + p[3]
 
+        local id = block.index(self.indexes.from[blk.id].name)
         if (not CONFIG.setair and id ~= 0) or CONFIG.setair then
-            block.set(pos[1], pos[2], pos[3], id, states)
+            block.set(world_x, world_y, world_z, id, blk.states)
         end
     end
 end
 
 function BluePrint:build_preview(origin_pos)
+    local rotated = rotator.dual_pass_rotated(self.blocks, self.rotation_matrix)
     local preview_id = block.index("meownatica:preview")
-    for _, _block in ipairs(self.blocks) do
-        local pos = vec3.add(origin_pos, _block.pos)
-        local block_id = block.index(self.indexes.from[_block.id].name)
 
-        if block_id ~= 0 and block.get(pos[1], pos[2], pos[3]) == 0 then
-            block.set(pos[1], pos[2], pos[3], preview_id)
+    for _, blk in ipairs(rotated) do
+        local world_pos = vec3.add(origin_pos, blk.pos)
+
+        local existing = block.get(world_pos[1], world_pos[2], world_pos[3])
+        local block_id = block.index(self.indexes.from[blk.id].name)
+
+        if block_id ~= 0 and existing == 0 then
+            block.set(world_pos[1], world_pos[2], world_pos[3], preview_id)
         end
     end
 end
 
 function BluePrint:unbuild_preview(origin_pos)
+    local rotated = rotator.dual_pass_rotated(self.blocks, self.rotation_matrix)
     local preview_id = block.index("meownatica:preview")
-    for _, _block in ipairs(self.blocks) do
-        local pos = vec3.add(origin_pos, _block.pos)
 
-        if block.get(pos[1], pos[2], pos[3]) == preview_id then
-            block.set(pos[1], pos[2], pos[3], 0)
+    for _, blk in ipairs(rotated) do
+        local world_pos = vec3.add(origin_pos, blk.pos)
+
+        if block.get(world_pos[1], world_pos[2], world_pos[3]) == preview_id then
+            block.set(world_pos[1], world_pos[2], world_pos[3], 0)
         end
     end
 end
+
 
 function BluePrint:index_to_pos(index)
     local sizeX, sizeY, sizeZ = unpack(self.size)
@@ -197,6 +186,22 @@ function BluePrint:pos_to_index(pos)
     end
 
     return abs_x * sizeY * sizeZ + abs_y * sizeZ + abs_z + 1
+end
+
+function BluePrint:get_center_pos()
+    local min = {math.huge, math.huge, math.huge}
+    local max = {-math.huge, -math.huge, -math.huge}
+
+    for _, block in ipairs(self.blocks) do
+        min = utils.vec.min(min, block.pos)
+        max = utils.vec.max(max, block.pos)
+    end
+
+    local center_x = math.floor((min[1] + max[1]) / 2)
+    local center_y = math.floor((min[2] + max[2]) / 2)
+    local center_z = math.floor((min[3] + max[3]) / 2)
+
+    return {center_x, center_y, center_z}
 end
 
 return BluePrint

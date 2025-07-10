@@ -77,6 +77,10 @@ function mbp.__put_data(buf, blueprint)
     buf:put_byte(blueprint.size[2])
     buf:put_uint16(blueprint.size[3])
 
+    buf:put_float32(blueprint.rotation_vector[1])
+    buf:put_float32(blueprint.rotation_vector[2])
+    buf:put_float32(blueprint.rotation_vector[3])
+
     buf:put_uint32(blueprint.origin)
 end
 
@@ -148,11 +152,19 @@ function mbp.__get_data(buf)
         buf:get_byte(),
         buf:get_uint16()
     }
+
+    local rotation_vector = {
+        buf:get_float32(),
+        buf:get_float32(),
+        buf:get_float32()
+    }
+
     local origin = buf:get_uint32()
     return {
         version = version,
         size = size,
-        origin = origin
+        origin = origin,
+        rotation_vector = rotation_vector
     }
 end
 
@@ -166,6 +178,7 @@ function mbp.deserialize(bytes)
 
     blueprint.origin = data.origin
     blueprint.size = data.size
+    blueprint.rotation_vector = data.rotation_vector
 
    for id, block in ipairs(blocks) do
         block.pos = blueprint:index_to_pos(id)
