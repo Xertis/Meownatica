@@ -5,7 +5,6 @@
     "sky-light-passing": true,
     "obstacle": false,
     "selectable": true,
-    "picking-item": "meownatica:meowoad.item",
     "hidden": true,
     "translucent": true,
     "shadeless": true

@@ -1,6 +1,8 @@
 CONFIG = nil
+BLUEPRINT_SAVE_PATH = "export:meownatica"
 
-CURRENT_BLUEPRINT = nil
+CURRENT_BLUEPRINT = {id = 0}
+BLUEPRINTS = {}
 
 CURRENT_BORDER_ID = 1
 BORDERS = { {}, {} }

@@ -1,11 +1,8 @@
 {
-  "blocks": [
-    "meowdelenie",
-    "meowdelat",
-    "meowbuild",
-    "meowreed",
-    "meowoad"
-  ],
+  "entities": [],
   "items": [],
-  "entities": []
+  "blocks": [
+    "meowdelat",
+    "preview"
+  ]
 }

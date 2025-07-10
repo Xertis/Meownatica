@@ -10,19 +10,47 @@ local block_signature = {
 local function __pre_process(blocks, origin)
     local min = {math.huge, math.huge, math.huge}
     local max = {0, 0, 0}
+    local origin_index = 1
 
-    for _, block in ipairs(blocks) do
+    for id, block in ipairs(blocks) do
         local pos = vec3.sub(block.pos, origin)
 
         min = utils.vec.min(min, pos)
         max = utils.vec.max(max, pos)
 
+        if pos[1] == 0 and pos[2] == 0 and pos[3] == 0 then
+            origin_index = id
+        end
+
         block.pos = pos
     end
 
-    local size = vec3.sub(max, min)
+    local size = vec3.add(vec3.abs(vec3.sub(max, min)), 1)
 
-    return size
+    return size, origin_index
+end
+
+local function __pre_process_indexes(blocks)
+    local indexes = {to = {}, from = {}}
+    local max_index = 0
+    for _, _block in ipairs(blocks) do
+        local block_name = block.name(_block.id)
+        if indexes.to[block_name] == nil then
+            indexes.to[block_name] = {
+                id = max_index,
+                name = block_name
+            }
+            indexes.from[max_index] = {
+                id = max_index,
+                name = block_name
+            }
+            max_index = max_index + 1
+        end
+
+        _block.id = indexes.to[block_name].id
+    end
+
+    return indexes
 end
 
 local function __change_origin(blocks, new_origin)
@@ -37,7 +65,10 @@ function BluePrint.new(blocks, origin)
     local self = setmetatable({}, BluePrint)
 
     self.blocks = blocks or {}
-    self.size = __pre_process(self.blocks, origin)
+    self.size, self.origin = __pre_process(self.blocks, origin)
+    self.indexes = __pre_process_indexes(self.blocks)
+    self.name = "default_name.mbp"
+
     self.meta = {
         description = '',
         image = {}
@@ -90,12 +121,59 @@ function BluePrint:build(origin_pos)
     for _, _block in ipairs(self.blocks) do
         local pos = vec3.add(origin_pos, _block.pos)
         local states = _block.states
-        local id = _block.id
+        local id = block.index(self.indexes.from[_block.id].name)
 
         if (not CONFIG.setair and id ~= 0) or CONFIG.setair then
             block.set(pos[1], pos[2], pos[3], id, states)
         end
     end
+end
+
+function BluePrint:index_to_pos(index)
+    local sizeX, sizeY, sizeZ = unpack(self.size)
+    local total_blocks = sizeX * sizeY * sizeZ
+
+    if index < 1 or index > total_blocks then
+        return nil
+    end
+
+    index = index - 1
+    local z = index % sizeZ
+    local y = math.floor(index / sizeZ) % sizeY
+    local x = math.floor(index / (sizeY * sizeZ))
+
+    local origin_index = self.origin - 1
+    local origin_z = origin_index % sizeZ
+    local origin_y = math.floor(origin_index / sizeZ) % sizeY
+    local origin_x = math.floor(origin_index / (sizeY * sizeZ))
+
+    return {
+        x - origin_x,
+        y - origin_y,
+        z - origin_z
+    }
+end
+
+function BluePrint:pos_to_index(pos)
+    local sizeX, sizeY, sizeZ = unpack(self.size)
+    local x, y, z = unpack(pos)
+
+    local origin_index = self.origin - 1
+    local origin_z = origin_index % sizeZ
+    local origin_y = math.floor(origin_index / sizeZ) % sizeY
+    local origin_x = math.floor(origin_index / (sizeY * sizeZ))
+
+    local abs_x = origin_x + x
+    local abs_y = origin_y + y
+    local abs_z = origin_z + z
+
+    if abs_x < 0 or abs_x >= sizeX or
+       abs_y < 0 or abs_y >= sizeY or
+       abs_z < 0 or abs_z >= sizeZ then
+        return nil
+    end
+
+    return abs_x * sizeY * sizeZ + abs_y * sizeZ + abs_z + 1
 end
 
 return BluePrint

@@ -32,6 +32,15 @@ local function __select_blocks(pos1, pos2)
     return blocks
 end
 
+local function set_blueprint(pos1, pos2, origin)
+    local blocks = __select_blocks(pos1, pos2)
+    if #blocks == 0 then return end
+
+    local blue_print = BluePrint.new(blocks, origin)
+    CURRENT_BLUEPRINT.id = #BLUEPRINTS+1
+    table.insert(BLUEPRINTS, blue_print)
+end
+
 function on_breaking(x, y, z)
     local pair_x = block.get_field(
         x, y, z,
@@ -48,6 +57,28 @@ function on_breaking(x, y, z)
 
     if pair_x then
         block.set(pair_x, pair_y, pair_z, 0)
+    end
+end
+
+function on_interact(x, y, z)
+    local pair_x = block.get_field(
+        x, y, z,
+        "pair_x"
+    )
+    local pair_y = block.get_field(
+        x, y, z,
+        "pair_y"
+    )
+    local pair_z = block.get_field(
+        x, y, z,
+        "pair_z"
+    )
+
+    if pair_x then
+        local pair_pos = {pair_x, pair_y, pair_z}
+        local self_pos = {x, y, z}
+
+        set_blueprint(self_pos, pair_pos, self_pos)
     end
 end
 
@@ -75,12 +106,8 @@ function on_placed(x, y, z)
         )
     end
 
-    local blocks = __select_blocks(BORDERS[1], BORDERS[2])
-    if #blocks == 0 then return end
-
     local origin = {x, y, z}
     if y > BORDERS[1][2] then origin = BORDERS[1] end
 
-    local blue_print = BluePrint.new(blocks, origin)
-    CURRENT_BLUEPRINT = blue_print
+    set_blueprint(BORDERS[1], BORDERS[2], origin)
 end
