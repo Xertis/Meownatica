@@ -1,0 +1,58 @@
+local drawing = require "blueprint/logic/drawing"
+
+local pid = nil
+
+function on_hud_open()
+    pid = hud.get_player()
+    hud.open_permanent("meownatica:build_hud")
+
+    input.add_callback("meownatica.build_hud-mark", function ()
+        if not COMMON_GLOBALS.BUILD_HUD_OPEN then
+            return
+        end
+
+        local x, y, z = player.get_selected_block(pid)
+
+        drawing.draw(x, y, z)
+    end)
+
+    input.add_callback("meownatica.build_hud-move", function ()
+        if not COMMON_GLOBALS.BUILD_HUD_OPEN then
+            return
+        end
+
+        local x, y, z = player.get_selected_block(pid)
+        local blue_print = BLUEPRINTS[CURRENT_BLUEPRINT.id]
+
+        if blue_print then
+            if CURRENT_BLUEPRINT.preview_pos[1] ~= nil then
+                blue_print:unbuild_preview(CURRENT_BLUEPRINT.preview_pos)
+            end
+
+            if input.is_pressed("key:left-ctrl") then
+                y = y + 1
+            end
+
+            local new_preview_pos = {x, y, z}
+            blue_print:build_preview(new_preview_pos)
+            CURRENT_BLUEPRINT.preview_pos = new_preview_pos
+        end
+    end)
+
+    input.add_callback("meownatica.build_hud-build", function ()
+        if not COMMON_GLOBALS.BUILD_HUD_OPEN then
+            return
+        end
+
+        local blue_print = BLUEPRINTS[CURRENT_BLUEPRINT.id]
+
+        if blue_print then
+            if CURRENT_BLUEPRINT.preview_pos[1] == nil then
+                return
+            end
+
+            blue_print:build(CURRENT_BLUEPRINT.preview_pos)
+            CURRENT_BLUEPRINT.preview_pos = {}
+        end
+    end)
+end

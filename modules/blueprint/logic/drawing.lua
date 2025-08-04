@@ -1,5 +1,8 @@
 local BluePrint = require "blueprint/blueprint"
 local selection = require "common/selection"
+local module = {}
+
+local norm255 =  utils.math.norm255
 
 local function __select_blocks(pos1, pos2)
     local blocks = {}
@@ -42,78 +45,31 @@ local function set_blueprint(pos1, pos2, origin)
     utils.blueprint.change(#BLUEPRINTS)
 end
 
-function on_breaking(x, y, z)
-    local pair_x = block.get_field(
-        x, y, z,
-        "pair_x"
-    )
-    local pair_y = block.get_field(
-        x, y, z,
-        "pair_y"
-    )
-    local pair_z = block.get_field(
-        x, y, z,
-        "pair_z"
-    )
-
-    if pair_x then
-        block.set(pair_x, pair_y, pair_z, 0)
-    end
-
-    selection.desel()
-end
-
-function on_interact(x, y, z)
-    local pair_x = block.get_field(
-        x, y, z,
-        "pair_x"
-    )
-    local pair_y = block.get_field(
-        x, y, z,
-        "pair_y"
-    )
-    local pair_z = block.get_field(
-        x, y, z,
-        "pair_z"
-    )
-
-    if pair_x then
-        local pair_pos = {pair_x, pair_y, pair_z}
-        local self_pos = {x, y, z}
-
-        set_blueprint(self_pos, pair_pos, self_pos)
-    end
-end
-
-function on_placed(x, y, z)
+function module.draw(x, y, z)
     local id = CURRENT_BORDER_ID
     CURRENT_BORDER_ID = utils.math.in_range(CURRENT_BORDER_ID+1, {1, 2})
-    BORDERS[id] = {x, y, z}
 
     if id ~= 2 then
+        local sel_id = selection.sel(x, y, z, x, y, z, {norm255(255), norm255(58), norm255(50), norm255(255)})
+
+        selection.desel(BORDERS[1][4])
+        selection.desel(BORDERS[2][4])
+        selection.desel(BORDERS[2][5])
+
+        BORDERS[id] = {x, y, z, sel_id}
         return
     end
 
+    local sel_id = selection.sel(x, y, z, x, y, z, {norm255(63), norm255(52), norm255(160), norm255(255)})
+
     local prev_x, prev_y, prev_z = unpack(BORDERS[1])
-    selection.sel(x, y, z, prev_x, prev_y, prev_z, {66 / 255, 170 / 255, 255 / 255, 255 / 255})
-
-    for self_id, pos in ipairs(BORDERS) do
-        local self_x, self_y, self_z = unpack(pos)
-        local pair_x, pair_y, pair_z = unpack(BORDERS[utils.math.in_range(self_id+1, {1, 2})])
-
-        block.set_field(
-            pair_x, pair_y, pair_z, "pair_x", self_x
-        )
-        block.set_field(
-            pair_x, pair_y, pair_z, "pair_y", self_y
-        )
-        block.set_field(
-            pair_x, pair_y, pair_z, "pair_z", self_z
-        )
-    end
+    local external_sel_id = selection.sel(x, y, z, prev_x, prev_y, prev_z, {norm255(255), norm255(183), norm255(0), norm255(255)})
+    BORDERS[id] = {x, y, z, sel_id, external_sel_id}
 
     local origin = {x, y, z}
-    if y > BORDERS[1][2] then origin = BORDERS[1] end
+    if y > BORDERS[1][2] then origin = {BORDERS[1][1], BORDERS[1][2], BORDERS[1][3]} end
 
     set_blueprint(BORDERS[1], BORDERS[2], origin)
 end
+
+return module

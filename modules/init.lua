@@ -5,7 +5,7 @@ do
         file.write(path, file.read("meownatica:default_data/config.toml"))
     end
 
-    CONFIG = toml.parse(file.read(path))
+    MEOW_CONFIG = toml.parse(file.read(path))
 end
 
 -- Инициализация папки экспорта

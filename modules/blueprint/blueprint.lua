@@ -89,11 +89,14 @@ end
 
 function BluePrint:move_origin(new_origin)
     self.blocks, self.origin = __change_origin(self.blocks, new_origin)
+    return self
 end
 
 function BluePrint:rotate(rotation)
     self.rotation_vector = rotation
     self.rotation_matrix = utils.mat4.vec_to_mat(rotation)
+
+    return self
 end
 
 function BluePrint:build(origin_pos)
@@ -105,10 +108,12 @@ function BluePrint:build(origin_pos)
         local world_z = origin_pos[3] + p[3]
 
         local id = block.index(self.indexes.from[blk.id].name)
-        if (not CONFIG.setair and id ~= 0) or CONFIG.setair then
+        if (not MEOW_CONFIG.setair and id ~= 0) or MEOW_CONFIG.setair then
             block.set(world_x, world_y, world_z, id, blk.states)
         end
     end
+
+    return self
 end
 
 function BluePrint:build_preview(origin_pos)
@@ -125,6 +130,8 @@ function BluePrint:build_preview(origin_pos)
             block.set(world_pos[1], world_pos[2], world_pos[3], preview_id)
         end
     end
+
+    return self
 end
 
 function BluePrint:unbuild_preview(origin_pos)
@@ -138,6 +145,8 @@ function BluePrint:unbuild_preview(origin_pos)
             block.set(world_pos[1], world_pos[2], world_pos[3], 0)
         end
     end
+
+    return self
 end
 
 

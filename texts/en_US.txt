@@ -1,0 +1,12 @@
+meownatica.menu=Open main menu
+meownatica.build_hud-build=Build schematic
+meownatica.build_hud-move=Move schematic
+meownatica.build_hud-rotate=Rotate schematic
+meownatica.build_hud-preview=Show schematic preview
+meownatica.build_hud-select=Select schematic
+meownatica.build_hud-mark=Set selection point
+meownatica.build_hud-destroy=Remove schematic
+
+meownatica.build-hud-selected-blueprint=Selected blueprint
+meownatica.build-hud-distance-preview=Distance to the preview
+meownatica.distance-blocks=blocks

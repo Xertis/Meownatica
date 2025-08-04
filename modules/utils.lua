@@ -3,7 +3,8 @@ utils = {
     math = {},
     table = {},
     blueprint = {},
-    mat4 = {}
+    mat4 = {},
+    files = {}
 }
 
 function utils.vec.min(vec1, vec2)
@@ -41,6 +42,17 @@ function utils.math.in_range(num, range)
 
     return num
 end
+
+function utils.math.norm255(num)
+    return num / 255
+end
+
+function utils.math.euclidian3D(pos1, pos2)
+    local x1, y1, z1 = unpack(pos1)
+    local x2, y2, z2 = unpack(pos2)
+    return ((x1 - x2) ^ 2 + (y1 - y2) ^ 2 + (z1 - z2) ^ 2) ^ 0.5
+end
+
 
 function utils.table.deep_equals(tbl1, tbl2)
     if type(tbl1) ~= type(tbl2) then
@@ -118,4 +130,16 @@ function utils.mat4.vec_to_mat(vector)
     end
 
     return mat4_mul(matrices)
+end
+
+function utils.files.hash(path)
+    local bytes = file.read_bytes(path)
+    local sum = 0
+    for _, byte in ipairs(bytes) do
+        sum = sum + (byte^0.8)
+    end
+
+    sum = math.round(sum)
+
+    return sum % (2^16-1)
 end

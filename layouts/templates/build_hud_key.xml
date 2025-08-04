@@ -1,0 +1,6 @@
+<container id="key_%{id}"size="80,50" color="#00000000">
+    <label id="keyhead_%{id}" gravity="top-center">%{head}</label>
+    <panel gravity="center-center" size="25,10" color="#ffb700ff">
+        <label id="keybuttom_%{id}" color="#ffffffff" gravity="center-center">%{key}</label>
+    </panel>
+</container>

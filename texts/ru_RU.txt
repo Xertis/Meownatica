@@ -1,0 +1,12 @@
+meownatica.menu=Открытие главного меню
+meownatica.build_hud-build=Постройка схемы
+meownatica.build_hud-move=Перемещение схемы
+meownatica.build_hud-rotate=Поворот схемы
+meownatica.build_hud-preview=Отображение превью схемы
+meownatica.build_hud-select=Выбор схему
+meownatica.build_hud-mark=Установка точки выделения
+meownatica.build_hud-destroy=Убрать схему
+
+meownatica.build-hud-selected-blueprint=Выбранная схема
+meownatica.build-hud-distance-preview=Расстояние до превью
+meownatica.distance-blocks=блоков
