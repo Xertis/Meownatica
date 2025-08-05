@@ -22,6 +22,7 @@ function on_hud_open()
         end
 
         local x, y, z = player.get_selected_block(pid)
+        if not x then return end
         local blue_print = BLUEPRINTS[CURRENT_BLUEPRINT.id]
 
         if blue_print then
@@ -53,6 +54,26 @@ function on_hud_open()
 
             blue_print:build(CURRENT_BLUEPRINT.preview_pos)
             CURRENT_BLUEPRINT.preview_pos = {}
+        end
+    end)
+
+    input.add_callback("meownatica.build_hud-rotate", function ()
+        if not COMMON_GLOBALS.BUILD_HUD_OPEN then
+            return
+        end
+
+        if not CURRENT_BLUEPRINT then
+            return
+        end
+
+        if CURRENT_BLUEPRINT.preview_pos[1] == nil then
+            return
+        end
+
+        local blue_print = BLUEPRINTS[CURRENT_BLUEPRINT.id]
+
+        if blue_print then
+            hud.show_overlay("meownatica:build_hud_rotate", false)
         end
     end)
 end
