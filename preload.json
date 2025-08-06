@@ -4,6 +4,9 @@
         "mgui/construction_tape_rotated_bottom",
         "mgui/blueprint",
         "mgui/load",
-        "mgui/unload"
+        "mgui/unload",
+        "mgui/default_blueprint_icon",
+        "mgui/export",
+        "mgui/materials"
     ]
 }
