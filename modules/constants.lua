@@ -1,5 +1,5 @@
 MEOW_CONFIG = nil
-BLUEPRINT_SAVE_PATH = "export:meownatica"
+BLUEPRINT_SAVE_PATH = "export:meownatics"
 
 CURRENT_BLUEPRINT = {
     id = 0,
@@ -14,6 +14,15 @@ CURRENT_BORDER_ID = 1
 BORDERS = { {}, {} }
 
 MODE = {side = "standalone"}
+
+FILTERS = {
+    {value = "all",            text="meownatica.menu-filters-all"},
+    {value = "nature",         text="meownatica.menu-filters-nature"},
+    {value = "middle_ages",    text="meownatica.menu-filters-middle_ages"},
+    {value = "post-soviet",    text="meownatica.menu-filters-post_soviet"},
+    {value = "modern",         text="meownatica.menu-filters-modern"},
+    {value = "future",         text="meownatica.menu-filters-future"},
+}
 
 COMMON_GLOBALS = {
     BUILD_HUD_OPEN = false

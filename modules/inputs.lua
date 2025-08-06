@@ -73,3 +73,7 @@ input.add_callback("meownatica.build_hud-rotate", function ()
         hud.show_overlay("meownatica:build_hud_rotate", false)
     end
 end)
+
+input.add_callback("meownatica.menu", function ()
+    hud.show_overlay("meownatica:meow_menu")
+end)

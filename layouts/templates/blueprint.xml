@@ -1,0 +1,13 @@
+<container id='blueprint_%{id}' onclick="select(%{id})" position-func="position_func(%{id})" size='0,40' color='#00000040' hover-color='#00000080' tooltip="%{tooltip}"> 
+    <label id="blueprintname_{id}" pos='42,6'>%{name}</label> 
+    <label id="blueprintpath_{id}" pos='42,24' markup="md" color="#66666680">%{path}</label> 
+
+    <image pos='3,3' src='mgui/blueprint' size='34'/>
+
+    <button gravity='center-right'
+            color='#00000000'
+            hover-color='#FFFFFF2B'
+            onclick='action(%{id})'>
+        <image id="blueprintaction_%{id}" src='mgui/load' size='32,32'/>
+    </button>
+</container>

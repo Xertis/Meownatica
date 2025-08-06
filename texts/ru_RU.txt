@@ -11,6 +11,13 @@ meownatica.menu-rotate-snap-tooltip=Меняет шаг трекбара на 90
 
 meownatica.menu-rotate-apply=Применить вращение
 
+meownatica.menu-filters-all=Все
+meownatica.menu-filters-nature=Природа
+meownatica.menu-filters-middle_ages=Средневековье
+meownatica.menu-filters-post_soviet=Постсоветское
+meownatica.menu-filters-modern=Модерн
+meownatica.menu-filters-future=Будущее
+
 meownatica.menu.on=Вкл
 meownatica.menu.off=Выкл
 meownatica.menu.close=Закрыть

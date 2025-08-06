@@ -1,0 +1,9 @@
+<container position-func="gui.get_viewport()[1]/2-450,gui.get_viewport()[2]/2-350" size="900,700" color='#000000f0'>
+    <image src="mgui/construction_tape_rotated_bottom" size="200" pos="700,500" />
+    <textbox pos="200,0" size="465,35" hint="Search..." sub-consumer="search"></textbox>
+    <select id="filters" pos="0,0" width="200">
+
+    </select>
+
+    <panel id="blueprints" color="#5050502b" size='600,650' pos="15,35" max-length='650' scrollable='true' />
+</container>

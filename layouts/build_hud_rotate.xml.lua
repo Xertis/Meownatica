@@ -98,7 +98,7 @@ function axis_validator(text)
 end
 
 function apply()
-    --hud.close("meownatica:build_hud_rotate")
+    hud.close("meownatica:build_hud_rotate")
     rotate_blueprint()
 end
 

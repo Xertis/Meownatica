@@ -11,6 +11,13 @@ meownatica.menu-rotate-snap-tooltip=Changes the trackbar step to 90 degrees
 
 meownatica.menu-rotate-apply=Apply rotation
 
+meownatica.menu-filters-all=All
+meownatica.menu-filters-nature=Nature
+meownatica.menu-filters-middle_ages=Middle ages
+meownatica.menu-filters-post_soviet=Post Soviet
+meownatica.menu-filters-modern=Modern
+meownatica.menu-filters-future=Future
+
 meownatica.menu.on=On
 meownatica.menu.off=Off
 meownatica.menu.close=Close
