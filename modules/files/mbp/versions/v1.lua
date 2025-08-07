@@ -186,6 +186,7 @@ function mbp.deserialize(bytes)
 
     blueprint.blocks = blocks
     blueprint.indexes = indexes
+    blueprint.loaded = true
 
     return blueprint
 end

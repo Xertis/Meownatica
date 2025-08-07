@@ -1,0 +1,8 @@
+<container size="615,700" color='#00000000'> 
+    <textbox id="search" pos="200,0" size="415,35" hint="Search..." sub-consumer="search"></textbox>
+    <select id="filters" pos="0,0" width="200">
+
+    </select>
+
+    <panel id="blueprints" color="#5050502b" size='600,650' pos="15,35" max-length='650' scrollable='true' />
+</container>

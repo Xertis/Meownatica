@@ -78,6 +78,11 @@ function BluePrint.new(blocks, origin)
     self.name = "default_name.mbp"
     self.rotation_vector = {0, 0, 0}
     self.rotation_matrix = utils.mat4.vec_to_mat(self.rotation_vector)
+    self.author = ""
+    self.description = ""
+    self.logo = {}
+    self.loaded = false
+    self.tags = {}
 
     self.meta = {
         description = '',

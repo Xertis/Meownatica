@@ -1,3 +1,32 @@
 <container position-func="gui.get_viewport()[1]/2-450,gui.get_viewport()[2]/2-350" size="900,700" color='#000000f0'>
-    <pagebox id='meow_menu' pos='0,0' size='900,700' />
+    <pagebox id='menu' pos='0,0' size='615,700' />
+
+    <image src="mgui/construction_tape_rotated_bottom" color="#ffffff2b" size="200" pos="700,500" />
+    <image id="blueprint_icon" src="mgui/default_blueprint_icon" size="256" pos="630,15" />
+    <panel id="blueprint_info" color="#00000000" size='270,300' pos="630,286">
+        <label id="blueprint_name">Название: Omg</label>
+        <label id="blueprint_name" markup="md">Путь: export:meownatics/omg.**mbp**</label>
+        <label id="blueprint_name" size="50" markup="md" multiline="true" text-wrap="true">Описание: 123123123123123123123123123123123123123123</label>
+    </panel>
+
+    <panel color="#00000000" size="300,100" pos="630,648" orientation="horizontal">
+        <button color='#00000000'
+                hover-color='#FFFFFF2B'
+                onclick='change_page("blueprints")'
+                id="buttom_blueprints">
+            <image src='mgui/blueprint' size='32,32'/>
+        </button>
+        <button color='#00000000'
+                hover-color='#FFFFFF2B'
+                onclick='change_page("export")'
+                id="buttom_export">
+            <image src='mgui/export' size='32,32'/>
+        </button>
+        <button color='#00000000'
+                hover-color='#FFFFFF2B'
+                onclick='change_page("materials")'
+                id="buttom_materials">
+            <image src='mgui/materials' size='32,32'/>
+        </button>
+    </panel>
 </container>

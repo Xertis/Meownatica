@@ -24,6 +24,13 @@ FILTERS = {
     {value = "future",         text="meownatica.menu-filters-future"},
 }
 
+FILE_EXTENSIONS = {
+    {value = "mbp",            text="MBP"},
+    {value = "json",    text="JSON"},
+    {value = "vox",         text="VOX (FRAGMENT)"}
+}
+
 COMMON_GLOBALS = {
-    BUILD_HUD_OPEN = false
+    BUILD_HUD_OPEN = false,
+    MENU = nil
 }

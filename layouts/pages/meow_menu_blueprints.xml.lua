@@ -1,19 +1,114 @@
 local mbp = require "files/mbp/manager"
 
-local Blueprints = {}
+local Blueprints = session.get_entry("meownatica.menu.blueprints.Blueprints")
+local olders_paths = session.get_entry("meownatica.menu.blueprints.olders_paths")
+local olders_indexes = session.get_entry("meownatica.menu.blueprints.olders_indexes")
+
 local blueprints_copy = table.copy(Blueprints)
-local olders_paths = {}
+
+function place_blueprint(info)
+    document.blueprints:add(gui.template("blueprint", info))
+end
+
 
 local function find_blueprint(id)
-    for i, blueprint in ipairs(Blueprints) do
+    for i, blueprint in pairs(Blueprints) do
         if blueprint.id == id then
-            return blueprint
+            return blueprint, i
         end
     end
 end
 
-function place_blueprint(info)
-    document.blueprints:add(gui.template("blueprint", info))
+local function load_from_files()
+    local files = file.list(BLUEPRINT_SAVE_PATH)
+    local next_index = table.count_pairs(Blueprints)+1
+    for i, file_path in ipairs(files) do
+
+        local name = file.stem(file_path)
+        local ext = file.ext(file_path)
+        local parent = file.parent(file_path)
+        local new_file_path = file_path
+
+        if olders_paths[file_path] then
+            place_blueprint({
+                id = olders_paths[file_path],
+                name = name,
+                path = new_file_path
+            })
+            goto continue
+        end
+
+        olders_paths[file_path] = next_index
+
+        if ext then
+            new_file_path = string.format("%s/%s.**%s**", parent, name, ext)
+        end
+
+        place_blueprint({
+            id = next_index,
+            name = name,
+            path = new_file_path
+        })
+
+        table.insert(Blueprints, {
+            id = next_index,
+            name = name,
+            path = file_path
+        })
+
+        next_index = next_index + 1
+
+        ::continue::
+    end
+end
+
+local function load_from_memory()
+    local next_index = table.count_pairs(Blueprints)+1
+    for i, blueprint in pairs(BLUEPRINTS) do
+        if blueprint.loaded then
+            goto continue
+        end
+
+        if olders_indexes[i] then
+            place_blueprint({
+                id = olders_indexes[i],
+                name = blueprint.name,
+                path = "in-memory"
+            })
+            goto continue
+        end
+
+        olders_indexes[i] = next_index
+
+        place_blueprint({
+            id = next_index,
+            name = blueprint.name,
+            path = "in-memory"
+        })
+
+        table.insert(Blueprints, {
+            id = next_index,
+            name = blueprint.name,
+            path = "in-memory",
+            index = i
+        })
+
+        next_index = next_index + 1
+
+        ::continue::
+    end
+end
+
+local function refresh()
+    for i, blueprint in pairs(Blueprints) do
+        if blueprint.index then
+            document["blueprintaction_" .. blueprint.id].src = "mgui/unload"
+        end
+
+        if blueprint.index == CURRENT_BLUEPRINT.id then
+            document["blueprint_" .. blueprint.id].color = {255, 255, 255, 17}
+        end
+    end
 end
 
 function on_open()
@@ -26,37 +121,9 @@ function on_open()
     document.filters.options = options
     document.filters.value = "all"
 
-    local files = file.list(BLUEPRINT_SAVE_PATH)
-    for i, file_path in ipairs(files) do
-        if table.has(olders_paths, file_path) then
-            goto continue
-        end
-
-        table.insert(olders_paths, file_path)
-
-        local name = file.stem(file_path)
-        local ext = file.ext(file_path)
-        local parent = file.parent(file_path)
-        local new_file_path = file_path
-
-        if ext then
-            new_file_path = string.format("%s/%s.**%s**", parent, name, ext)
-        end
-
-        place_blueprint({
-            id = i,
-            name = name,
-            path = new_file_path
-        })
-
-        table.insert(Blueprints, {
-            id = i,
-            name = name,
-            path = file_path
-        })
-
-        ::continue::
-    end
+    load_from_files()
+    load_from_memory()
+    refresh()
 end
 
 function position_func(blueprint_id)
@@ -78,6 +145,7 @@ function position_func(blueprint_id)
 end
 
 function search(text)
+    text = text or document.search.text
     blueprints_copy = table.copy(Blueprints)
     local search_text = text:lower()
 
@@ -155,12 +223,20 @@ function action(id)
         end
     else
         icon.src = "mgui/load"
+        document["blueprint_" .. id].color = {0, 0, 0, 64}
+        if not BLUEPRINTS[blueprint.index].loaded then
+            local _, id_in_tbl = find_blueprint(id)
+
+            table.remove(Blueprints, id_in_tbl)
+            document["blueprint_" .. id]:destruct()
+
+            olders_indexes[blueprint.index] = nil
+
+            search()
+        end
+
         if blueprint.index then
             BLUEPRINTS[blueprint.index] = nil
         end
     end
-end
-
-function export()
-    
 end
