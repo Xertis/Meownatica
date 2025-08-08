@@ -31,6 +31,32 @@ function utils.vec.floor(vec)
     }
 end
 
+function utils.vec.facing(angles_deg)
+    local rotX, rotY, rotZ = unpack(angles_deg)
+    local m = mat4.idt()
+
+    m = mat4.rotate(m, {1, 0, 0}, rotX)
+    m = mat4.rotate(m, {0, 1, 0}, rotY)
+    m = mat4.rotate(m, {0, 0, 1}, rotZ)
+
+    local dir = {0, 0, 1, 0}
+
+    dir = mat4.mul(m, dir)
+
+    dir = {dir[1], dir[2], dir[3]}
+
+    dir = vec3.normalize(dir)
+    local absDir = vec3.abs(dir)
+
+    if absDir[1] >= absDir[2] and absDir[1] >= absDir[3] then
+        return (dir[1] > 0) and 0 or 1
+    elseif absDir[2] >= absDir[1] and absDir[2] >= absDir[3] then
+        return (dir[2] > 0) and 2 or 3
+    else
+        return (dir[3] > 0) and 4 or 5
+    end
+end
+
 function utils.math.in_range(num, range)
     if num < range[1] then
         return range[2]

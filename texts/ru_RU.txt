@@ -22,6 +22,18 @@ meownatica.menu.on=Вкл
 meownatica.menu.off=Выкл
 meownatica.menu.close=Закрыть
 
+meownatica.menu.count=Кол-во
+meownatica.menu.stacks=стаков
+meownatica.menu.units=единиц
+meownatica.menu.and=и
+
+meownatica.menu.name=Название
+meownatica.menu.author=Автор
+meownatica.menu.path=Путь
+meownatica.menu.tags=Тэги
+meownatica.menu.size=Размер
+meownatica.menu.blocks_count=Кол-во блоков
+
 meownatica.build_hud-build=Постройка схемы
 meownatica.build_hud-move=Перемещение схемы
 meownatica.build_hud-rotate=Поворот схемы

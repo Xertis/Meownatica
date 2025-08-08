@@ -1,0 +1,9 @@
+<container id='material_%{id}' size='0,40' color='#00000040' hover-color='#00000080' tooltip="%{tooltip}"> 
+    <label id="materialname_%{id}" pos='39,6'>%{name}</label> 
+
+    <label pos='39,6' size='455,50' color='#FFFFFFB2'> 
+        %{count} 
+    </label> 
+
+    <image id="%materialicon_{id}" pos='3,3' src='%{icon}' size='34'/>
+</container>

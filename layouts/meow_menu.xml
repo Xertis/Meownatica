@@ -4,9 +4,12 @@
     <image src="mgui/construction_tape_rotated_bottom" color="#ffffff2b" size="200" pos="700,500" />
     <image id="blueprint_icon" src="mgui/default_blueprint_icon" size="256" pos="630,15" />
     <panel id="blueprint_info" color="#00000000" size='270,300' pos="630,286">
-        <label id="blueprint_name">Название: Omg</label>
-        <label id="blueprint_name" markup="md">Путь: export:meownatics/omg.**mbp**</label>
-        <label id="blueprint_name" size="50" markup="md" multiline="true" text-wrap="true">Описание: 123123123123123123123123123123123123123123</label>
+        <label id="blueprint_name">Название:</label>
+        <label id="blueprint_author">Автор:</label>
+        <label id="blueprint_size">Размер:</label>
+        <label id="blueprint_blocks_count">Кол-во блоков:</label>
+        <label id="blueprint_tags" size="50" multiline="true" text-wrap="true">Тэги:</label>
+        <label id="blueprint_description" size="50" markup="md" multiline="true" text-wrap="true">Описание:</label>
     </panel>
 
     <panel color="#00000000" size="300,100" pos="630,648" orientation="horizontal">

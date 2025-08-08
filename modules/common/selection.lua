@@ -135,4 +135,49 @@ function Select.desel(selection_id)
     end
 end
 
+function Select.dot(x, y, z, col)
+    local function showdot(text_pos, text_rot, text)
+        local text_scale = 1/16
+        local text_table = {
+        scale = text_scale,
+        xray_opacity = 0,
+        render_distance = 1000,
+        color = col
+        }
+        local tid = gfx.text3d.show(text_pos, text, text_table)
+        gfx.text3d.set_rotation(tid, text_rot)
+        Selections[#Selections + 1] = tid
+    end
+
+    local text_rot = mat4.rotate({0, 1, 0}, 0)
+    local text_pos = {x, y+0.5, z+1}
+    local text = "   ∟"
+    showdot(text_pos, text_rot, text)
+
+    text_rot = mat4.rotate({0, 1, 0}, 90)
+    text_pos = {x+1, y+0.5, z}
+    text = "∟ "
+    showdot(text_pos, text_rot, text)
+
+    text_rot = mat4.rotate({0, 1, 0}, 180)
+    text_pos = {x, y+0.5, z}
+    text = "∟ "
+    showdot(text_pos, text_rot, text)
+
+    text_rot = mat4.rotate({0, 1, 0}, 270)
+    text_pos = {x, y+0.5, z}
+    text = "   ∟"
+    showdot(text_pos, text_rot, text)
+
+    text_rot = mat4.rotate({1, 0, 0}, 90)
+    text_pos = {x, y, z+0.5}
+    text = "   ∟"
+    showdot(text_pos, text_rot, text)
+
+    text_rot = mat4.rotate({1, 0, 0}, 270)
+    text_pos = {x, y+1, z+0.5}
+    text = "   ∟"
+    showdot(text_pos, text_rot, text)
+end
+
 return Select

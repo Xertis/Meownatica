@@ -30,7 +30,20 @@ FILE_EXTENSIONS = {
     {value = "vox",         text="VOX (FRAGMENT)"}
 }
 
+HALF_EXTENSIONS = {
+    "vox"
+}
+
+TAGS = {
+    {id = "nature",         text="meownatica.menu-filters-nature"},
+    {id = "middle_ages",    text="meownatica.menu-filters-middle_ages"},
+    {id = "post-soviet",    text="meownatica.menu-filters-post_soviet"},
+    {id = "modern",         text="meownatica.menu-filters-modern"},
+    {id = "future",         text="meownatica.menu-filters-future"},
+}
+
 COMMON_GLOBALS = {
     BUILD_HUD_OPEN = false,
-    MENU = nil
+    MENU = nil,
+    ITEMS_AVAILABLE = {},
 }

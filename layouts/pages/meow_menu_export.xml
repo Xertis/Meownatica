@@ -2,52 +2,48 @@
     <panel pos="15,15" color="#ffffff12" size="615,660">
         <label>Название схемы:</label>
         <panel size="517,35" color="#00000000" orientation="horizontal">
-            <textbox size="383,35" hint="Name" sub-consumer="name"></textbox>
-            <select id="extensions" width="200"/>
+            <textbox id="file_name" size="383,35" hint="Name"></textbox>
+            <select id="extensions" onselect="select_extension" width="200"/>
         </panel>
 
         <label>Автор:</label>
         <panel size="585,35" color="#00000000" orientation="horizontal">
-            <textbox size="585,35" hint="Author" sub-consumer="name"></textbox>
+            <textbox id="author" size="585,35" hint="Author"></textbox>
         </panel>
         <label>Описание:</label>
         <panel size="585,35" color="#00000000" orientation="horizontal">
-            <textbox size="585,35" hint="Description" sub-consumer="name"></textbox>
+            <textbox id="description" size="585,35" hint="Description"></textbox>
         </panel>
         <label>Путь к изображению:</label>
         <panel size="585,35" color="#00000000" orientation="horizontal">
-            <textbox size="585,35" hint="Path" sub-consumer="name"></textbox>
+            <textbox id="path" size="585,35" hint="Path"></textbox>
         </panel>
         <label>Выбранные тэги:</label>
-        <checkbox>@meownatica.menu-filters-nature</checkbox>
-        <checkbox>@meownatica.menu-filters-middle_ages</checkbox>
-        <checkbox>@meownatica.menu-filters-post_soviet</checkbox>
-        <checkbox>@meownatica.menu-filters-modern</checkbox>
-        <checkbox>@meownatica.menu-filters-future</checkbox>
+        <panel id="tags" color="#00000000" />
         <!-- Просто разделение -->
         <label>Вращение:</label>
-        <panel size="585,120" color="#ffffff00">
-            <checkbox>Отцентровать ось вращения</checkbox>
+        <panel id="rotation" size="585,120" color="#ffffff00">
+            <checkbox id="centering">Отцентровать ось вращения</checkbox>
             <label>X:</label>
             <panel orientation="horizontal" size="585,30" color="#00000000">
-                <textbox id="text_axis_x" error-color="#ff0000ff" validator="axis_validator" sub-consumer="axis_x_text" size="40,30" />
+                <textbox id="text_axis_x" error-color="#ff0000ff" validator="axis_validator" sub-consumer="axis_x_text" size="40,30">0</textbox>
                 <trackbar id="track_axis_x" consumer="axis_x" size="543,30" value='0' tooltip='@meownatica.menu-rotate-axis-x' min='0' max='360' step='1' />
             </panel>
             <label>Y:</label>
             <panel orientation="horizontal" size="585,30" color="#00000000">
-                <textbox id="text_axis_y" error-color="#ff0000ff" validator="axis_validator" sub-consumer="axis_y_text" size="40,30" />
+                <textbox id="text_axis_y" error-color="#ff0000ff" validator="axis_validator" sub-consumer="axis_y_text" size="40,30">0</textbox>
                 <trackbar id="track_axis_y" consumer="axis_y" size="543,30" value='0' tooltip='@meownatica.menu-rotate-axis-y' min='0' max='360' step='1' />
             </panel>
             <label>Z:</label>
             <panel orientation="horizontal" size="585,30" color="#00000000">
-                <textbox id="text_axis_z" error-color="#ff0000ff" validator="axis_validator" sub-consumer="axis_z_text" size="40,30" />
+                <textbox id="text_axis_z" error-color="#ff0000ff" validator="axis_validator" sub-consumer="axis_z_text" size="40,30">0</textbox>
                 <trackbar id="track_axis_z" consumer="axis_z" size="543,30" value='0' tooltip='@meownatica.menu-rotate-axis-z' min='0' max='360' step='1' />
             </panel>
         </panel>
         <!-- Ещё одно разделение -->
         <label />
         <panel orientation="horizontal" size="585,40" color="#ffffff00">
-            <button color="#6d6d6d5f" size="585,40" hover-color='#4141415f' onclick='change_page("blueprints")'>Экспортировать</button>
+            <button color="#6d6d6d5f" size="585,40" hover-color='#4141415f' onclick='export()'>Экспортировать</button>
         </panel>
     </panel>
 </container>

@@ -144,23 +144,59 @@ function position_func(blueprint_id)
     return pos[1], pos[2]
 end
 
+function select_filter(filter)
+    if filter == "all" then
+        search()
+        return
+    end
+
+    blueprints_copy = table.copy(Blueprints)
+    local function score_by_filter(blueprint)
+        if table.has(blueprint.tags or {}, filter) then
+            document["blueprint_" .. blueprint.id].enabled = true
+            return 1
+        end
+
+        document["blueprint_" .. blueprint.id].enabled = false
+        return 0
+    end
+
+    local function sorting_by_filter(a, b)
+        local score_a = score_by_filter(a)
+        local score_b = score_by_filter(b)
+
+        if score_a ~= score_b then
+            return score_a > score_b
+        end
+
+        return a.name < b.name
+    end
+
+    table.sort(blueprints_copy, sorting_by_filter)
+
+    for _, blueprint in ipairs(blueprints_copy) do
+        document["blueprint_" .. blueprint.id]:reposition()
+    end
+end
+
 function search(text)
     text = text or document.search.text
     blueprints_copy = table.copy(Blueprints)
     local search_text = text:lower()
 
     if #search_text ~= 0 then
-        local function score(blueprint_name)
-            if blueprint_name:lower():find(search_text) then
+        local function score(blueprint)
+            if blueprint.name:lower():find(search_text) then
+                document["blueprint_" .. blueprint.id].enabled = true
                 return 1
             end
+            document["blueprint_" .. blueprint.id].enabled = false
             return 0
         end
 
         local function sorting(a, b)
-            local score_a = score(a.name)
-            local score_b = score(b.name)
-
+            local score_a = score(a)
+            local score_b = score(b)
 
             if score_a ~= score_b then
                 return score_a > score_b
@@ -170,6 +206,10 @@ function search(text)
         end
 
         table.sort(blueprints_copy, sorting)
+    else
+        for _, blueprint in ipairs(Blueprints) do
+            document["blueprint_" .. blueprint.id].enabled = true
+        end
     end
 
     for _, blueprint in ipairs(blueprints_copy) do
@@ -206,7 +246,7 @@ function load_blueprint(path)
     end
 
     table.insert(BLUEPRINTS, blueprint)
-    return true, #BLUEPRINTS
+    return true, #BLUEPRINTS, blueprint.tags
 end
 
 function action(id)
@@ -214,10 +254,11 @@ function action(id)
     local blueprint = find_blueprint(id)
 
     if icon.src == "mgui/load" then
-        local status, error_or_index = load_blueprint(blueprint.path)
+        local status, error_or_index, tags = load_blueprint(blueprint.path)
         if status then
             icon.src = "mgui/unload"
             blueprint.index = error_or_index
+            blueprint.tags = tags
         else
             gui.alert("Не удалось загрузить схему\nОшибка:" .. tostring(error_or_index))
         end
@@ -238,5 +279,7 @@ function action(id)
         if blueprint.index then
             BLUEPRINTS[blueprint.index] = nil
         end
+
+        blueprint.index = nil
     end
 end

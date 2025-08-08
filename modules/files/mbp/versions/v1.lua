@@ -82,6 +82,14 @@ function mbp.__put_data(buf, blueprint)
     buf:put_float32(blueprint.rotation_vector[3])
 
     buf:put_uint32(blueprint.origin)
+
+    buf:put_string(blueprint.author)
+    buf:put_string(blueprint.description)
+    buf:put_byte(#blueprint.tags)
+
+    for _, tag in ipairs(blueprint.tags) do
+        buf:put_string(tag)
+    end
 end
 
 function mbp.serialize(blueprint)
@@ -160,11 +168,24 @@ function mbp.__get_data(buf)
     }
 
     local origin = buf:get_uint32()
+
+    local author = buf:get_string()
+    local description =  buf:get_string()
+    local count_tags = buf:get_byte()
+
+    local tags = {}
+    for _=1, count_tags do
+        table.insert(tags, buf:get_string())
+    end
+
     return {
         version = version,
         size = size,
         origin = origin,
-        rotation_vector = rotation_vector
+        rotation_vector = rotation_vector,
+        author = author,
+        description = description,
+        tags = tags
     }
 end
 
@@ -179,6 +200,10 @@ function mbp.deserialize(bytes)
     blueprint.origin = data.origin
     blueprint.size = data.size
     blueprint.rotation_vector = data.rotation_vector
+    blueprint.rotation_matrix = utils.mat4.vec_to_mat(data.rotation_vector)
+    blueprint.author = data.author
+    blueprint.description = data.description
+    blueprint.tags = data.tags
 
    for id, block in ipairs(blocks) do
         block.pos = blueprint:index_to_pos(id)

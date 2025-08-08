@@ -1,2 +1,3 @@
 <container size="600,700" color='#00000000'> 
+    <panel id="materials" color="#5050502b" size='600,670' pos="15,15" max-length='670' scrollable='true' />
 </container>

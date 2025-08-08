@@ -1,6 +1,6 @@
 <container size="615,700" color='#00000000'> 
     <textbox id="search" pos="200,0" size="415,35" hint="Search..." sub-consumer="search"></textbox>
-    <select id="filters" pos="0,0" width="200">
+    <select id="filters" pos="0,0" width="200" onselect="select_filter">
 
     </select>
 

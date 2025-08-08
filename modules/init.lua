@@ -17,4 +17,9 @@ do
     end
 end
 
+--Инициализация списка предметов
+for i=0, item.defs_count()-1 do
+    COMMON_GLOBALS.ITEMS_AVAILABLE[item.name(i)] = true
+end
+
 require "cmd"

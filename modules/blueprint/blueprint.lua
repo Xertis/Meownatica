@@ -80,7 +80,7 @@ function BluePrint.new(blocks, origin)
     self.rotation_matrix = utils.mat4.vec_to_mat(self.rotation_vector)
     self.author = ""
     self.description = ""
-    self.logo = {}
+    self.image_path = {}
     self.loaded = false
     self.tags = {}
 

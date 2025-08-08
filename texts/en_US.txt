@@ -22,6 +22,11 @@ meownatica.menu.on=On
 meownatica.menu.off=Off
 meownatica.menu.close=Close
 
+meownatica.menu.count=Count
+meownatica.menu.stacks=stacks
+meownatica.menu.units=units
+meownatica.menu.and=and
+
 meownatica.build_hud-build=Build schematic
 meownatica.build_hud-move=Move schematic
 meownatica.build_hud-rotate=Rotate schematic
