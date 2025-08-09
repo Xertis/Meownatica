@@ -64,6 +64,20 @@ local function compose_rotation(rot, facing, profile)
         elseif rot == 5 then
             new_rot = 3
         end
+    elseif facing == 2 then
+        if rot == 4 then
+            new_rot = 2
+        elseif rot == 2 then
+            new_rot = 5
+        elseif rot == 0 then
+            new_rot = 4
+        elseif rot == 5 then
+            new_rot = 2
+        elseif rot == 3 then
+            new_rot = 3
+        elseif rot == 1 then
+            new_rot = 1
+        end
     end
 
     if profile == "none" then

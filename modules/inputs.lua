@@ -10,7 +10,9 @@ input.add_callback("meownatica.build_hud-mark", function ()
 
     local x, y, z = player.get_selected_block(pid)
 
-    drawing.draw(x, y, z)
+    if x then
+        drawing.draw(x, y, z)
+    end
 end)
 
 input.add_callback("meownatica.build_hud-move", function ()
