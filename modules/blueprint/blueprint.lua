@@ -1,4 +1,7 @@
 local rotator = require "blueprint/logic/rotation"
+local selection = require "common/selection"
+
+local norm255 =  utils.math.norm255
 
 local BluePrint = {}
 BluePrint.__index = BluePrint
@@ -8,6 +11,32 @@ local block_signature = {
     states = 0,
     pos = {0, 0, 0},
 }
+
+local function depth_effect(color, pos, origin, size)
+    local relative_pos = {
+        pos[1] - origin[1],
+        pos[2] - origin[2],
+        pos[3] - origin[3]
+    }
+    local half_size = {
+        size[1] / 2,
+        size[2] / 2,
+        size[3] / 2
+    }
+    local max_distance = (half_size[1]^2 + half_size[2]^2 + half_size[3]^2) ^ 0.5
+    local current_distance = (relative_pos[1]^2 + relative_pos[2]^2 + relative_pos[3]^2) ^ 0.5
+
+    local norm_dist = math.min(current_distance / max_distance, 1)
+
+    local darken_coef = 1 - norm_dist * 0.5
+
+    return {
+        norm255(color[1] * darken_coef),
+        norm255(color[2] * darken_coef),
+        norm255(color[3] * darken_coef),
+        norm255(color[4])
+    }
+end
 
 local function __pre_process(blocks, origin)
     local min = {math.huge, math.huge, math.huge}
@@ -69,6 +98,7 @@ local function __change_origin(blocks, new_origin)
     return blocks, origin_index
 end
 
+local next_id = 0
 function BluePrint.new(blocks, origin)
     local self = setmetatable({}, BluePrint)
 
@@ -80,9 +110,14 @@ function BluePrint.new(blocks, origin)
     self.rotation_matrix = utils.mat4.vec_to_mat(self.rotation_vector)
     self.author = ""
     self.description = ""
-    self.image_path = {}
+    self.image_path = ""
+    self.image = ""
+    self.image_bytes = {}
     self.loaded = false
     self.tags = {}
+    self.preview_ids = {}
+    self.id = next_id
+    next_id = next_id + 1
 
     self.meta = {
         description = '',
@@ -98,6 +133,8 @@ function BluePrint:move_origin(new_origin)
 end
 
 function BluePrint:rotate(rotation)
+    local a, b = utils.vec.facing(rotation)
+
     self.rotation_vector = rotation
     self.rotation_matrix = utils.mat4.vec_to_mat(rotation)
 
@@ -123,32 +160,31 @@ end
 
 function BluePrint:build_preview(origin_pos)
     local rotated = rotator.dual_pass_rotated(self.blocks, self.rotation_matrix)
-    local preview_id = block.index("meownatica:preview")
+
+    local color = {40, 151, 255, 255}
+    local center_pos = self:get_center_pos()
 
     for _, blk in ipairs(rotated) do
         local world_pos = vec3.add(origin_pos, blk.pos)
 
-        local existing = block.get(world_pos[1], world_pos[2], world_pos[3])
+        --local existing = block.get(world_pos[1], world_pos[2], world_pos[3])
         local block_id = block.index(self.indexes.from[blk.id].name)
 
-        if block_id ~= 0 and existing == 0 then
-            block.set(world_pos[1], world_pos[2], world_pos[3], preview_id)
+        if block_id ~= 0 then
+            table.insert(self.preview_ids,
+                selection.dot(world_pos[1], world_pos[2], world_pos[3],
+                depth_effect(color, blk.pos, center_pos, self.size))
+            )
         end
     end
 
     return self
 end
 
-function BluePrint:unbuild_preview(origin_pos)
-    local rotated = rotator.dual_pass_rotated(self.blocks, self.rotation_matrix)
-    local preview_id = block.index("meownatica:preview")
-
-    for _, blk in ipairs(rotated) do
-        local world_pos = vec3.add(origin_pos, blk.pos)
-
-        if block.get(world_pos[1], world_pos[2], world_pos[3]) == preview_id then
-            block.set(world_pos[1], world_pos[2], world_pos[3], 0)
-        end
+function BluePrint:unbuild_preview()
+    for i=#self.preview_ids, 1, -1 do
+        selection.desel(self.preview_ids[i])
+        table.remove(self.preview_ids, i)
     end
 
     return self

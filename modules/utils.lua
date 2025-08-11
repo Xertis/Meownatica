@@ -31,22 +31,33 @@ function utils.vec.floor(vec)
     }
 end
 
+function utils.vec.distance(vec1, vec2)
+    local x1, y1, z1 = unpack(vec1)
+    local x2, y2, z2 = unpack(vec2)
+
+    return ((x1 - x2) ^ 2 + (y1 - y2) ^ 2 + (z1 - z2) ^ 2) ^ 0.5
+end
+
 function utils.vec.facing(angles_deg)
     local m = utils.mat4.vec_to_mat(angles_deg)
 
-    local dir = {0, 0, 1}
+    local dir = {0, 1, 0}
 
     dir = mat4.mul(m, dir)
 
     dir = {dir[1], dir[2], dir[3]}
     local abs_dir = vec3.abs(dir)
 
+    local y_rot = math.round(angles_deg[2] / 90)
+
+    if y_rot == 4 then y_rot = 0 end
+
     if abs_dir[1] >= abs_dir[2] and abs_dir[1] >= abs_dir[3] then
-        return (dir[1] > 0) and 0 or 1
+        return (dir[1] > 0) and 3 or 1, y_rot
     elseif abs_dir[2] >= abs_dir[1] and abs_dir[2] >= abs_dir[3] then
-        return (dir[2] > 0) and 2 or 3
+        return (dir[2] > 0) and 4 or 5, y_rot
     else
-        return (dir[3] > 0) and 4 or 5
+        return (dir[3] > 0) and 0 or 2, y_rot
     end
 end
 
@@ -114,6 +125,14 @@ function utils.table.rep(tbl, unit, count)
     end
 
     return tbl
+end
+
+function utils.table.last(tbl)
+    local id = nil
+    for i, _ in pairs(tbl) do
+        id = math.max(i, id or 0)
+    end
+    return id
 end
 
 function utils.blueprint.change(indx)

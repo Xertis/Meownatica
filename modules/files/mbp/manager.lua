@@ -4,9 +4,9 @@ local PARSERS = {
     mbp = true
 }
 
-local mbp_v1 = require "files/mbp/versions/v1"
+local mbp_v3 = require "files/mbp/versions/v3"
 local manager = {
-    versions = {mbp_v1},
+    versions = {[3] = mbp_v3},
     utils = {}
 }
 
@@ -35,7 +35,7 @@ function manager.read(path)
 end
 
 function manager.write_mbp(path, blueprint)
-    local buf = manager.versions[#manager.versions].serialize(blueprint)
+    local buf = manager.versions[utils.table.last(manager.versions)].serialize(blueprint)
     file.write_bytes(path, buf.bytes)
 end
 
@@ -55,7 +55,9 @@ local function preparation_mbp(properties, blueprint)
 
     blueprint.author = properties.author
     blueprint.description = properties.description
-    blueprint.image_path = properties.image_path
+    if file.exists(properties.image_path) and file.ext(properties.image_path) == "png" then
+        blueprint.image_path = properties.image_path
+    end
     blueprint.tags = properties.tags
 
     manager.write_mbp(path, blueprint)

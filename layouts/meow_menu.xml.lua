@@ -35,15 +35,23 @@ function update()
     local index = CURRENT_BLUEPRINT.id
     local blueprint = BLUEPRINTS[index]
 
-    if not blueprint then
+    if not blueprint then return end
+    if blueprint.image ~= '' then
+        document.blueprint_icon.src = blueprint.image
+    elseif blueprint.image_bytes and #blueprint.image_bytes > 0 then
+        assets.load_texture(blueprint.image_bytes, "blueprint_icon_" .. blueprint.id)
+        document.blueprint_icon.src = "blueprint_icon_" .. blueprint.id
+        blueprint.image = "blueprint_icon_" .. blueprint.id
+    else
+        document.blueprint_icon.src = "mgui/default_blueprint_icon"
+    end
+
     document.blueprint_name.text = string.format("%s: %s", gui.str("meownatica.menu.name", "meownatica"), 'None')
     document.blueprint_author.text = string.format("%s: %s", gui.str("meownatica.menu.author", "meownatica"), 'None')
     document.blueprint_tags.text = string.format("%s: %s", gui.str("meownatica.menu.tags", "meownatica"), 'None')
     document.blueprint_description.text = string.format("%s: %s", gui.str("Description", "menu"), 'None')
     document.blueprint_size.text = string.format("%s: %s", gui.str("meownatica.menu.size", "meownatica"), 'None')
     document.blueprint_blocks_count.text = string.format("%s: %s", gui.str("meownatica.menu.blocks_count", "meownatica"), 'None')
-        return
-    end
 
     local blocks_count = 0
     for _, blk in ipairs(blueprint.blocks) do

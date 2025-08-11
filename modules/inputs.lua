@@ -51,6 +51,7 @@ input.add_callback("meownatica.build_hud-build", function ()
             return
         end
 
+        blue_print:unbuild_preview()
         builder.build(CURRENT_BLUEPRINT.preview_pos, 200, blue_print)
         CURRENT_BLUEPRINT.preview_pos = {}
     end

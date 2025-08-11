@@ -4,7 +4,7 @@ local rle = require "files/utils/rle"
 
 local mbp = {}
 
-local VERSION = 1
+local VERSION = 3
 
 local MAX_UINT16 = 65535
 local MIN_UINT16 = 0
@@ -90,6 +90,15 @@ function mbp.__put_data(buf, blueprint)
     for _, tag in ipairs(blueprint.tags) do
         buf:put_string(tag)
     end
+
+    local image_bytes = nil
+    if blueprint.image_path then
+        image_bytes = file.read_bytes(blueprint.image_path)
+    end
+
+    image_bytes = image_bytes or {}
+    buf:put_uint32(#image_bytes)
+    buf:put_bytes(image_bytes)
 end
 
 function mbp.serialize(blueprint)
@@ -178,6 +187,9 @@ function mbp.__get_data(buf)
         table.insert(tags, buf:get_string())
     end
 
+    local image_bytes_count = buf:get_uint32()
+    local image_bytes = buf:get_bytes(image_bytes_count)
+
     return {
         version = version,
         size = size,
@@ -185,7 +197,8 @@ function mbp.__get_data(buf)
         rotation_vector = rotation_vector,
         author = author,
         description = description,
-        tags = tags
+        tags = tags,
+        image_bytes = image_bytes
     }
 end
 
@@ -199,6 +212,7 @@ function mbp.deserialize(bytes)
 
     blueprint.origin = data.origin
     blueprint.size = data.size
+    blueprint.image_bytes = data.image_bytes
     blueprint.rotation_vector = data.rotation_vector
     blueprint.rotation_matrix = utils.mat4.vec_to_mat(data.rotation_vector)
     blueprint.author = data.author

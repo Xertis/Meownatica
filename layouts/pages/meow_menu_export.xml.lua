@@ -133,3 +133,7 @@ function export()
 
     manager.utils.easy_write(properties, blueprint)
 end
+
+function path_validator(path)
+    return file.exists(path) and file.ext(path) == "png"
+end

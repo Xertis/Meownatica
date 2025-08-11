@@ -3,90 +3,18 @@ local module = {}
 
 local queue = {}
 
-local function compose_rotation(rot, facing, profile)
-    local new_rot = rot
-
-    if facing == 0 then
-        if rot == 0 then
-            new_rot = 1
-        elseif rot == 1 then
-            new_rot = 2
-        elseif rot == 2 then
-            new_rot = 3
-        elseif rot == 3 then
-            new_rot = 0
-        end
-    elseif facing == 5 then
-        if rot == 0 then
-            new_rot = 2
-        elseif rot == 1 then
-            new_rot = 3
-        elseif rot == 2 then
-            new_rot = 0
-        elseif rot == 3 then
-            new_rot = 1
-        end
-    elseif facing == 1 then
-        if rot == 0 then
-            new_rot = 3
-        elseif rot == 1 then
-            new_rot = 0
-        elseif rot == 2 then
-            new_rot = 1
-        elseif rot == 3 then
-            new_rot = 2
-        end
-    elseif facing == 3 then
-        if rot == 4 then
-            new_rot = 0
-        elseif rot == 0 then
-            new_rot = 5
-        elseif rot == 5 then
-            new_rot = 2
-        elseif rot == 2 then
-            new_rot = 4
-        elseif rot == 1 then
-            new_rot = 1
-        elseif rot == 3 then
-            new_rot = 3
-        end
-    elseif facing == 4 then
-        if rot == 4 then
-            new_rot = 1
-        elseif rot == 3 then
-            new_rot = 4
-        elseif rot == 1 then
-            new_rot = 5
-        elseif rot == 2 then
-            new_rot = 2
-        elseif rot == 0 then
-            new_rot = 0
-        elseif rot == 5 then
-            new_rot = 3
-        end
-    elseif facing == 2 then
-        if rot == 4 then
-            new_rot = 2
-        elseif rot == 2 then
-            new_rot = 5
-        elseif rot == 0 then
-            new_rot = 4
-        elseif rot == 5 then
-            new_rot = 2
-        elseif rot == 3 then
-            new_rot = 3
-        elseif rot == 1 then
-            new_rot = 1
-        end
-    end
-
+local function compose_rotation(rot, facing, angle, profile)
     if profile == "none" then
-        new_rot = 0
-    elseif profile == "pane" then
-        new_rot = math.clamp(new_rot, 0, 3)
+        return 0
     end
 
-    return new_rot
+    if profile == "pipe" then
+        return dirs[profile][tostring(facing) .. tostring(rot)]
+    end
+
+    local rotate = dirs[profile][tostring(facing) .. tostring(angle)] or rot
+
+    return rotate
 end
 
 function module.build(origin_pos, max_blocks_per_tick, blueprint)
@@ -97,7 +25,7 @@ function module.build(origin_pos, max_blocks_per_tick, blueprint)
         rotated = true
     end
 
-    local common_facing = utils.vec.facing(blueprint.rotation_vector)
+    local common_facing, common_angle = utils.vec.facing(blueprint.rotation_vector)
     local builded_blocks = 0
 
     local co = coroutine.create(function ()
@@ -118,7 +46,7 @@ function module.build(origin_pos, max_blocks_per_tick, blueprint)
 
                 if rotated then
                     local rot = bit.band(blk.states, 7)
-                    local new_rot = compose_rotation(rot, common_facing, block.get_rotation_profile(id))
+                    local new_rot = rotator.transform_block(common_facing, common_angle, rot, block.get_rotation_profile(id))
 
                     new_states = bit.rshift(new_states, 3)
                     new_states = bit.lshift(new_states, 3)
@@ -136,10 +64,14 @@ function module.build(origin_pos, max_blocks_per_tick, blueprint)
 end
 
 function module.tick()
-    for i=#queue, 1, -1 do
+    for i = #queue, 1, -1 do
         local co = queue[i]
         if coroutine.status(co) ~= "dead" then
-            coroutine.resume(co)
+            local success, err = coroutine.resume(co)
+            if not success then
+                print("Error in coroutine: " .. tostring(err))
+                table.remove(queue, i)
+            end
         else
             table.remove(queue, i)
         end

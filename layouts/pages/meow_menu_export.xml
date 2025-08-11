@@ -16,7 +16,7 @@
         </panel>
         <label>Путь к изображению:</label>
         <panel size="585,35" color="#00000000" orientation="horizontal">
-            <textbox id="path" size="585,35" hint="Path"></textbox>
+            <textbox id="path" size="585,35" hint="Path" validator="path_validator" error-color="#a00000b8"></textbox>
         </panel>
         <label>Выбранные тэги:</label>
         <panel id="tags" color="#00000000" />
