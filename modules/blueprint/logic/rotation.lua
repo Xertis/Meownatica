@@ -1,5 +1,27 @@
 local module = {}
 
+function module.entities_rotate(entities, origin, rotation_matrix)
+    local rotated_entities = {}
+    local translate_to_origin = mat4.translate(vec3.mul(origin, -1))
+    local translate_back = mat4.translate(origin)
+    local global_rot_matrix = mat4.mul(translate_back, mat4.mul(rotation_matrix, translate_to_origin))
+
+    for i, entity in ipairs(entities) do
+        local rotated_pos = mat4.mul(rotation_matrix, entity.pos)
+
+        local current_rot = entity.rotation
+        local new_rot = mat4.mul(global_rot_matrix, current_rot)
+
+        rotated_entities[i] = {
+            id = entity.id,
+            rotation = new_rot,
+            pos = rotated_pos
+        }
+    end
+
+    return rotated_entities
+end
+
 function module.dual_pass_rotated(blocks, rotation_matrix)
     local src = {}
     for _, blk in ipairs(blocks) do

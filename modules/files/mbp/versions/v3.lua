@@ -41,12 +41,12 @@ local function __put_count(buf, count)
     end
 end
 
-local function __put_block(buf, block, indexes)
+local function __put_block(buf, block)
     buf:put_uint16(block.id)
     buf:put_uint16(block.states)
 end
 
-function mbp.__put_blocks(buf, blocks, indexes)
+function mbp.__put_blocks(buf, blocks)
     local compressed_blocks = rle.compress(blocks)
 
     buf:put_uint32(#compressed_blocks)
@@ -56,8 +56,31 @@ function mbp.__put_blocks(buf, blocks, indexes)
             __put_count(buf, block)
         else
             buf:put_uint(0, 2)
-            __put_block(buf, block, indexes)
+            __put_block(buf, block)
         end
+    end
+end
+
+function mbp.__put_entities(buf, entities)
+    buf:put_uint32(#entities)
+
+    for _, entity in ipairs(entities) do
+        buf:put_uint16(entity.id)
+        local pos = entity.pos
+        local rot = entity.rotation
+
+        buf:put_float32(pos[1])
+        buf:put_float32(pos[2])
+        buf:put_float32(pos[3])
+
+        local quaternion = quat.from_mat4(rot)
+        for i = 1, 16 do
+            buf:put_bit(rot[i] >= 0)
+        end
+        buf:put_float32(quaternion[1])
+        buf:put_float32(quaternion[2])
+        buf:put_float32(quaternion[3])
+        buf:put_float32(quaternion[4])
     end
 end
 
@@ -92,7 +115,7 @@ function mbp.__put_data(buf, blueprint)
     end
 
     local image_bytes = nil
-    if blueprint.image_path then
+    if blueprint.image_path ~= '' then
         image_bytes = file.read_bytes(blueprint.image_path)
     end
 
@@ -104,8 +127,11 @@ end
 function mbp.serialize(blueprint)
     local buf  = bit_buffer:new()
     mbp.__put_data(buf, blueprint)
-    mbp.__put_indexes(buf, blueprint.indexes)
-    mbp.__put_blocks(buf, blueprint.blocks, blueprint.indexes)
+    mbp.__put_indexes(buf, blueprint.block_indexes)
+    mbp.__put_indexes(buf, blueprint.entity_indexes)
+
+    mbp.__put_blocks(buf, blueprint.blocks)
+    mbp.__put_entities(buf, blueprint.entities)
 
     buf:flush()
     buf:reset()
@@ -154,6 +180,46 @@ function mbp.__get_blocks(buf)
     end
 
     return blocks
+end
+
+function mbp.__get_entities(buf)
+    local len = buf:get_uint32()
+    local entities = {}
+    for i=1, len do
+        local id = buf:get_uint16()
+        local pos = {
+            buf:get_float32(),
+            buf:get_float32(),
+            buf:get_float32()
+        }
+
+        local signs = {}
+        for j = 1, 16 do
+            signs[j] = buf:get_bit()
+        end
+        local quaternion = {
+            buf:get_float32(),
+            buf:get_float32(),
+            buf:get_float32(),
+            buf:get_float32()
+        }
+        local rot_mat = mat4.from_quat(quaternion)
+        for j = 1, 16 do
+            if not signs[j] then
+                rot_mat[j] = -math.abs(rot_mat[j])
+            else
+                rot_mat[j] = math.abs(rot_mat[j])
+            end
+        end
+
+        table.insert(entities, {
+            id = id,
+            pos = pos,
+            rotation = rot_mat
+        })
+    end
+
+    return entities
 end
 
 function mbp.__get_data(buf)
@@ -205,13 +271,18 @@ end
 function mbp.deserialize(bytes)
     local buf = bit_buffer:new(bytes)
     local data = mbp.__get_data(buf)
-    local indexes = mbp.__get_indexes(buf)
-    local blocks = rle.decompress(mbp.__get_blocks(buf))
 
-    local blueprint = BluePrint.new({}, {0, 0, 0})
+    local block_indexes = mbp.__get_indexes(buf)
+    local entity_indexes = mbp.__get_indexes(buf)
+
+    local blocks = rle.decompress(mbp.__get_blocks(buf))
+    local entities = mbp.__get_entities(buf)
+
+    local blueprint = BluePrint.new({}, {}, {0, 0, 0})
 
     blueprint.origin = data.origin
     blueprint.size = data.size
+    blueprint.entities = entities
     blueprint.image_bytes = data.image_bytes
     blueprint.rotation_vector = data.rotation_vector
     blueprint.rotation_matrix = utils.mat4.vec_to_mat(data.rotation_vector)
@@ -224,7 +295,8 @@ function mbp.deserialize(bytes)
     end
 
     blueprint.blocks = blocks
-    blueprint.indexes = indexes
+    blueprint.block_indexes = block_indexes
+    blueprint.entity_indexes = entity_indexes
     blueprint.loaded = true
 
     return blueprint

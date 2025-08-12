@@ -12,6 +12,12 @@ local block_signature = {
     pos = {0, 0, 0},
 }
 
+local entity_signature = {
+    id = 0,
+    rotation = {},
+    pos = {0, 0, 0}
+}
+
 local function depth_effect(color, pos, origin, size)
     local relative_pos = {
         pos[1] - origin[1],
@@ -61,7 +67,7 @@ local function __pre_process(blocks, origin)
     return size, origin_index
 end
 
-local function __pre_process_indexes(blocks)
+local function __pre_process_block_indexes(blocks)
     local indexes = {to = {}, from = {}}
     local max_index = 0
     for _, _block in ipairs(blocks) do
@@ -84,6 +90,30 @@ local function __pre_process_indexes(blocks)
     return indexes
 end
 
+local function __pre_process_entity(_entities, origin)
+    local indexes = {to = {}, from = {}}
+    local max_index = 0
+    for _, entity in ipairs(_entities) do
+        local entity_name = entities.def_name(entity.id)
+        if indexes.to[entity_name] == nil then
+            indexes.to[entity_name] = {
+                id = max_index,
+                name = entity_name
+            }
+            indexes.from[max_index] = {
+                id = max_index,
+                name = entity_name
+            }
+            max_index = max_index + 1
+        end
+
+        entity.id = indexes.to[entity_name].id
+        entity.pos = vec3.sub(entity.pos, origin)
+    end
+
+    return indexes
+end
+
 local function __change_origin(blocks, new_origin)
     local origin_index = 1
     for id, block in ipairs(blocks) do
@@ -99,12 +129,12 @@ local function __change_origin(blocks, new_origin)
 end
 
 local next_id = 0
-function BluePrint.new(blocks, origin)
+function BluePrint.new(blocks, entities, origin)
     local self = setmetatable({}, BluePrint)
 
     self.blocks = blocks or {}
     self.size, self.origin = __pre_process(self.blocks, origin)
-    self.indexes = __pre_process_indexes(self.blocks)
+    self.block_indexes = __pre_process_block_indexes(self.blocks)
     self.name = "default_name.mbp"
     self.rotation_vector = {0, 0, 0}
     self.rotation_matrix = utils.mat4.vec_to_mat(self.rotation_vector)
@@ -116,6 +146,8 @@ function BluePrint.new(blocks, origin)
     self.loaded = false
     self.tags = {}
     self.preview_ids = {}
+    self.entities = entities or {}
+    self.entity_indexes = __pre_process_entity(self.entities, origin)
     self.id = next_id
     next_id = next_id + 1
 
@@ -141,23 +173,6 @@ function BluePrint:rotate(rotation)
     return self
 end
 
-function BluePrint:build(origin_pos)
-    local rotated = rotator.dual_pass_rotated(self.blocks, self.rotation_matrix)
-    for _, blk in ipairs(rotated) do
-        local p = blk.pos
-        local world_x = origin_pos[1] + p[1]
-        local world_y = origin_pos[2] + p[2]
-        local world_z = origin_pos[3] + p[3]
-
-        local id = block.index(self.indexes.from[blk.id].name)
-        if (not MEOW_CONFIG.setair and id ~= 0) or MEOW_CONFIG.setair then
-            block.set(world_x, world_y, world_z, id, blk.states)
-        end
-    end
-
-    return self
-end
-
 function BluePrint:build_preview(origin_pos)
     local rotated = rotator.dual_pass_rotated(self.blocks, self.rotation_matrix)
 
@@ -167,8 +182,7 @@ function BluePrint:build_preview(origin_pos)
     for _, blk in ipairs(rotated) do
         local world_pos = vec3.add(origin_pos, blk.pos)
 
-        --local existing = block.get(world_pos[1], world_pos[2], world_pos[3])
-        local block_id = block.index(self.indexes.from[blk.id].name)
+        local block_id = block.index(self.block_indexes.from[blk.id].name)
 
         if block_id ~= 0 then
             table.insert(self.preview_ids,

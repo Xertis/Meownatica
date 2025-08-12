@@ -33,6 +33,7 @@ meownatica.menu.path=Путь
 meownatica.menu.tags=Тэги
 meownatica.menu.size=Размер
 meownatica.menu.blocks_count=Кол-во блоков
+meownatica.menu.entities_count=Кол-во сущностей
 
 meownatica.build_hud-build=Постройка схемы
 meownatica.build_hud-move=Перемещение схемы

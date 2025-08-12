@@ -52,10 +52,11 @@ function update()
     document.blueprint_description.text = string.format("%s: %s", gui.str("Description", "menu"), 'None')
     document.blueprint_size.text = string.format("%s: %s", gui.str("meownatica.menu.size", "meownatica"), 'None')
     document.blueprint_blocks_count.text = string.format("%s: %s", gui.str("meownatica.menu.blocks_count", "meownatica"), 'None')
+    document.blueprint_entities_count.text = string.format("%s: %s", gui.str("meownatica.menu.entities_count", "meownatica"), 'None')
 
     local blocks_count = 0
     for _, blk in ipairs(blueprint.blocks) do
-        if blueprint.indexes.from[blk.id].name ~= "core:air" then
+        if blueprint.block_indexes.from[blk.id].name ~= "core:air" then
             blocks_count = blocks_count + 1
         end
     end
@@ -66,4 +67,5 @@ function update()
     document.blueprint_description.text = string.format("%s: %s", gui.str("Description", "menu"), blueprint.description or 'None')
     document.blueprint_size.text = string.format("%s: %s", gui.str("meownatica.menu.size", "meownatica"), table.tostring(blueprint.size))
     document.blueprint_blocks_count.text = string.format("%s: %s", gui.str("meownatica.menu.blocks_count", "meownatica"), blocks_count)
+    document.blueprint_entities_count.text = string.format("%s: %s", gui.str("meownatica.menu.entities_count", "meownatica"), #blueprint.entities)
 end

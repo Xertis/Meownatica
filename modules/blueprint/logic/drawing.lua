@@ -6,6 +6,7 @@ local norm255 =  utils.math.norm255
 
 local function __select_blocks(pos1, pos2)
     local blocks = {}
+    local _entities = {}
     local x1, y1, z1 = unpack(pos1)
     local x2, y2, z2 = unpack(pos2)
     for x = math.min(x1, x2), math.max(x1, x2) do
@@ -33,14 +34,27 @@ local function __select_blocks(pos1, pos2)
         end
     end
 
-    return blocks
+    local pos = utils.vec.min(pos1, pos2)
+    local size = vec3.add(vec3.sub(utils.vec.max(pos1, pos2), pos), 1)
+    local uids = entities.get_all_in_box(pos, size)
+
+    for _, uid in ipairs(uids) do
+        local entity = entities.get(uid)
+        table.insert(_entities, {
+            id = entities.get_def(uid),
+            pos = entity.transform:get_pos(),
+            rotation = entity.transform:get_rot()
+        })
+    end
+
+    return blocks, _entities
 end
 
 local function set_blueprint(pos1, pos2, origin)
-    local blocks = __select_blocks(pos1, pos2)
+    local blocks, entities = __select_blocks(pos1, pos2)
     if #blocks == 0 then return end
 
-    local blue_print = BluePrint.new(blocks, origin)
+    local blue_print = BluePrint.new(blocks, entities, origin)
     table.insert(BLUEPRINTS, blue_print)
     utils.blueprint.change(#BLUEPRINTS)
 end

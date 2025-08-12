@@ -17,22 +17,24 @@ local function compose_rotation(rot, facing, angle, profile)
     return rotate
 end
 
-function module.build(origin_pos, max_blocks_per_tick, blueprint)
+function module.build(origin_pos, max_units_per_tick, blueprint)
     local rotated_blocks = blueprint.blocks
+    local rotated_entities = blueprint.entities
     local rotated = false
     if blueprint.rotation_vector[1] ~= 0 or blueprint.rotation_vector[2] ~= 0 or blueprint.rotation_vector[3] ~= 0 then
-        rotated_blocks = rotator.dual_pass_rotated(blueprint.blocks, blueprint.rotation_matrix)
+        rotated_blocks = rotator.dual_pass_rotated(rotated_blocks, blueprint.rotation_matrix)
+        rotated_entities = rotator.entities_rotate(rotated_entities, {0, 0, 0}, blueprint.rotation_matrix)
         rotated = true
     end
 
     local common_facing, common_angle = utils.vec.facing(blueprint.rotation_vector)
-    local builded_blocks = 0
+    local builded_unit = 0
 
     local co = coroutine.create(function ()
         for _, blk in ipairs(rotated_blocks) do
-            if builded_blocks > max_blocks_per_tick then
+            if builded_unit > max_units_per_tick then
                 coroutine.yield()
-                builded_blocks = 0
+                builded_unit = 0
             end
 
             local p = blk.pos
@@ -40,7 +42,7 @@ function module.build(origin_pos, max_blocks_per_tick, blueprint)
             local world_y = origin_pos[2] + p[2]
             local world_z = origin_pos[3] + p[3]
 
-            local id = block.index(blueprint.indexes.from[blk.id].name)
+            local id = block.index(blueprint.block_indexes.from[blk.id].name)
             if (not MEOW_CONFIG.setair and id ~= 0) or MEOW_CONFIG.setair then
                 local new_states = blk.states
 
@@ -56,7 +58,22 @@ function module.build(origin_pos, max_blocks_per_tick, blueprint)
                 block.set(world_x, world_y, world_z, id, new_states, true)
             end
 
-            builded_blocks = builded_blocks + 1
+            builded_unit = builded_unit + 1
+        end
+
+        if not MEOW_CONFIG.spawn_entities then
+            return
+        end
+
+        for _, entity in ipairs(rotated_entities) do
+            if builded_unit > max_units_per_tick then
+                coroutine.yield()
+                builded_unit = 0
+            end
+
+            local pos = vec3.add(entity.pos, origin_pos)
+            local _entity = entities.spawn(blueprint.entity_indexes.from[entity.id].name, pos)
+            _entity.transform:set_rot(entity.rotation)
         end
     end)
 

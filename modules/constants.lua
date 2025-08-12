@@ -46,4 +46,6 @@ COMMON_GLOBALS = {
     BUILD_HUD_OPEN = false,
     MENU = nil,
     ITEMS_AVAILABLE = {},
+    BLOCKS_AVAILABLE = {},
+    ENTITIES_AVAILABLE = {}
 }

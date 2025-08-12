@@ -29,6 +29,10 @@ local function load_from_files()
         local parent = file.parent(file_path)
         local new_file_path = file_path
 
+        if ext then
+            new_file_path = string.format("%s/%s.**%s**", parent, name, ext)
+        end
+
         if olders_paths[file_path] then
             place_blueprint({
                 id = olders_paths[file_path],
@@ -39,10 +43,6 @@ local function load_from_files()
         end
 
         olders_paths[file_path] = next_index
-
-        if ext then
-            new_file_path = string.format("%s/%s.**%s**", parent, name, ext)
-        end
 
         place_blueprint({
             id = next_index,
