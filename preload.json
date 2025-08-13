@@ -1,16 +1,13 @@
 {
     "textures": [
-        "mgui/gui_icons/load",
-        "mgui/gui_icons/conversion",
-        "mgui/gui_icons/meownatic",
-        "mgui/not_found",
-        "mgui/meownatic_icons/house",
-        "mgui/meownatic_icons/bridge",
-        "mgui/meownatic_icons/undefined",
-        "mgui/meownatic_icons/penrose_triangle",
-        "mgui/meownatic_icons/spaceship",
-        "mgui/meownatic_icons/cat",
-        "mgui/gui_icons/settings",
-        "mgui/gui_icons/materials"
+        "mgui/construction_tape_rotated_top",
+        "mgui/construction_tape_rotated_bottom",
+        "mgui/blueprint",
+        "mgui/load",
+        "mgui/unload",
+        "mgui/default_blueprint_icon",
+        "mgui/export",
+        "mgui/materials",
+        "mgui/background"
     ]
 }

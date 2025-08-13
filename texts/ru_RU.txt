@@ -1,0 +1,48 @@
+meownatica.menu=Открытие главного меню
+meownatica.menu-rotate-axis-x=Поворот вокруг оси X
+meownatica.menu-rotate-axis-y=Поворот вокруг оси Y
+meownatica.menu-rotate-axis-z=Поворот вокруг оси Z
+
+meownatica.menu-rotate-auto=Автоповорот
+meownatica.menu-rotate-auto-tooltip=Применяет вращение схемы при каждом его изменении
+
+meownatica.menu-rotate-snap=Кратно 90
+meownatica.menu-rotate-snap-tooltip=Меняет шаг трекбара на 90 градусов
+
+meownatica.menu-rotate-apply=Применить вращение
+
+meownatica.menu-filters-all=Все
+meownatica.menu-filters-nature=Природа
+meownatica.menu-filters-middle_ages=Средневековье
+meownatica.menu-filters-post_soviet=Постсоветское
+meownatica.menu-filters-modern=Модерн
+meownatica.menu-filters-future=Будущее
+
+meownatica.menu.on=Вкл
+meownatica.menu.off=Выкл
+meownatica.menu.close=Закрыть
+
+meownatica.menu.count=Кол-во
+meownatica.menu.stacks=стаков
+meownatica.menu.units=единиц
+meownatica.menu.and=и
+
+meownatica.menu.name=Название
+meownatica.menu.author=Автор
+meownatica.menu.path=Путь
+meownatica.menu.tags=Тэги
+meownatica.menu.size=Размер
+meownatica.menu.blocks_count=Кол-во блоков
+meownatica.menu.entities_count=Кол-во сущностей
+
+meownatica.build_hud-build=Постройка схемы
+meownatica.build_hud-move=Перемещение схемы
+meownatica.build_hud-rotate=Поворот схемы
+meownatica.build_hud-preview=Отображение превью схемы
+meownatica.build_hud-select=Выбор схему
+meownatica.build_hud-mark=Установка точки выделения
+meownatica.build_hud-destroy=Убрать схему
+
+meownatica.build-hud-selected-blueprint=Выбранная схема
+meownatica.build-hud-distance-preview=Расстояние до превью
+meownatica.distance-blocks=блоков

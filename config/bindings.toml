@@ -1,1 +1,8 @@
 meownatica.menu="key:v"
+meownatica.build_hud-build="key:b"
+meownatica.build_hud-move="key:m"
+meownatica.build_hud-rotate="key:r"
+meownatica.build_hud-preview="key:p"
+meownatica.build_hud-select="key:y"
+meownatica.build_hud-mark="key:t"
+meownatica.build_hud-destroy="key:u"

@@ -1,0 +1,20 @@
+<container position-func="gui.get_viewport()[1]/2-242,gui.get_viewport()[2]/2+100-75" size="484,150" color='#00000073'>
+    <label pos="15,0">X:</label>
+    <panel orientation="horizontal" pos="15,15" size="470,30" color="#00000000">
+        <textbox id="text_axis_x" error-color="#ff0000ff" validator="axis_validator" sub-consumer="axis_x_text" size="40,30" />
+        <trackbar id="track_axis_x" consumer="axis_x" size="200,30" value='0' tooltip='@meownatica.menu-rotate-axis-x' min='0' max='360' step='1' />
+        <button id="autorotate" tooltip="@meownatica.menu-rotate-auto-tooltip" size="210,30" onclick='autorotate()'>Автоповорот: off</button>
+    </panel>
+    <label pos="15,45">Y:</label>
+    <panel orientation="horizontal" pos="15,60" size="470,30" color="#00000000">
+        <textbox id="text_axis_y" error-color="#ff0000ff" validator="axis_validator" sub-consumer="axis_y_text" size="40,30" />
+        <trackbar id="track_axis_y" consumer="axis_y" size="200,30" value='0' tooltip='@meownatica.menu-rotate-axis-y' min='0' max='360' step='1' />
+        <button id="snap_step" tooltip="@meownatica.menu-rotate-snap-tooltip" size="210,30" onclick='snap_step()'>Кратно 90: off</button>
+    </panel>
+    <label pos="15,90">Z:</label>
+    <panel orientation="horizontal" pos="15,105" size="470,30" color="#00000000">
+        <textbox id="text_axis_z" error-color="#ff0000ff" validator="axis_validator" sub-consumer="axis_z_text" size="40,30" />
+        <trackbar id="track_axis_z" consumer="axis_z" size="200,30" value='0' tooltip='@meownatica.menu-rotate-axis-z' min='0' max='360' step='1' />
+        <button id="apply" size="210,30" onclick='apply()'>@meownatica.menu-rotate-apply</button>
+    </panel>
+</container>

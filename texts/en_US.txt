@@ -1,0 +1,41 @@
+meownatica.menu=Open main menu
+meownatica.menu-rotate-axis-x=Rotation around the X-axis
+meownatica.menu-rotate-axis-y=Rotation around the Y-axis
+meownatica.menu-rotate-axis-z=Rotation around the Z-axis
+
+meownatica.menu-rotate-auto=Autorotate
+meownatica.menu-rotate-auto-tooltip=Applies the rotation of the blueprint every time it is changed
+
+meownatica.menu-rotate-snap=Multiple of 90
+meownatica.menu-rotate-snap-tooltip=Changes the trackbar step to 90 degrees
+
+meownatica.menu-rotate-apply=Apply rotation
+
+meownatica.menu-filters-all=All
+meownatica.menu-filters-nature=Nature
+meownatica.menu-filters-middle_ages=Middle ages
+meownatica.menu-filters-post_soviet=Post Soviet
+meownatica.menu-filters-modern=Modern
+meownatica.menu-filters-future=Future
+
+meownatica.menu.on=On
+meownatica.menu.off=Off
+meownatica.menu.close=Close
+
+meownatica.menu.count=Count
+meownatica.menu.stacks=stacks
+meownatica.menu.units=units
+meownatica.menu.and=and
+
+meownatica.build_hud-build=Build schematic
+meownatica.build_hud-move=Move schematic
+meownatica.build_hud-rotate=Rotate schematic
+meownatica.build_hud-preview=Show schematic preview
+meownatica.build_hud-select=Select schematic
+meownatica.build_hud-mark=Set selection point
+meownatica.build_hud-destroy=Remove schematic
+
+meownatica.build-hud-selected-blueprint=Selected blueprint
+meownatica.build-hud-distance-preview=Distance to the preview
+meownatica.distance-blocks=blocks
+

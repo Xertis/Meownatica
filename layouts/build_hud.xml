@@ -1,0 +1,4 @@
+<container position-func="gui.get_viewport()[1]/2-240,50" size="480,125" color='#00000073'>
+    <label id="selected_blueprint" pos="0,50">Выбранная схема:</label>
+    <label id="distance_preview" pos="0,75">Расстояние до превью:</label>
+</container>
