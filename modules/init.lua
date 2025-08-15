@@ -31,5 +31,3 @@ end
 for i=0, entities.defs_count()-1 do
     COMMON_GLOBALS.ENTITIES_AVAILABLE[entities.def_name(i)] = true
 end
-
-require "cmd"

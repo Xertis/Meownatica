@@ -5,5 +5,4 @@ function on_hud_open()
     session.reset_entry("meownatica.menu.obj")
 
     require "inputs"
-    hud.open_permanent("meownatica:build_hud")
 end

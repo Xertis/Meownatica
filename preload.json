@@ -8,6 +8,7 @@
         "mgui/default_blueprint_icon",
         "mgui/export",
         "mgui/materials",
-        "mgui/background"
+        "mgui/background",
+        "mgui/hammer"
     ]
 }

@@ -43,7 +43,7 @@ function module.build(origin_pos, max_units_per_tick, blueprint)
             local world_z = origin_pos[3] + p[3]
 
             local id = block.index(blueprint.block_indexes.from[blk.id].name)
-            if (not MEOW_CONFIG.setair and id ~= 0) or MEOW_CONFIG.setair then
+            if (not MEOW_CONFIG.set_air and id ~= 0) or MEOW_CONFIG.set_air then
                 local new_states = blk.states
 
                 if rotated then

@@ -32,5 +32,11 @@
                 id="buttom_materials">
             <image src='mgui/materials' size='32,32'/>
         </button>
+        <button color='#00000000'
+                hover-color='#FFFFFF2B'
+                onclick='build_hud()'
+                id="buttom_build_hud">
+            <image src='mgui/hammer' size='32,32'/>
+        </button>
     </panel>
 </container>

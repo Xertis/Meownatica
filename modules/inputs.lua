@@ -52,7 +52,7 @@ input.add_callback("meownatica.build_hud-build", function ()
         end
 
         blue_print:unbuild_preview()
-        builder.build(CURRENT_BLUEPRINT.preview_pos, 200, blue_print)
+        builder.build(CURRENT_BLUEPRINT.preview_pos, MEOW_CONFIG.blocks_per_tick, blue_print)
         CURRENT_BLUEPRINT.preview_pos = {}
     end
 end)
