@@ -31,6 +31,14 @@ function change_page(page)
     end
 end
 
+function build_hud()
+    if not COMMON_GLOBALS.BUILD_HUD_OPEN then
+        hud.open_permanent("meownatica:build_hud")
+    else
+        hud.close("meownatica:build_hud")
+    end
+end
+
 function update()
     local index = CURRENT_BLUEPRINT.id
     local blueprint = BLUEPRINTS[index]

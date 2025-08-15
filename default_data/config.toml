@@ -1,2 +1,3 @@
-setair = false
+set_air = false
 spawn_entities = true
+blocks_per_tick = 200
