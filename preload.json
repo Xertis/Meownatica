@@ -9,6 +9,7 @@
         "mgui/export",
         "mgui/materials",
         "mgui/background",
-        "mgui/hammer"
+        "mgui/hammer",
+        "mgui/o2"
     ]
 }

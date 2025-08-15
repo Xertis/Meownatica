@@ -140,13 +140,20 @@ function Select.dot(x, y, z, col)
     NextSelectionId = NextSelectionId + 1
     Selections[selection_id] = {}
 
+    local display = "static_billboard"
+
+    if MEOW_CONFIG.sliced_preview then
+        display = "xy_free_billboard"
+    end
+
     local function showdot(text_pos, text_rot, text)
         local text_scale = 1/16
         local text_table = {
             scale = text_scale,
             xray_opacity = 0,
             render_distance = 250,
-            color = col
+            color = col,
+            display = display
         }
         local tid = gfx.text3d.show(text_pos, text, text_table)
         gfx.text3d.set_rotation(tid, text_rot)
@@ -158,15 +165,20 @@ function Select.dot(x, y, z, col)
     local text = "   ∟"
     showdot(text_pos, text_rot, text)
 
-    text_rot = mat4.rotate({0, 1, 0}, 90)
-    text_pos = {x+1-0.001, y+0.5, z}
-    text = "∟ "
-    showdot(text_pos, text_rot, text)
+    if MEOW_CONFIG.sliced_preview then
+        return selection_id
+    end
 
     text_rot = mat4.rotate({0, 1, 0}, 180)
     text_pos = {x, y+0.5, z+0.001}
     text = "∟ "
     showdot(text_pos, text_rot, text)
+
+    text_rot = mat4.rotate({0, 1, 0}, 90)
+    text_pos = {x+1-0.001, y+0.5, z}
+    text = "∟ "
+    showdot(text_pos, text_rot, text)
+
 
     text_rot = mat4.rotate({0, 1, 0}, 270)
     text_pos = {x+0.001, y+0.5, z}

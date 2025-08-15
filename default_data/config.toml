@@ -1,3 +1,4 @@
 set_air = false
 spawn_entities = true
+sliced_preview = false
 blocks_per_tick = 200

@@ -31,6 +31,7 @@ meownatica.menu.name=Название
 meownatica.menu.author=Автор
 meownatica.menu.path=Путь
 meownatica.menu.tags=Тэги
+meownatica.menu.packs=Паки
 meownatica.menu.size=Размер
 meownatica.menu.blocks_count=Кол-во блоков
 meownatica.menu.entities_count=Кол-во сущностей

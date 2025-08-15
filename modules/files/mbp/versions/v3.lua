@@ -299,6 +299,8 @@ function mbp.deserialize(bytes)
     blueprint.entity_indexes = entity_indexes
     blueprint.loaded = true
 
+    blueprint:__init_packs()
+
     return blueprint
 end
 

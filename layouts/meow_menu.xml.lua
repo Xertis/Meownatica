@@ -61,6 +61,8 @@ function update()
     document.blueprint_size.text = string.format("%s: %s", gui.str("meownatica.menu.size", "meownatica"), 'None')
     document.blueprint_blocks_count.text = string.format("%s: %s", gui.str("meownatica.menu.blocks_count", "meownatica"), 'None')
     document.blueprint_entities_count.text = string.format("%s: %s", gui.str("meownatica.menu.entities_count", "meownatica"), 'None')
+    document.blueprint_packs.text = string.format("%s: %s", gui.str("meownatica.menu.packs", "meownatica"), 'None')
+
 
     local blocks_count = 0
     for _, blk in ipairs(blueprint.blocks) do
@@ -76,4 +78,5 @@ function update()
     document.blueprint_size.text = string.format("%s: %s", gui.str("meownatica.menu.size", "meownatica"), table.tostring(blueprint.size))
     document.blueprint_blocks_count.text = string.format("%s: %s", gui.str("meownatica.menu.blocks_count", "meownatica"), blocks_count)
     document.blueprint_entities_count.text = string.format("%s: %s", gui.str("meownatica.menu.entities_count", "meownatica"), #blueprint.entities)
+    document.blueprint_packs.text = string.format("%s: %s", gui.str("meownatica.menu.packs", "meownatica"), table.concat(blueprint.packs or {}, ', '))
 end

@@ -3,20 +3,6 @@ local module = {}
 
 local queue = {}
 
-local function compose_rotation(rot, facing, angle, profile)
-    if profile == "none" then
-        return 0
-    end
-
-    if profile == "pipe" then
-        return dirs[profile][tostring(facing) .. tostring(rot)]
-    end
-
-    local rotate = dirs[profile][tostring(facing) .. tostring(angle)] or rot
-
-    return rotate
-end
-
 function module.build(origin_pos, max_units_per_tick, blueprint)
     local rotated_blocks = blueprint.blocks
     local rotated_entities = blueprint.entities
@@ -29,6 +15,12 @@ function module.build(origin_pos, max_units_per_tick, blueprint)
 
     local common_facing, common_angle = utils.vec.facing(blueprint.rotation_vector)
     local builded_unit = 0
+    local pid = hud.get_player()
+
+    if not rules.get("allow-content-access") then
+        gui.alert("Без доступа к меню контента, автовставка схемы в мир не работает")
+        return
+    end
 
     local co = coroutine.create(function ()
         for _, blk in ipairs(rotated_blocks) do
@@ -45,17 +37,17 @@ function module.build(origin_pos, max_units_per_tick, blueprint)
             local id = block.index(blueprint.block_indexes.from[blk.id].name)
             if (not MEOW_CONFIG.set_air and id ~= 0) or MEOW_CONFIG.set_air then
                 local new_states = blk.states
+                local decompose_states = block.decompose_state(new_states)
 
                 if rotated then
-                    local rot = bit.band(blk.states, 7)
+                    local rot = decompose_states[1]
                     local new_rot = rotator.transform_block(common_facing, common_angle, rot, block.get_rotation_profile(id))
 
-                    new_states = bit.rshift(new_states, 3)
-                    new_states = bit.lshift(new_states, 3)
-                    new_states = bit.bor(new_states, new_rot)
+                    decompose_states[1] = new_rot
+                    new_states = block.compose_state(decompose_states)
                 end
 
-                block.set(world_x, world_y, world_z, id, new_states, true)
+                block.place(world_x, world_y, world_z, id, new_states, pid, true)
             end
 
             builded_unit = builded_unit + 1

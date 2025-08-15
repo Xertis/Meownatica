@@ -10,6 +10,7 @@
         <label id="blueprint_blocks_count">Кол-во блоков:</label>
         <label id="blueprint_entities_count">Кол-во сущностей:</label>
         <label id="blueprint_tags" size="50" multiline="true" text-wrap="true">Тэги:</label>
+        <label id="blueprint_packs" size="50" multiline="true" text-wrap="true">Паки:</label>
         <label id="blueprint_description" size="50" markup="md" multiline="true" text-wrap="true">Описание:</label>
     </panel>
 

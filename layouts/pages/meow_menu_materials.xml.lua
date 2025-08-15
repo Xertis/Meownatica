@@ -69,48 +69,52 @@ local function open()
             unit_name = blueprint.entity_indexes.from[material.id].name
         end
 
-        if unit_name ~= "core:air" then
-            local item_name = unit_name .. ".item"
-            local icon = nil
-            local caption = nil
-            local count = string.format("%s: %s %s",
-                gui.str("meownatica.menu.count", "meownatica"), material.count,
-                gui.str("meownatica.menu.units", "meownatica")
-            )
-            local tooltip = "Not found"
-            if COMMON_GLOBALS.ITEMS_AVAILABLE[item_name] then
-                local indx = item.index(item_name)
-                local stack_size = item.stack_size(indx)
-                local stacks = math.floor(material.count / stack_size)
-                local units = material.count - (stacks * stack_size)
-                icon = item.icon(indx)
-                caption = item.caption(indx)
-                tooltip = unit_name
+        local item_name = unit_name .. ".item"
+        local icon = nil
+        local caption = nil
+        local count = string.format("%s: %s %s",
+            gui.str("meownatica.menu.count", "meownatica"), material.count,
+            gui.str("meownatica.menu.units", "meownatica")
+        )
+        local tooltip = "Not found"
+        if COMMON_GLOBALS.ITEMS_AVAILABLE[item_name] then
+            local indx = item.index(item_name)
+            local stack_size = item.stack_size(indx)
+            local stacks = math.floor(material.count / stack_size)
+            local units = material.count - (stacks * stack_size)
+            icon = item.icon(indx)
+            caption = item.caption(indx)
+            tooltip = unit_name
 
-                if stacks > 0 then
-                    count = string.format("%s %s %s %s %s",
-                        stacks, gui.str("meownatica.menu.stacks", "meownatica"),
-                        gui.str("meownatica.menu.and", "meownatica"),
-                        units, gui.str("meownatica.menu.units", "meownatica")
-                    )
-                end
+            if stacks > 0 then
+                count = string.format("%s %s %s %s %s",
+                    stacks, gui.str("meownatica.menu.stacks", "meownatica"),
+                    gui.str("meownatica.menu.and", "meownatica"),
+                    units, gui.str("meownatica.menu.units", "meownatica")
+                )
             end
-
-            MATERIALS[id] = {
-                name = unit_name,
-                type = material.type,
-                id = material.id
-            }
-
-            place_material({
-                id = id,
-                count = count,
-                name = caption or unit_name,
-                icon = icon,
-                tooltip = tooltip,
-                validator =  material.type == "block" and "block_exists" or "entity_exists"
-            })
         end
+
+        if unit_name == "core:air" then
+            icon = "mgui/o2"
+            tooltip = "core:air"
+            caption = "air"
+        end
+
+        MATERIALS[id] = {
+            name = unit_name,
+            type = material.type,
+            id = material.id
+        }
+
+        place_material({
+            id = id,
+            count = count,
+            name = caption or unit_name,
+            icon = icon,
+            tooltip = tooltip,
+            validator =  material.type == "block" and "block_exists" or "entity_exists"
+        })
     end
 end
 

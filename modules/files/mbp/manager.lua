@@ -1,7 +1,9 @@
 local bit_buffer = require "files/buffer/bit_buffer"
+local vox_reader = require "files/other/vox"
 
 local PARSERS = {
-    mbp = true
+    mbp = true,
+    vox = true
 }
 
 local mbp_v3 = require "files/mbp/versions/v3"
@@ -10,7 +12,7 @@ local manager = {
     utils = {}
 }
 
-function manager.read(path)
+local function mbp_read(path)
     local bytes = file.read_bytes(path)
 
     local buf = bit_buffer:new(bytes)
@@ -32,6 +34,16 @@ function manager.read(path)
     blueprint.name = file.name(path)
 
     return blueprint
+end
+
+function manager.read(path)
+    local ext = file.ext(path)
+
+    if ext == "mbp" then
+        return mbp_read(path)
+    elseif ext == "vox" then
+        return vox_reader.load(path)
+    end
 end
 
 function manager.write_mbp(path, blueprint)
@@ -63,10 +75,18 @@ local function preparation_mbp(properties, blueprint)
     manager.write_mbp(path, blueprint)
 end
 
+local function preparation_vox(properties, blueprint)
+    local path = string.format("%s/%s.vox", BLUEPRINT_SAVE_PATH, properties.name)
+
+    vox_reader.save(blueprint, path)
+end
+
 function manager.utils.easy_write(properties, blueprint)
-    local extension = properties.extension
-    if extension == "mbp" then
+    local ext = properties.extension
+    if ext == "mbp" then
         preparation_mbp(properties, blueprint)
+    elseif ext == "vox" then
+        preparation_vox(properties, blueprint)
     end
 end
 

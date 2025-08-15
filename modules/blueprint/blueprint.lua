@@ -149,6 +149,7 @@ function BluePrint.new(blocks, entities, origin)
     self.entities = entities or {}
     self.entity_indexes = __pre_process_entity(self.entities, origin)
     self.id = next_id
+    self.packs = {}
     next_id = next_id + 1
 
     self.meta = {
@@ -156,7 +157,23 @@ function BluePrint.new(blocks, entities, origin)
         image = {}
     }
 
+    self:__init_packs()
+
     return self
+end
+
+function BluePrint:__init_packs()
+    local packs = {}
+    for _, blk in ipairs(self.blocks) do
+        local block_name = self.block_indexes.from[blk.id].name
+        local pack_id = string.explode(':', block_name)[1]
+
+        if not table.has(packs, pack_id) and pack_id ~= "core" then
+            table.insert(packs, pack_id)
+        end
+    end
+
+    self.packs = packs
 end
 
 function BluePrint:move_origin(new_origin)
@@ -165,8 +182,6 @@ function BluePrint:move_origin(new_origin)
 end
 
 function BluePrint:rotate(rotation)
-    local a, b = utils.vec.facing(rotation)
-
     self.rotation_vector = rotation
     self.rotation_matrix = utils.mat4.vec_to_mat(rotation)
 
