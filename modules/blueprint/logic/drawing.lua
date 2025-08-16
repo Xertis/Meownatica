@@ -55,6 +55,7 @@ local function set_blueprint(pos1, pos2, origin)
     if #blocks == 0 then return end
 
     local blue_print = BluePrint.new(blocks, entities, origin)
+    blue_print:__init_packs()
     table.insert(BLUEPRINTS, blue_print)
     utils.blueprint.change(#BLUEPRINTS)
 end
