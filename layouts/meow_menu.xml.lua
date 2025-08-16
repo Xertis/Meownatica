@@ -4,6 +4,8 @@ local all_pages = {
     "export"
 }
 
+local last_id = nil
+
 function on_open()
     session.entries["meownatica.menu.obj"] = document.menu
     change_page("blueprints")
@@ -42,6 +44,12 @@ end
 function update()
     local index = CURRENT_BLUEPRINT.id
     local blueprint = BLUEPRINTS[index]
+
+    if blueprint.id ~= last_id then
+        last_id = blueprint.id
+    else
+        return
+    end
 
     if not blueprint then return end
     if blueprint.image ~= '' then
