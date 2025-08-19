@@ -11,6 +11,9 @@ input.add_callback("meownatica.build_hud-mark", function ()
     local x, y, z = player.get_selected_block(pid)
 
     if x then
+        if input.is_pressed("key:left-ctrl") then
+            y = y + 1
+        end
         drawing.draw(x, y, z)
     end
 end)

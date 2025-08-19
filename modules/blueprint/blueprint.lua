@@ -2,6 +2,7 @@ local rotator = require "blueprint/logic/rotation"
 local selection = require "common/selection"
 
 local norm255 =  utils.math.norm255
+local next_id = 0
 
 local BluePrint = {}
 BluePrint.__index = BluePrint
@@ -128,7 +129,6 @@ local function __change_origin(blocks, new_origin)
     return blocks, origin_index
 end
 
-local next_id = 0
 function BluePrint.new(blocks, entities, origin)
     local self = setmetatable({}, BluePrint)
 

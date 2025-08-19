@@ -45,13 +45,13 @@ function update()
     local index = CURRENT_BLUEPRINT.id
     local blueprint = BLUEPRINTS[index]
 
+    if not blueprint then return end
     if blueprint.id ~= last_id then
         last_id = blueprint.id
     else
         return
     end
 
-    if not blueprint then return end
     if blueprint.image ~= '' then
         document.blueprint_icon.src = blueprint.image
     elseif blueprint.image_bytes and #blueprint.image_bytes > 0 then
