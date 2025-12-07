@@ -25,8 +25,8 @@ FILTERS = {
 }
 
 FILE_EXTENSIONS = {
-    {value = "mbp",            text="MBP"},
-    {value = "json",    text="JSON"},
+    {value = "mbp",         text="MBP"},
+    {value = "json",        text="JSON"},
     {value = "vox",         text="VOX (FRAGMENT)"}
 }
 

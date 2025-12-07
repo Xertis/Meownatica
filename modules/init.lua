@@ -1,3 +1,5 @@
+require "constants"
+
 -- Инициализация конфига
 do
     local path = pack.shared_file("meownatica", "config.toml")
