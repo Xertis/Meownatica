@@ -5,6 +5,7 @@ local Select = {}
 
 local Selections = {}
 local NextSelectionId = 1
+local zfight = 0.001
 
 local function dcoords(x1, y1, z1, x2, y2, z2)
     local minX, maxX = math.min(x1, x2), math.max(x1, x2)
@@ -27,49 +28,58 @@ local function loc(x, y, z, maxY, col, rot, selection_id)
         color = col
     }
 
-    local text_pos, text_rot
-
-    if rot[1] then
-        text_pos = { x + (4 / 7) + 1, y + 1, z }
-        text_rot = {
-            1, 0, 0, 0,
-            0, 1, 0, 0,
-            0, 0, 1, 0,
-            0, 0, 0, 1
-        }
-        if rot[2] then text_pos[3] = text_pos[3] + 1 end
-    else
-        text_pos = { x, y + 1, z + (4 / 7) + 1 }
-        text_rot = {
-            0, 0, 1, 0,
-            0, 1, 0, 0,
-            -1, 0, 0, 0,
-            0, 0, 0, 1
-        }
-        if rot[2] then text_pos[1] = text_pos[1] + 1 end
-    end
-
-    if y == maxY then
-        text_pos[2] = text_pos[2] + 1 - 1 / 7
+    local function add_text(t_pos, t_rot, t_str)
+        local tid = gfx.text3d.show(t_pos, t_str, text_table)
+        gfx.text3d.set_rotation(tid, t_rot)
+        Selections[selection_id][#Selections[selection_id] + 1] = tid
     end
 
     if rot[3] then
-        local yx, yy, yz = x + 1, y - (4 / 7), z
-        if rot[1] == true then yx = x + 2 - (1/7) end
-        if rot[2] == true then yz = z + 1 end
-        text_pos = {yx, yy, yz}
-        text_rot = {
-         0,-1, 0, 0,
-         1, 0, 0, 0,
-         0, 0, 1, 0,
-         0, 0, 0, 1
-        }
+        if rot[1] then -- maxX
+            if rot[2] then -- maxZ
+                add_text({ x + 1 + (1 / 7), y - (1 / 7), z + 1 + zfight}, mat4.rotate(mat4.rotate({0, 0, 1}, 90), {0, 1, 0}, 0), " _")
+                add_text({ x + 1 + zfight, y, z + 1 + (1 / 7)}, mat4.rotate(mat4.rotate({0, 0, 1}, 270), {1, 0, 0}, 270), "_ ")
+            else -- minZ
+                add_text({ x + 1 + (1 / 7), y, z - zfight}, mat4.rotate(mat4.rotate({0, 0, 1}, 90), {0, 1, 0}, 180), "_ ")
+                add_text({ x + 1 + zfight, y, z + (1 / 7) + (1 / 7)}, mat4.rotate(mat4.rotate({0, 0, 1}, 270), {1, 0, 0}, 270), "_ ")
+            end
+        else -- minX
+            if rot[2] then -- maxZ
+                add_text({ x + (1 / 7) + (1 / 7), y - (1 / 7), z + 1 + zfight}, mat4.rotate(mat4.rotate({0, 0, 1}, 90), {0, 1, 0}, 0), " _")
+                add_text({ x - zfight, y - (1 / 7), z + 1 + (1 / 7)}, mat4.rotate(mat4.rotate({0, 0, 1}, 90), {1, 0, 0}, 270), " _")
+            else -- minZ
+                add_text({ x + (1 / 7) + (1 / 7), y, z - zfight}, mat4.rotate(mat4.rotate({0, 0, 1}, 90), {0, 1, 0}, 180), "_ ")
+                add_text({ x - zfight, y - (1 / 7), z + (1 / 7) + (1 / 7)}, mat4.rotate(mat4.rotate({0, 0, 1}, 90), {1, 0, 0}, 270), " _")
+            end
+        end
+    else
+        local py = y
+        if py == maxY then
+            py = py + 1 - (1/7) - (1/7)
+        else
+            py = py - (1/7)
+        end
+
+        if rot[1] then
+            -- Вдоль оси X
+            if rot[2] then -- maxZ
+                add_text({ x - (1 / 7), py, z + 1 + zfight}, mat4.rotate({0, 1, 0}, 0), " _")
+                add_text({ x, py, z + 1 - zfight}, mat4.rotate({0, 1, 0}, 180), "_ ")
+            else -- minZ
+                add_text({ x - (1 / 7), py, z + zfight}, mat4.rotate({0, 1, 0}, 0), " _")
+                add_text({ x, py, z - zfight}, mat4.rotate({0, 1, 0}, 180), "_ ")
+            end
+        else
+            -- Вдоль оси Z
+            if rot[2] then -- maxX
+                add_text({ x + 1 + zfight, py, z}, mat4.rotate({0, 1, 0}, 90), "_ ")
+                add_text({ x + 1 - zfight, py, z - (1 / 7)}, mat4.rotate({0, 1, 0}, 270), " _")
+            else -- minX
+                add_text({ x + zfight, py, z }, mat4.rotate({0, 1, 0}, 90), "_ ")
+                add_text({ x - zfight, py, z - (1 / 7)}, mat4.rotate({0, 1, 0}, 270), " _")
+            end
+        end
     end
-
-    local tid = gfx.text3d.show(text_pos, "_", text_table)
-    gfx.text3d.set_rotation(tid, text_rot)
-
-    Selections[selection_id][#Selections[selection_id] + 1] = tid
 end
 
 function Select.sel(x1, y1, z1, x2, y2, z2, col)
@@ -161,7 +171,7 @@ function Select.dot(x, y, z, col)
     end
 
     local text_rot = mat4.rotate({0, 1, 0}, 0)
-    local text_pos = {x, y+0.5, z+1-0.001}
+    local text_pos = {x - 0.5, y+1, z+1-0.001}
     local text = "   ∟"
     showdot(text_pos, text_rot, text)
 
@@ -170,28 +180,27 @@ function Select.dot(x, y, z, col)
     end
 
     text_rot = mat4.rotate({0, 1, 0}, 180)
-    text_pos = {x, y+0.5, z+0.001}
+    text_pos = {x + 0.5, y+1, z+zfight}
     text = "∟ "
     showdot(text_pos, text_rot, text)
 
     text_rot = mat4.rotate({0, 1, 0}, 90)
-    text_pos = {x+1-0.001, y+0.5, z}
+    text_pos = {x+1-zfight, y+1, z + 0.5}
     text = "∟ "
     showdot(text_pos, text_rot, text)
 
-
     text_rot = mat4.rotate({0, 1, 0}, 270)
-    text_pos = {x+0.001, y+0.5, z}
+    text_pos = {x+zfight, y+1, z - 0.5}
     text = "   ∟"
     showdot(text_pos, text_rot, text)
 
     text_rot = mat4.rotate({1, 0, 0}, 90)
-    text_pos = {x, y+0.001, z+0.5}
+    text_pos = {x - 0.5, y+zfight + 1, z}
     text = "   ∟"
     showdot(text_pos, text_rot, text)
 
     text_rot = mat4.rotate({1, 0, 0}, 270)
-    text_pos = {x, y+1-0.001, z+0.5}
+    text_pos = {x - 0.5, y+2-zfight, z + 1}
     text = "   ∟"
     showdot(text_pos, text_rot, text)
 
