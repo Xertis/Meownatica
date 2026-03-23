@@ -1,8 +1,8 @@
 local mbp = require "files/mbp/manager"
 
-local Blueprints = session.get_entry("meownatica.menu.blueprints.Blueprints")
-local olders_paths = session.get_entry("meownatica.menu.blueprints.olders_paths")
-local olders_indexes = session.get_entry("meownatica.menu.blueprints.olders_indexes")
+local Blueprints = session.get("meownatica.menu.blueprints.Blueprints")
+local olders_paths = session.get("meownatica.menu.blueprints.olders_paths")
+local olders_indexes = session.get("meownatica.menu.blueprints.olders_indexes")
 
 local blueprints_copy = table.copy(Blueprints)
 
