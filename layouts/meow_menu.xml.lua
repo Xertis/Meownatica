@@ -7,7 +7,6 @@ local all_pages = {
 local last_id = nil
 
 function on_open()
-    session.entries["meownatica.menu.obj"] = document.menu
     change_page("blueprints")
 
     document.blueprint_info:setInterval(50, update)
