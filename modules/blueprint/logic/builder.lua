@@ -9,7 +9,7 @@ function module.build(origin_pos, max_units_per_tick, blueprint)
     local rotated = false
     if blueprint.rotation_vector[1] ~= 0 or blueprint.rotation_vector[2] ~= 0 or blueprint.rotation_vector[3] ~= 0 then
         rotated_blocks = rotator.dual_pass_rotated(rotated_blocks, blueprint.rotation_matrix)
-        rotated_entities = rotator.entities_rotate(rotated_entities, {0, 0, 0}, blueprint.rotation_matrix)
+        rotated_entities = rotator.entities_rotate(rotated_entities, { 0, 0, 0 }, blueprint.rotation_matrix)
         rotated = true
     end
 
@@ -22,7 +22,7 @@ function module.build(origin_pos, max_units_per_tick, blueprint)
         return
     end
 
-    local co = coroutine.create(function ()
+    local co = coroutine.create(function()
         for _, blk in ipairs(rotated_blocks) do
             if builded_unit > max_units_per_tick then
                 coroutine.yield()
@@ -34,14 +34,17 @@ function module.build(origin_pos, max_units_per_tick, blueprint)
             local world_y = origin_pos[2] + p[2]
             local world_z = origin_pos[3] + p[3]
 
+            local blk_id = block.get(world_x, world_y, world_z)
+
             local id = block.index(blueprint.block_indexes.from[blk.id].name)
-            if (not MEOW_CONFIG.set_air and id ~= 0) or MEOW_CONFIG.set_air then
+            if ((not MEOW_CONFIG.set_air and id ~= 0) or MEOW_CONFIG.set_air) and not (blk_id == 0 and id == 0) then
                 local new_states = blk.states
                 local decompose_states = block.decompose_state(new_states)
 
                 if rotated then
                     local rot = decompose_states[1]
-                    local new_rot = rotator.transform_block(common_facing, common_angle, rot, block.get_rotation_profile(id))
+                    local new_rot = rotator.transform_block(common_facing, common_angle, rot,
+                        block.get_rotation_profile(id))
 
                     decompose_states[1] = new_rot
                     new_states = block.compose_state(decompose_states)

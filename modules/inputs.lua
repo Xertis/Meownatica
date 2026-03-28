@@ -1,9 +1,9 @@
-local drawing = require "blueprint/logic/drawing"
+local blueprints_manager = require "blueprint/logic/manager"
 local builder = require "blueprint/logic/builder"
 
 local pid = hud.get_player()
 
-input.add_callback("meownatica.build_hud-mark", function ()
+input.add_callback("meownatica.build_hud-mark", function()
     if not COMMON_GLOBALS.BUILD_HUD_OPEN then
         return
     end
@@ -14,11 +14,11 @@ input.add_callback("meownatica.build_hud-mark", function ()
         if input.is_pressed("key:left-ctrl") then
             y = y + 1
         end
-        drawing.draw(x, y, z)
+        blueprints_manager.draw(x, y, z)
     end
 end)
 
-input.add_callback("meownatica.build_hud-move", function ()
+input.add_callback("meownatica.build_hud-move", function()
     if not COMMON_GLOBALS.BUILD_HUD_OPEN then
         return
     end
@@ -36,13 +36,13 @@ input.add_callback("meownatica.build_hud-move", function ()
             y = y + 1
         end
 
-        local new_preview_pos = {x, y, z}
+        local new_preview_pos = { x, y, z }
         blue_print:build_preview(new_preview_pos)
         CURRENT_BLUEPRINT.preview_pos = new_preview_pos
     end
 end)
 
-input.add_callback("meownatica.build_hud-build", function ()
+input.add_callback("meownatica.build_hud-build", function()
     if not COMMON_GLOBALS.BUILD_HUD_OPEN then
         return
     end
@@ -60,7 +60,7 @@ input.add_callback("meownatica.build_hud-build", function ()
     end
 end)
 
-input.add_callback("meownatica.build_hud-rotate", function ()
+input.add_callback("meownatica.build_hud-rotate", function()
     if not COMMON_GLOBALS.BUILD_HUD_OPEN then
         return
     end
@@ -80,6 +80,6 @@ input.add_callback("meownatica.build_hud-rotate", function ()
     end
 end)
 
-input.add_callback("meownatica.menu", function ()
+input.add_callback("meownatica.menu", function()
     hud.show_overlay("meownatica:meow_menu")
 end)

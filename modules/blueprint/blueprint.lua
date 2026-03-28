@@ -1,7 +1,7 @@
 local rotator = require "blueprint/logic/rotation"
-local selection = require "common/selection"
+local drawing = require "blueprint/logic/drawing"
 
-local norm255 =  utils.math.norm255
+local norm255 = utils.math.norm255
 local next_id = 0
 
 local BluePrint = {}
@@ -10,13 +10,13 @@ BluePrint.__index = BluePrint
 local block_signature = {
     id = 0,
     states = 0,
-    pos = {0, 0, 0},
+    pos = { 0, 0, 0 },
 }
 
 local entity_signature = {
     id = 0,
     rotation = {},
-    pos = {0, 0, 0}
+    pos = { 0, 0, 0 }
 }
 
 local function depth_effect(color, pos, origin, size)
@@ -30,8 +30,8 @@ local function depth_effect(color, pos, origin, size)
         size[2] / 2,
         size[3] / 2
     }
-    local max_distance = (half_size[1]^2 + half_size[2]^2 + half_size[3]^2) ^ 0.5
-    local current_distance = (relative_pos[1]^2 + relative_pos[2]^2 + relative_pos[3]^2) ^ 0.5
+    local max_distance = (half_size[1] ^ 2 + half_size[2] ^ 2 + half_size[3] ^ 2) ^ 0.5
+    local current_distance = (relative_pos[1] ^ 2 + relative_pos[2] ^ 2 + relative_pos[3] ^ 2) ^ 0.5
 
     local norm_dist = math.min(current_distance / max_distance, 1)
 
@@ -46,8 +46,8 @@ local function depth_effect(color, pos, origin, size)
 end
 
 local function __pre_process(blocks, origin)
-    local min = {math.huge, math.huge, math.huge}
-    local max = {0, 0, 0}
+    local min = { math.huge, math.huge, math.huge }
+    local max = { 0, 0, 0 }
     local origin_index = 1
 
     for id, block in ipairs(blocks) do
@@ -69,7 +69,7 @@ local function __pre_process(blocks, origin)
 end
 
 local function __pre_process_block_indexes(blocks)
-    local indexes = {to = {}, from = {}}
+    local indexes = { to = {}, from = {} }
     local max_index = 0
     for _, _block in ipairs(blocks) do
         local block_name = block.name(_block.id)
@@ -92,7 +92,7 @@ local function __pre_process_block_indexes(blocks)
 end
 
 local function __pre_process_entity(_entities, origin)
-    local indexes = {to = {}, from = {}}
+    local indexes = { to = {}, from = {} }
     local max_index = 0
     for _, entity in ipairs(_entities) do
         local entity_name = entities.def_name(entity.id)
@@ -136,7 +136,7 @@ function BluePrint.new(blocks, entities, origin)
     self.size, self.origin = __pre_process(self.blocks, origin)
     self.block_indexes = __pre_process_block_indexes(self.blocks)
     self.name = "default_name.mbp"
-    self.rotation_vector = {0, 0, 0}
+    self.rotation_vector = { 0, 0, 0 }
     self.rotation_matrix = utils.mat4.vec_to_mat(self.rotation_vector)
     self.author = ""
     self.description = ""
@@ -145,7 +145,9 @@ function BluePrint.new(blocks, entities, origin)
     self.image_bytes = {}
     self.loaded = false
     self.tags = {}
+
     self.preview_ids = {}
+
     self.entities = entities or {}
     self.entity_indexes = __pre_process_entity(self.entities, origin)
     self.id = next_id
@@ -189,36 +191,19 @@ function BluePrint:rotate(rotation)
 end
 
 function BluePrint:build_preview(origin_pos)
+    self.preview_ids = self.preview_ids or {}
     local rotated = rotator.dual_pass_rotated(self.blocks, self.rotation_matrix)
 
-    local color = {40, 151, 255, 255}
-    local center_pos = self:get_center_pos()
-
-    for _, blk in ipairs(rotated) do
-        local world_pos = vec3.add(origin_pos, blk.pos)
-
-        local block_id = block.index(self.block_indexes.from[blk.id].name)
-
-        if block_id ~= 0 then
-            table.insert(self.preview_ids,
-                selection.dot(world_pos[1], world_pos[2], world_pos[3],
-                depth_effect(color, blk.pos, center_pos, self.size))
-            )
-        end
-    end
+    drawing.build_preview(self, origin_pos, rotated)
 
     return self
 end
 
 function BluePrint:unbuild_preview()
-    for i=#self.preview_ids, 1, -1 do
-        selection.desel(self.preview_ids[i])
-        table.remove(self.preview_ids, i)
-    end
+    drawing.unbuild_preview(self)
 
     return self
 end
-
 
 function BluePrint:index_to_pos(index)
     local sizeX, sizeY, sizeZ = unpack(self.size)
@@ -259,8 +244,8 @@ function BluePrint:pos_to_index(pos)
     local abs_z = origin_z + z
 
     if abs_x < 0 or abs_x >= sizeX or
-       abs_y < 0 or abs_y >= sizeY or
-       abs_z < 0 or abs_z >= sizeZ then
+        abs_y < 0 or abs_y >= sizeY or
+        abs_z < 0 or abs_z >= sizeZ then
         return nil
     end
 
@@ -268,8 +253,8 @@ function BluePrint:pos_to_index(pos)
 end
 
 function BluePrint:get_center_pos()
-    local min = {math.huge, math.huge, math.huge}
-    local max = {-math.huge, -math.huge, -math.huge}
+    local min = { math.huge, math.huge, math.huge }
+    local max = { -math.huge, -math.huge, -math.huge }
 
     for _, block in ipairs(self.blocks) do
         min = utils.vec.min(min, block.pos)
@@ -280,7 +265,7 @@ function BluePrint:get_center_pos()
     local center_y = math.floor((min[2] + max[2]) / 2)
     local center_z = math.floor((min[3] + max[3]) / 2)
 
-    return {center_x, center_y, center_z}
+    return { center_x, center_y, center_z }
 end
 
 return BluePrint
