@@ -250,8 +250,13 @@ function load_blueprint(path)
 end
 
 function action(id)
+    local blueprint, id_in_tbl = find_blueprint(id)
+    if not blueprint then
+        gui.alert("Схема не найдена")
+        return
+    end
+
     local icon = document["blueprintaction_" .. id]
-    local blueprint = find_blueprint(id)
 
     if icon.src == "mgui/load" then
         local status, error_or_index, tags = load_blueprint(blueprint.path)
@@ -260,14 +265,15 @@ function action(id)
             blueprint.index = error_or_index
             blueprint.tags = tags
         else
-            gui.alert("Не удалось загрузить схему\nОшибка:" .. tostring(error_or_index))
+            gui.alert("Не удалось загрузить схему\nОшибка: " .. tostring(error_or_index))
         end
     else
         icon.src = "mgui/load"
         document["blueprint_" .. id].color = {0, 0, 0, 64}
-        if not BLUEPRINTS[blueprint.index].loaded then
-            local _, id_in_tbl = find_blueprint(id)
 
+        local entry = blueprint.index and BLUEPRINTS[blueprint.index]
+
+        if entry and not entry.loaded then
             table.remove(Blueprints, id_in_tbl)
             document["blueprint_" .. id]:destruct()
 

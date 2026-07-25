@@ -45,17 +45,14 @@ local function reverse_reorder_blocks(blocks, size)
     local newBlocks = {}
     local sizeX, sizeY, sizeZ = unpack(size)
     local total = sizeX * sizeY * sizeZ
-
-    for newIndex = 1, total do
-        local ni = newIndex - 1
+    for bpIndex = 1, total do
+        local ni = bpIndex - 1
         local x = math.floor(ni / (sizeY * sizeZ))
         local y = math.floor((ni % (sizeY * sizeZ)) / sizeZ)
         local z = ni % sizeZ
-
-        local oldIndex = y * (sizeZ * sizeX) + z * sizeX + x + 1
-        newBlocks[newIndex] = blocks[oldIndex]
+        local voxIndex = y * (sizeZ * sizeX) + z * sizeX + x + 1
+        newBlocks[voxIndex] = blocks[bpIndex]
     end
-
     return newBlocks
 end
 
@@ -100,7 +97,7 @@ function module.save(blueprint, path)
 end
 
 function module.load(path)
-    local blueprint = BluePrint.new({}, {}, {0, 0, 0})
+    local blueprint = BluePrint.new({}, {}, { 0, 0, 0 })
     local fragment = bjson.frombytes(file.read_bytes(path))
 
     local blocks = convert_to_mbp(fragment.voxels)
